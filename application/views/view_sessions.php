@@ -183,12 +183,10 @@
 
 
     .borderFrame{
+        margin-top: 100px;
         width: 100%;
         background-color: #679b41;
         height: 29px;
-        position: absolute;
-        z-index: 11;
-        bottom: 80px;
     }
 
 
@@ -209,7 +207,6 @@
                     <div id="embededVideo">
                         <div class="row"><i id="btnFS" class="fa fa-arrows-alt" aria-hidden="true"></i></div>
                         <div id="iframeDiv" class="row embed-responsive embed-responsive-16by9"><?= isset($sessions) ? $sessions->embed_html_code : "" ?></div>
-                        <div class="borderFrame"></div>
                         <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; text-align: left;">
                             <div class="modal-dialog">
                                 <div class="modal-content" style="padding: 0px; border: 0px solid #999; border-radius: 15px;">
@@ -234,10 +231,11 @@
                             </div>
                         </div>
                     </div>
-<!--                    <p class="currentTime">
-                        CURRENT TIME : <span id="show_time"></span> EDT <a class="button color currentTimeButton" id="close_session"><span>Close the Session</span></a>
-                        <span class="borderFooter">test</span>
-                    </p>-->
+
+                    <!--                    <p class="currentTime">
+                                            CURRENT TIME : <span id="show_time"></span> EDT <a class="button color currentTimeButton" id="close_session"><span>Close the Session</span></a>
+                                            <span class="borderFooter">test</span>
+                                        </p>-->
                     <div class="col-md-12">
                         <?php
                         if (isset($music_setting)) {
@@ -288,9 +286,11 @@
                 </div>
             </div>
         </section>
+
         <!-- END: SECTION -->
     </div>
 </section>
+<div class="borderFrame"></div>
 
 
 <?php
