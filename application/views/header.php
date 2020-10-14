@@ -259,26 +259,34 @@
                 <!--END: SHOPPING CART -->
 
                 <!--NAVIGATION-->
-                <div class="navbar-collapse collapse main-menu-collapse navigation-wrap">
-                    <div class="container">
-                        <nav id="mainMenu2" class="main-menu mega-menu">
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="" target="_blank">RESOURCES</a></li>
-                                <li><a href="" target="_blank">TOOLBOX</a>
-                                    <ul class="toolboxCustomDrop">
-                                        <li><a href=""><i class="fa fa-question" aria-hidden="true"></i> ASK QUESTIONS</a></li>
-                                        <li><a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i> TAKE NOTES</a></li>
-                                        <li><a href=""><i class="fa fa-comments" aria-hidden="true"></i> CHAT</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" target="_blank">CLAIM CREDIT</a></li>
-                                <li><a href="" target="_blank">HELP DESK</a></li>
-                            </ul>
+                <?php
+                if ($this->session->userdata('cid') != "") {
+                ?>
+
+                    <div class="navbar-collapse collapse main-menu-collapse navigation-wrap">
+                        <div class="container">
+                            <nav id="mainMenu2" class="main-menu mega-menu">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="" target="_blank">RESOURCES</a></li>
+                                    <li><a href="" target="_blank">TOOLBOX</a>
+                                        <ul class="toolboxCustomDrop">
+                                            <li><a href=""><i class="fa fa-question" aria-hidden="true"></i> ASK QUESTIONS</a></li>
+                                            <li><a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i> TAKE NOTES</a></li>
+                                            <li><a href=""><i class="fa fa-comments" aria-hidden="true"></i> CHAT</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="" target="_blank">CLAIM CREDIT</a></li>
+                                    <li><a href="" target="_blank">HELP DESK</a></li>
+                                </ul>
 
 
-                        </nav>
+                            </nav>
+                        </div>
                     </div>
-                </div>
+                <?php
+                }
+                ?>
+
 
                 <!--END: NAVIGATION-->
             </div>
