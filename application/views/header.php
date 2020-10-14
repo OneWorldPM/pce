@@ -107,7 +107,7 @@
 
         .logo2 img {
             object-fit: contain;
-            width: 220px;
+            width: 110px;
             height: 70px;
         }
 
