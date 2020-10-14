@@ -530,13 +530,15 @@ if (isset($sessions)) {
         </div>
         <div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
             <div style="padding:5px;">
-                <div style="text-align: center; display: flex; " id="questions_section">
+                <div style="text-align: center; display: flex; "  id="questions_section">
 
-                    <div class="col-md-12 input-group">
+                    <div class="col-10 input-group">
                         <span class="input-group-addon" style="padding: 5px 6px"><img src="<?= base_url() ?>front_assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
                         <input type="text" id="questions" class="form-control" placeholder="Enter Question" value="">
                     </div>
-                    <a class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
+                    <div class="col-2">
+                        <a class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
+                    </div>
                 </div>
                 <div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
                     <img src="<?= base_url() ?>front_assets/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
