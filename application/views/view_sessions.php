@@ -192,6 +192,21 @@
         height: 29px;
     }
 
+    .messagesSticky input{
+        width: 210px;
+        float: left;
+        border-radius: 0;
+        margin-left: 5px;
+    }
+    .messagesSticky button{
+        margin-left: 3px;
+        margin-top: 0px;
+        height: 40px;
+        line-height: 16px;
+        width: 60px;
+        padding: 0;
+    }
+
 
 
 </style>
@@ -472,6 +487,7 @@ if (isset($sessions)) {
         </div>
 
         <input type="text" class="form-control" placeholder="Enter message" id='sendGroupChat'>
+        <button class="btn btn-success" id="sendGroupChatButton">Send</button>
 
     </div>
 
@@ -568,30 +584,40 @@ if (isset($sessions)) {
             if ($questions.val() == "") {
                 $questions.addClass("border borderRed");
             } else {
-                $questions.removeClass("border borderRed");
-                var $questionsVal=$questions.val();
-                $questions.val("");
-                $.post("<?=base_url()?>"+"SessionGroupChat/newText",
-                {
-                    "sessionId":"<?=getAppName($sessions->sessions_id) ?>",
-                    "message":$questionsVal
-                },
-                function(resp){
-                    if(resp){
-                        resp=JSON.parse(resp);
-                        socket.emit("sessionViewGroupChat",{
-                            "sessionId":resp.session_id,
-                            "message":resp.message,
-                            "userId":resp.user_id,
-                            "userName":resp.user_name
-                         })
-                    
-                    }
-                })
-               
+                $('#sendGroupChatButton').click()
             }
         }
     });
+        $('#sendGroupChatButton').click(function (e) {
+            var $questions = $("#sendGroupChat");
+
+                if ($questions.val() == "") {
+                    $questions.addClass("border borderRed");
+                } else {
+                    $questions.removeClass("border borderRed");
+                    var $questionsVal=$questions.val();
+                    $questions.val("");
+                    $.post("<?=base_url()?>"+"SessionGroupChat/newText",
+                        {
+                            "sessionId":"<?=getAppName($sessions->sessions_id) ?>",
+                            "message":$questionsVal
+                        },
+                        function(resp){
+                            if(resp){
+                                resp=JSON.parse(resp);
+                                socket.emit("sessionViewGroupChat",{
+                                    "sessionId":resp.session_id,
+                                    "message":resp.message,
+                                    "userId":resp.user_id,
+                                    "userName":resp.user_name
+                                })
+
+                            }
+                        })
+
+                }
+        });
+
     $.post("<?=base_url()?>" + "SessionGroupChat/getTexts", {
             "sessionId": "<?=getAppName($sessions->sessions_id) ?>",
         },
