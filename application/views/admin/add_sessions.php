@@ -238,10 +238,10 @@
                                             <label class="col-md-12 text-large" style="padding:0">Select Session Properties</label>
                                             <hr>
                                             <div class="form-group">
-                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" value="resources">Resources</label>
-                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" value="chat">Chat</label>
-                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]"  value="notes">Notes</label>
-                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" value="questions">Questions</label>
+                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?= (isset($sessions_edit) && !empty($sessions_edit)) ? in_array("resources", explode(",", $sessions_edit->right_bar)) ? 'checked' : '' : '' ?> value="resources">Resources</label>
+                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?= (isset($sessions_edit) && !empty($sessions_edit)) ? in_array("chat", explode(",", $sessions_edit->right_bar)) ? 'checked' : '' : '' ?> value="chat">Chat</label>
+                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?= (isset($sessions_edit) && !empty($sessions_edit)) ? in_array("notes", explode(",", $sessions_edit->right_bar)) ? 'checked' : '' : '' ?> value="notes">Notes</label>
+                                                <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?= (isset($sessions_edit) && !empty($sessions_edit)) ? in_array("questions", explode(",", $sessions_edit->right_bar)) ? 'checked' : '' : '' ?>  value="questions">Questions</label>
                                             </div>
 
                                             <div class="form-group">
@@ -288,7 +288,7 @@
     {
     $('.datepicker').datepicker({dateFormat: 'mm/dd/yyyy' });
     $("#btn_add_new_presenter").on("click", function () {
-            $("#presenter_list").append("<div class='col-md-12 p-15' id='add_new_presenter_section' style='margin-bottom: 20px; padding: 10px; border: 1px solid #b2b7bb;'>\n\
+            $("#presenter_list").append("<div class='p-15' id='add_new_presenter_section' style='margin-bottom: 20px; padding: 10px; border: 1px solid #b2b7bb;'>\n\
                                         <div class='row'><input type='hidden' name='status[]' value='insert'><div class='col-md-6'><div class='form-group'>\n\
                                             <label class='text-large'>Order No.:</label>\n\
                                             <input type='text' name='order_no[]' id='presenter_order_no' placeholder='Order No.' value='' class='form-control'>\n\
