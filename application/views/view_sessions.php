@@ -145,9 +145,8 @@
         overflow: hidden;
     }
 
-    .parallax {
-        height: 909px;
-    }
+
+
 
     .questionElement {
         max-height: 230px;
@@ -182,6 +181,18 @@
         }
     }
 
+
+    .borderFrame{
+        width: 100%;
+        background-color: #679b41;
+        height: 29px;
+        position: absolute;
+        z-index: 11;
+        bottom: 80px;
+    }
+
+
+
 </style>
 
 
@@ -192,12 +203,13 @@
         <section class="content">
             <div>
                 <div class="videContent">
-                    <div style="background-color: #B2B7BB;">
+                    <div style="background-color: black;">
                         <h3 style="margin-bottom: 2px; color: #fff; font-weight: 700; text-transform: uppercase;"><?= isset($sessions) ? $sessions->session_title : "" ?></h3>
                     </div>
                     <div id="embededVideo">
                         <div class="row"><i id="btnFS" class="fa fa-arrows-alt" aria-hidden="true"></i></div>
                         <div id="iframeDiv" class="row embed-responsive embed-responsive-16by9"><?= isset($sessions) ? $sessions->embed_html_code : "" ?></div>
+                        <div class="borderFrame"></div>
                         <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; text-align: left;">
                             <div class="modal-dialog">
                                 <div class="modal-content" style="padding: 0px; border: 0px solid #999; border-radius: 15px;">
