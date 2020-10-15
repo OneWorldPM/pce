@@ -84,8 +84,6 @@
         }
 
 
-
-
         #header-wrap {
             border-top: 5px solid #679b41;
             height: 100px !important;
@@ -115,29 +113,34 @@
             margin-right: 100px;
             margin-top: 15px;
         }
+
         #mainMenu2 .nav {
-        height: max-content;
+            height: max-content;
         }
 
-        #mainMenu2 ul li a{
+        #mainMenu2 ul li a {
             line-height: 0 !important;
             height: max-content !important;
             font-weight: 600;
             font-size: 13px;
             color: #679b41;
         }
-        #mainMenu2 ul li{
+
+        #mainMenu2 ul li {
             margin-right: 40px;
         }
+
         #mainMenu2 ul li a:hover {
             background-color: transparent;
             color: #ff5e00;
+            cursor: pointer;
         }
 
-        #mainMenu2 ul li:hover ul{
+        #mainMenu2 ul li:hover ul {
             display: block !important;
         }
-        .toolboxCustomDrop{
+
+        .toolboxCustomDrop {
 
             display: none;
             background-color: white;
@@ -148,64 +151,80 @@
             position: absolute;
             z-index: 124214214;
         }
-        .toolboxCustomDrop li{
+
+        .toolboxCustomDrop li {
             margin-right: 0 !important;
 
             font-weight: bold;
         }
-        .toolboxCustomDrop li a{
+
+        .toolboxCustomDrop li a {
             color: #7a7a7a !important;
+            cursor: pointer;
         }
-        .toolboxCustomDrop li a:hover{
+
+        .toolboxCustomDrop li a:hover {
             color: #ff5e00 !important;
 
         }
-        .toolboxCustomDrop li i{
+
+        .toolboxCustomDrop li i {
             font-size: 19px !important;
         }
-        .toolboxCustomDrop li:nth-of-type(1n+2){
-                       margin-top: 12px;
+
+        .toolboxCustomDrop li:nth-of-type(1n+2) {
+            margin-top: 12px;
         }
+
         @media screen and (max-width: 1290px) {
-            #header-wrap{
+            #header-wrap {
                 padding: 16px 30px;
             }
         }
+
         @media screen and (max-width: 1200px) {
-            #header-wrap{
+            #header-wrap {
                 padding: 16px 10px;
             }
-            #header .container{
+
+            #header .container {
                 width: 100% !important;
             }
-            #mainMenu2{
+
+            #mainMenu2 {
                 margin-right: 0;
             }
+
             #mainMenu2 ul li {
                 margin-right: 10px;
             }
         }
+
         @media screen and (max-width: 992px) {
-            .parallax{
+            .parallax {
                 margin-top: 0;
             }
-            #mainMenu2 .nav{
+
+            #mainMenu2 .nav {
                 background-color: white;
                 height: 200px;
                 width: 200px;
                 float: right;
             }
-            .nav-main-menu-responsive{
+
+            .nav-main-menu-responsive {
                 height: max-content;
                 line-height: 0;
             }
 
         }
+
         @media screen and (max-width: 493px) {
-            .logo2{
+            .logo2 {
                 margin-left: 5px;
             }
-            .logo2 img{
+
+            .logo2 img {
                 width: 115px;
             }
         }
@@ -261,29 +280,48 @@
                 <!--NAVIGATION-->
                 <?php
                 if ($this->session->userdata('cid') != "") {
-                ?>
+                    ?>
 
                     <div class="navbar-collapse collapse main-menu-collapse navigation-wrap">
                         <div class="container">
                             <nav id="mainMenu2" class="main-menu mega-menu">
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li><a href="" target="_blank">RESOURCES</a></li>
-                                    <li><a href="" target="_blank">TOOLBOX</a>
+                                    <li><a target="_blank">TOOLBOX</a>
                                         <ul class="toolboxCustomDrop">
-                                            <li><a href=""><i class="fa fa-question" aria-hidden="true"></i> ASK QUESTIONS</a></li>
-                                            <li><a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i> TAKE NOTES</a></li>
-                                            <li><a href=""><i class="fa fa-comments" aria-hidden="true"></i> CHAT</a></li>
+                                            <?php
+                                            if(isset($right_bar) && isset($tool_box_status)){
+                                                if ($tool_box_status == "1") {
+                                                    if (sessionRightBarControl($right_bar, "questions")) {
+                                                        ?>
+                                                        <li data-type="questionsSticky"><a data-type2="off"><i class="fa fa-question" aria-hidden="true"></i> ASK QUESTIONS</a></li>
+                                                        <?php
+                                                    }
+                                                    if (sessionRightBarControl($right_bar, "notes")) {
+                                                        ?>
+                                                        <li data-type="notesSticky"><a data-type2="off"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> TAKE NOTES</a></li>
+                                                        <?php
+                                                    }
+                                                    if (sessionRightBarControl($right_bar, "chat")) {
+                                                        ?>
+                                                        <li data-type="messagesSticky"><a data-type2="off"><i class="fa fa-comments" aria-hidden="true"></i> CHAT</a></li>
+                                                        <?php
+                                                    }
+                                                }
+                                            }
+
+
+                                            ?>
                                         </ul>
                                     </li>
                                     <li><a href="" target="_blank">CLAIM CREDIT</a></li>
-                                    <li><a href="" target="_blank">HELP DESK</a></li>
+                                    <li><a href="https://yourconference.live/support" target="_blank">HELP DESK</a></li>
                                 </ul>
 
 
                             </nav>
                         </div>
                     </div>
-                <?php
+                    <?php
                 }
                 ?>
 
