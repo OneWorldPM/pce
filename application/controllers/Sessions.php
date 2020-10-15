@@ -55,6 +55,7 @@ class Sessions extends CI_Controller {
     public function view($sessions_id) {
         $sesions=$this->objsessions->viewSessionsData($sessions_id);
         $header_data["sesions_logo"]=$sesions->sessions_logo;
+        $header_data["sponsor_type"]=$sesions->sponsor_type;
         $header_data["right_bar"]=$sesions->right_bar;
         $header_data["tool_box_status"]=$sesions->tool_box_status;
 
