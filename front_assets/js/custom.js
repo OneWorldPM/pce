@@ -7,7 +7,7 @@ $(document).ready(function () {
 
         var $rightSticky = $(".rightSticky")
 
-        $(document).on("click", ".rightSticky ul li,.rightSticykPopup .open > .dropdown-menu li a,.rightSticykPopup .header .rightTool i", function () {
+        $(document).on("click", ".rightSticky ul li,.rightSticykPopup .open > .dropdown-menu li a,.rightSticykPopup .header .rightTool i,.toolboxCustomDrop li a", function () {
             $toolType = $(this).data("type");
             var $toolType2 = $(this).data("type2");
             var screen = $rightSticky.data("screen");
