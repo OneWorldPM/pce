@@ -62,6 +62,7 @@ class M_sessions extends CI_Model {
     function createSessions() {
         $post = $this->input->post();
 
+
         $session_right_bar = "";
         if (isset($post["session_right_bar"])) {
             $session_right_bar = implode(",", $post["session_right_bar"]);
@@ -91,8 +92,9 @@ class M_sessions extends CI_Model {
             'embed_html_code_presenter' => trim($post['embed_html_code_presenter']),
             'sessions_type_id' => $sessions_type_id,
             'sessions_tracks_id' => $sessions_tracks_id,
-            'sessions_type_status' => trim($post['sessions_type_status']),
+            'sessions_type_status' => trim(sponsor_type),
             'right_bar' => $session_right_bar,
+            'sponsor_type' => $post['sponsor_type'],
             "reg_date" => date("Y-m-d h:i")
         );
         $this->db->insert("sessions", $set);
@@ -207,7 +209,6 @@ class M_sessions extends CI_Model {
     function updateSessions() {
         $post = $this->input->post();
 
-
         $session_right_bar = "";
         if (isset($post["session_right_bar"])) {
             $session_right_bar = implode(",", $post["session_right_bar"]);
@@ -240,6 +241,7 @@ class M_sessions extends CI_Model {
             'sessions_tracks_id' => $sessions_tracks_id,
             'sessions_type_status' => trim($post['sessions_type_status']),
             'tool_box_status' => (isset($post['tool_box_status'])) ? $post['tool_box_status'] : 1,
+            'sponsor_type' => $post['sponsor_type'],
             'right_bar' => $session_right_bar
         );
         $this->db->update("sessions", $set, array("sessions_id" => $post['sessions_id']));

@@ -99,7 +99,7 @@
             border-left: 1px solid black;
             float: left;
             padding-left: 5px;
-            margin-top: -4px;
+            margin-top: 0px;
             margin-left: 25px;
         }
 
@@ -107,6 +107,12 @@
             object-fit: contain;
             width: 110px;
             height: 70px;
+        }  
+        .logo2 span {
+            position: absolute;
+            top: -16px;
+            font-family: sans-serif;
+            font-size: 11px;
         }
 
         #mainMenu2 {
@@ -260,6 +266,7 @@
                 if (isset($sesions_logo)) {
                     ?>
                     <div class="logo2">
+                        <span><?=$sponsor_type?></span>
                         <img src="<?= base_url() . "uploads/sessions_logo/" . $sesions_logo ?>" onerror="$(this).parent().remove()">
                     </div>
                     <?php
