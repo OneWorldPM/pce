@@ -289,7 +289,7 @@
                                     <li><a target="_blank">TOOLBOX</a>
                                         <ul class="toolboxCustomDrop">
                                             <?php
-                                            if(isset($right_bar) && isset($tool_box_status)){
+                                            if (isset($right_bar) && isset($tool_box_status)) {
                                                 if ($tool_box_status == "1") {
                                                     if (sessionRightBarControl($right_bar, "questions")) {
                                                         ?>
@@ -304,6 +304,11 @@
                                                     if (sessionRightBarControl($right_bar, "chat")) {
                                                         ?>
                                                         <li data-type="messagesSticky"><a data-type2="off"><i class="fa fa-comments" aria-hidden="true"></i> CHAT</a></li>
+                                                        <?php
+                                                    }
+                                                    if (sessionRightBarControl($right_bar, "resources")) {
+                                                        ?>
+                                                        <li data-type="resourcesSticky"><a data-type2="off"><i class="fa fa-comments" aria-hidden="true"></i> RESOURCES</a></li>
                                                         <?php
                                                     }
                                                 }
