@@ -60,7 +60,6 @@
             <div class="row">
                 <div class="col-md-12 m-t-50" style="text-align: -webkit-center;">
                     <?php
-
                     if (isset($all_sessions_week) && !empty($all_sessions_week)) {
                         foreach ($all_sessions_week as $val) {
                             ?>
@@ -74,9 +73,9 @@
                                     if ($val->sessions_date == $current_date) {
                                         ?>
                                         <div class="col-lg box_home_active text-center">
-                                            <?php } else { ?>
+                                        <?php } else { ?>
                                             <div class="col-lg box-home text-center">
-        <?php } ?>
+                                            <?php } ?>
                                             <label style="margin-bottom: 20px; margin-top: 20px;   font-size: 30px; font-weight: 700;"><?= $val->dayname ?></label><br>
                                             <label><?= date('M-d-Y', strtotime($val->sessions_date)); ?></label>
                                         </div>
@@ -109,7 +108,7 @@
                                             <div class="post-content-details col-md-9 m-t-30">
 
                                                 <div class="post-title">
-                                                    <h6 style="font-weight: 600"><?= $val->sessions_date . ' ' . date("h:i A", strtotime($val->time_slot)) .' - '. date("h:i A", strtotime($val->end_time)) ?></h6>
+                                                    <h6 style="font-weight: 600"><?= $val->sessions_date . ' ' . date("h:i A", strtotime($val->time_slot)) . ' - ' . date("h:i A", strtotime($val->end_time)) ?></h6>
                                                     <h3><a href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>" style="color: #679B41; font-weight: 900;"><?= $val->session_title ?></a></h3>
                                                 </div>
                                                 <?php
@@ -202,7 +201,22 @@
             var twitter_link = $(this).attr("data-twitter_link");
             var facebook_link = $(this).attr("data-facebook_link");
             var linkedin_link = $(this).attr("data-linkedin_link");
-            $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/" + presenter_photo);
+            if (presenter_photo != "" && presenter_photo != null) {
+                $.ajax({
+                    url: '<?= base_url() ?>uploads/presenter_photo/' + presenter_photo,
+                    type: 'HEAD',
+                    error: function ()
+                    {
+                        $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/presenter_avtar.png");
+                    },
+                    success: function ()
+                    {
+                        $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/" + presenter_photo);
+                    }
+                });
+            } else {
+                $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/presenter_avtar.png");
+            }
             $('#presenter_title').text(presenter_name + ", " + designation);
             $('#email').text(email);
             $('#company').text(company_name);
