@@ -788,6 +788,7 @@ if (isset($_GET['testing']) && $_GET['testing'] == 1) {
     }
 
     $(document).on('click', '.hide_question', function () {
+		 console.log("okkook");
         var qid = $(this).attr('data-q-id');
         var data_listkey_id = $(this).attr('data-listkey-id');
         $.ajax({
