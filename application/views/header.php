@@ -91,7 +91,7 @@
         }
 
         .parallax {
-            height: 909px;
+            /*height: 909px;*/
             margin-top: 40px;
         }
 
