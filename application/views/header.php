@@ -110,9 +110,9 @@
         }  
         .logo2 span {
             position: absolute;
-            top: -16px;
+            top: -15px;
             font-family: sans-serif;
-            font-size: 11px;
+            font-size: 8px
         }
 
         #mainMenu2 {
@@ -325,7 +325,6 @@
                                             ?>
                                         </ul>
                                     </li>
-                                    <li><a href="" target="_blank">CLAIM CREDIT</a></li>
                                     <li><a href="https://yourconference.live/support" target="_blank">HELP DESK</a></li>
                                 </ul>
 
