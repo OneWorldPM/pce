@@ -264,10 +264,12 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="sel1">Select Sponsor Type</label>
-                                                    
+
                                                     <select class="form-control" name="sponsor_type">
+                                                        <option value=""></option>
                                                         <option value="SPONSORED BY" <?=isset($sessions_edit)?($sessions_edit->sponsor_type=="SPONSORED BY"?"selected":""):""?>>SPONSORED BY</option>
                                                         <option value="EDUCATED BY" <?=isset($sessions_edit)?($sessions_edit->sponsor_type=="EDUCATED BY"?"selected":""):""?>>EDUCATED BY</option>
+                                                        <option value="PARTNERED WITH" <?=isset($sessions_edit)?($sessions_edit->sponsor_type=="PARTNERED WITH"?"selected":""):""?>>PARTNERED WITH</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
