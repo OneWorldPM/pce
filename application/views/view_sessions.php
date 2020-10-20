@@ -186,7 +186,7 @@
 
 
     .borderFrame{
-        margin-top: 100px;
+        margin-top: 0px;
         width: 100%;
         background-color: #679b41;
         height: 29px;
@@ -207,6 +207,24 @@
         padding: 0;
     }
 
+    .embedTools{
+        position: absolute;
+        right: 10px;
+        margin-top: -129px;
+        background-color: #ffffff36;
+        width: 90px;
+        height: 40px;
+        line-height: 50px;
+        text-align: center;
+        box-shadow: 0 0 4px 0px white;
+    }
+    .embedTools span{
+        font-size: 22px;
+    }
+    .embedTools span:hover{
+        cursor: pointer;
+        color: black;
+    }
 
 
 </style>
@@ -314,6 +332,10 @@
         <!-- END: SECTION -->
     </div>
 </section>
+<div class="embedTools">
+    <span class="glyphicon glyphicon-fullscreen"></span>
+
+</div>
 <div class="borderFrame"></div>
 
 
@@ -642,7 +664,7 @@ if (isset($sessions)) {
                 resp.forEach(function(par){
                     addMessageGroupChat(par,"load")
                 })
-                
+
             }
         })
 
@@ -659,14 +681,14 @@ if (isset($sessions)) {
         }
         else{
             messageType= `<div class="messageHe"><span>${userName}</span><p>${message}</p></div>`;
-        
+
             if(type!="load"){
                 if ($('.messagesSticky'+sessionId).css('display') == 'none'){
                 if($(".notify"+sessionId).hasClass("displayNone"))$(".notify"+sessionId).removeClass("displayNone");
                 }
             }
 
-        }  
+        }
 
         $(".messagesSticky"+sessionId+" .messages").append(messageType)
     }
