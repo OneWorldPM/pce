@@ -210,20 +210,21 @@
     .embedTools{
         position: absolute;
         right: 10px;
-        margin-top: -129px;
-        background-color: #ffffff36;
+        margin-top: -179px;
+        background-color: #ffffff17;
         width: 90px;
         height: 40px;
         line-height: 50px;
         text-align: center;
-        box-shadow: 0 0 4px 0px white;
+        box-shadow: 0 0 4px 0px #ffffff36;
+        color: black;
     }
     .embedTools span{
         font-size: 22px;
     }
     .embedTools span:hover{
         cursor: pointer;
-        color: black;
+        color: #0e0602;
     }
 
 
