@@ -1097,13 +1097,13 @@ if (isset($_GET['testing']) && $_GET['testing'] == 1) {
         audio.pause();
     }
 
-    var upgradeTime = 15;
+    var upgradeTime = 10;
     var seconds = upgradeTime;
 
     function timer(status) {
         var is_poll_ended = $('#poll_vot_section_is_ended').val();
         if (status == 0 || is_poll_ended == 1) {
-            seconds = 15;
+            seconds = 10;
         }
         var remainingSeconds = seconds % 60;
 

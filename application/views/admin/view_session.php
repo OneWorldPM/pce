@@ -938,11 +938,11 @@
         }
     });
 
-    var upgradeTime = 15;
+    var upgradeTime = 10;
     var seconds = upgradeTime;
     function timer(status) {
         if(status == 0) {
-            seconds = 15;
+            seconds = 10;
         }
         var remainingSeconds = seconds % 60;
         function pad(n) {
