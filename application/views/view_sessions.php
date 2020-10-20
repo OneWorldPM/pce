@@ -613,8 +613,9 @@ if (isset($sessions)) {
 
         var iBody = $("#iframeDiv iframe").contents().find("body");
 
-        iBody.find(".player-controls__right-control-group").remove();
+      var html=  iBody.find("#root");
 
+      console.log(html);
 
     let socket = io("<?=getSocketUrl()?>");
     socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
