@@ -614,11 +614,15 @@ if (isset($sessions)) {
 
         var iframeHead = $("#iframeDiv iframe").contents().find("head");
 
-     iframeHead.append(`
-         <style>
-            .test{}
-         </style>
-     `);
+        console.log(iframeHead);
+        console.log(iframeHead.html());
+     // iframeHead.append(`
+     //     <style>
+     //        .test{
+     //
+     //        }
+     //     </style>
+     // `);
 
 
     let socket = io("<?=getSocketUrl()?>");
