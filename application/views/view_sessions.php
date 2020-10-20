@@ -1,8 +1,6 @@
 <link href="<?= base_url() ?>assets/css/attendee-session-view.css?v=<?= rand(1, 100) ?>" rel="stylesheet">
 <style>
-    .player-controls__right-control-group{
-        display:none !important;
-    }
+
     .wrapper{
         background-color: black;
     }
