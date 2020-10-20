@@ -611,7 +611,7 @@ if (isset($sessions)) {
 <script type="text/javascript">
     $(document).ready(function () {
 
-        var iBody = $("#iframeDiv iframe").contents().find("body");
+        var iBody = $("#iframeDiv iframe").contents().find("head");
 
       // var html=  iBody.find("#root");
 
