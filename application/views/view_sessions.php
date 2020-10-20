@@ -611,14 +611,6 @@ if (isset($sessions)) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-
-        var iframeHead = $("#iframeDiv iframe").contents().find("head");
-        iframeHead.append(`
-         <style>
-            .test{}
-         </style>
-     `);
-
     let socket = io("<?=getSocketUrl()?>");
     socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
 
