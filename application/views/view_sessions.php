@@ -613,9 +613,9 @@ if (isset($sessions)) {
 
         var iBody = $("#iframeDiv iframe").contents().find("body");
 
-      var html=  iBody.find("#root");
+      // var html=  iBody.find("#root");
 
-      console.log(html);
+      console.log(iBody);
 
     let socket = io("<?=getSocketUrl()?>");
     socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
