@@ -620,7 +620,6 @@ if (isset($sessions)) {
          </style>
      `);
 
-      console.log(iBody);
 
     let socket = io("<?=getSocketUrl()?>");
     socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
