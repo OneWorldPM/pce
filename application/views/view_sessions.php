@@ -615,7 +615,7 @@ if (isset($sessions)) {
 
       // var html=  iBody.find("#root");
 
-      console.log(iBody);
+      console.log(iBody.html());
 
     let socket = io("<?=getSocketUrl()?>");
     socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
