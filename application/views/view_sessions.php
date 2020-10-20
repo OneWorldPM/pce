@@ -612,9 +612,12 @@ if (isset($sessions)) {
 <script type="text/javascript">
     $(document).ready(function () {
 
-        var iframe = document.querySelectorAll("iframe");
-        var elmnt = iframe.contentWindow.document.getElementsByTagName("div")[0];
-        elmnt.style.display = "none";
+        var iframeHead = $("#iframeDiv iframe").contents().find("head");
+        iframeHead.append(`
+         <style>
+            .test{}
+         </style>
+     `);
 
     let socket = io("<?=getSocketUrl()?>");
     socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
