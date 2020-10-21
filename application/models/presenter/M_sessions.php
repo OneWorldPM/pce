@@ -6,7 +6,7 @@ class M_sessions extends CI_Model {
         parent::__construct();
     }
 
-    function getSessionsAll() {
+     function getSessionsAll() {
         $this->db->select('*');
         $this->db->from('sessions s');
         $this->db->like('s.presenter_id', $this->session->userdata("pid"));
@@ -16,8 +16,33 @@ class M_sessions extends CI_Model {
         if ($sessions->num_rows() > 0) {
             $return_array = array();
             foreach ($sessions->result() as $val) {
-                $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
-                $return_array[] = $val;
+                $presenter_id_array = explode(",", $val->presenter_id);
+                if (in_array($this->session->userdata("pid"), $presenter_id_array)) {
+                    $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                    $return_array[] = $val;
+                }
+            }
+            return $return_array;
+        } else {
+            return '';
+        }
+    }
+
+    function getModeratorSessionsAll() {
+        $this->db->select('*');
+        $this->db->from('sessions s');
+        $this->db->like('s.moderator_id', $this->session->userdata("pid"));
+        $this->db->order_by("s.sessions_date", "asc");
+        $this->db->order_by("s.time_slot", "asc");
+        $sessions = $this->db->get();
+        if ($sessions->num_rows() > 0) {
+            $return_array = array();
+            foreach ($sessions->result() as $val) {
+                $presenter_id_array = explode(",", $val->moderator_id);
+                if (in_array($this->session->userdata("pid"), $presenter_id_array)) {
+                    $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                    $return_array[] = $val;
+                }
             }
             return $return_array;
         } else {
