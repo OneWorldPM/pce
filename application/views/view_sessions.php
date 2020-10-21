@@ -242,7 +242,6 @@
                         <h3 style="margin-bottom: 2px; color: #fff; font-weight: 700; text-transform: uppercase;"><?= isset($sessions) ? $sessions->session_title : "" ?></h3>
                     </div>
                     <div id="embededVideo">
-                        <div class="row"><i id="btnFS" class="fa fa-arrows-alt" aria-hidden="true"></i></div>
                         <div id="iframeDiv" class="row embed-responsive embed-responsive-16by9"><?= isset($sessions) ? $sessions->embed_html_code : "" ?></div>
                         <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; text-align: left;">
                             <div class="modal-dialog">
@@ -334,7 +333,7 @@
     </div>
 </section>
 <div class="embedTools">
-    <span class="glyphicon glyphicon-fullscreen"></span>
+    <span id="btnFS" class="glyphicon glyphicon-fullscreen"></span>
 
 </div>
 <div class="borderFrame"></div>
