@@ -1150,6 +1150,7 @@ if (isset($sessions)) {
                             timer(1);
                         }
                     } else {
+						stop_music();
                         $("#timer_sectiom").hide();
                         $("#popup_title_lbl").css({"border-top-right-radius": "15px", "border-top-left-radius": "15px"});
                     }
@@ -1232,6 +1233,7 @@ if (isset($sessions)) {
                         }
                     }
                 } else {
+					stop_music();
                     $('#modal').modal('hide');
                     $("#timer_sectiom").hide();
                       $("#popup_title_lbl").css({"border-top-right-radius": "15px", "border-top-left-radius": "15px"});
