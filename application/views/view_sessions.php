@@ -1018,7 +1018,7 @@ if (isset($sessions)) {
         });
 
 
-        $(document).on("click", "#briefcase_send", function () {
+       $(document).on("click", "#briefcase_send", function () {
             if ($("#briefcase").val() == "") {
                 $("#error_briefcase").text("Enter Notes").fadeIn('slow').fadeOut(5000);
             } else {
@@ -1034,6 +1034,7 @@ if (isset($sessions)) {
                             $("#briefcase").val("");
                             $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                         }
+                        $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/'+briefcase);
                     }
                 });
             }
@@ -1058,6 +1059,7 @@ if (isset($sessions)) {
                                 $("#briefcase").val("");
                                 $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                             }
+                            $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/'+briefcase);
                         }
                     });
                 }
