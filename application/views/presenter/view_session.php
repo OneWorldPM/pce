@@ -834,6 +834,7 @@ if (isset($_GET['testing']) && $_GET['testing'] == 1) {
             data: {'sessions_id': sessions_id, 'list_last_id': list_last_id},
             dataType: "json",
             success: function (resultdata, textStatus, jqXHR) {
+                $('#favorite_question_list').html('');
                 if (resultdata.status == 'success') {
                     $.each(resultdata.question_list, function (key, val) {
                         console.log(val);

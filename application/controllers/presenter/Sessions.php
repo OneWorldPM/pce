@@ -176,7 +176,7 @@ class Sessions extends CI_Controller {
         if (!empty($result_data)) {
             $result_array = array("status" => "success", "question_list" => $result_data);
         } else {
-            $result_array = array("status" => "error");
+            $result_array = array("status" => "error", "question_list" => $result_data);
         }
         echo json_encode($result_array);
     }

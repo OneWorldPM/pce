@@ -225,8 +225,10 @@ class M_sessions extends CI_Model {
         $this->db->from('tbl_favorite_question fq');
         $this->db->join('sessions_cust_question s', 's.sessions_cust_question_id = fq.sessions_cust_question_id');
         $this->db->join('customer_master c', 's.cust_id=c.cust_id');
-        $this->db->where(array("fq.sessions_id" => $post['sessions_id'], 'fq.cust_id' => $this->session->userdata("pid"), 'fq.tbl_favorite_question_id >' => $post['list_last_id'], 'fq.hide_status' => 0));
+        $this->db->where(array("fq.sessions_id" => $post['sessions_id'], 'fq.hide_status' => 0));
+        $this->db->group_by('fq.sessions_cust_question_id');
         $result = $this->db->get();
+        //print_r($this->db->last_query()); exit;
         if ($result->num_rows() > 0) {
             return $result->result();
         } else {
