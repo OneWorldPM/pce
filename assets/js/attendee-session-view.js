@@ -8,16 +8,24 @@ document.getElementById('embededVideo').addEventListener('fullscreenchange', (ev
     // the value of the property is null.
     if (document.fullscreenElement) {
         console.log(`Element: ${document.fullscreenElement.id} entered full-screen mode.`);
+
+        $("#btnFS").removeClass("glyphicon glyphicon-resize-full").addClass("glyphicon glyphicon-resize-small");
+
     } else {
         console.log('Leaving full-screen mode.');
         exitFullscreen();
         var iframe = document.getElementById('embededVideo').getElementsByTagName("iframe")[0];
         iframe.setAttribute("width", "1280");
         iframe.setAttribute("height", "720");
+
+        $("#btnFS").removeClass("glyphicon glyphicon-resize-small").addClass("glyphicon glyphicon-resize-full");
+
     }
 });
 
 function goFullScreen() {
+
+
     var iframe = document.getElementById('embededVideo').getElementsByTagName("iframe")[0];
     iframe.setAttribute("width", "100%");
     iframe.setAttribute("height", "100%");
@@ -92,6 +100,7 @@ function launchIntoFullscreen(element) {
 
 // Whack fullscreen
 function exitFullscreen() {
+
     var iframe = document.getElementById('embededVideo').getElementsByTagName("iframe")[0];
     iframe.setAttribute("width", "1280");
     iframe.setAttribute("height", "720");

@@ -209,22 +209,23 @@
 
     .embedTools{
         position: absolute;
-        right: 10px;
-        margin-top: -179px;
-        background-color: #ffffff17;
+        right: 0;
+        /*background-color: #ffffff17;*/
         width: 90px;
         height: 40px;
         line-height: 50px;
         text-align: center;
-        box-shadow: 0 0 4px 0px #ffffff36;
-        color: black;
+        /*box-shadow: 0 0 4px 0px #ffffff36;*/
+        color: white;
+        bottom: 0;
+        margin-bottom: 163px;
     }
     .embedTools span{
         font-size: 22px;
     }
     .embedTools span:hover{
         cursor: pointer;
-        color: #0e0602;
+        color: #ffff00c9;
     }
 
 
@@ -242,14 +243,15 @@
                         <h3 style="margin-bottom: 2px; color: #fff; font-weight: 700; text-transform: uppercase;"><?= isset($sessions) ? $sessions->session_title : "" ?></h3>
                     </div>
                     <div id="embededVideo">
-                        <div id="iframeDiv" class="row embed-responsive embed-responsive-16by9"><?= isset($sessions) ? $sessions->embed_html_code : "" ?></div>
+                        <div id="iframeDiv" class="row embed-responsive embed-responsive-16by9">
+                            <?= isset($sessions) ? $sessions->embed_html_code : "" ?>
+                            <div class="embedTools">
+                                <span id="btnFS" class="glyphicon glyphicon-resize-full"></span>
+                            </div>
+                        </div>
                         <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; text-align: left;">
                             <div class="modal-dialog">
                                 <div class="modal-content" style="padding: 0px; border: 0px solid #999; border-radius: 15px;">
-                                    <!--                                                <div class="modal-header" style="padding: 0px;">
-                                                                                                    <img class="kent_logo" src="<?= base_url() ?>assets/images/logo.png" alt="MLG">
-                                                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                                                </div>-->
                                     <div class="modal-body" style="padding: 0px;">
                                         <div class="row" style="padding-top: 0px; padding-bottom: 20px;">
                                             <div class="col-sm-12">
@@ -268,10 +270,6 @@
                         </div>
                     </div>
 
-                    <!--                    <p class="currentTime">
-                                            CURRENT TIME : <span id="show_time"></span> EDT <a class="button color currentTimeButton" id="close_session"><span>Close the Session</span></a>
-                                            <span class="borderFooter">test</span>
-                                        </p>-->
                     <div class="col-md-12">
                         <?php
                         if (isset($music_setting)) {
@@ -287,11 +285,6 @@
                         <input type="hidden" id="poll_vot_section_id_status" value="0">
                         <input type="hidden" id="poll_vot_section_is_ended" value="0">
                         <input type="hidden" id="poll_vot_section_last_status" value="0">
-                        <!--                                    <div class="col-md-3">
-                                                                <div id="poll_vot_section" style="padding: 0px 0px 0px 0px; margin-top: 10px; background-color: #fff; border-radius: 5px;">
-                                                                </div>
-                                                            </div>-->
-
                         <div class="row" style="display:none">
 
                             <div class="col-md-3">
@@ -332,10 +325,7 @@
         <!-- END: SECTION -->
     </div>
 </section>
-<div class="embedTools">
-    <span id="btnFS" class="glyphicon glyphicon-fullscreen"></span>
 
-</div>
 <div class="borderFrame"></div>
 
 
