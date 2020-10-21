@@ -110,6 +110,7 @@ class Sessions extends CI_Controller {
         echo json_encode($result_array);
     }
 	public function downloadNote($briefcase) {
+		 $briefcase = str_replace('%20',' ', $briefcase);
         $handle = fopen("note.txt", "w");
         fwrite($handle, $briefcase);
         fclose($handle);
