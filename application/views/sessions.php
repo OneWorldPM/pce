@@ -150,9 +150,9 @@
             </div> 
         </div>
     </div>
-    <div class="borderFrame"></div>
 
 </section>
+<div class="borderFrame"></div>
 
 <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
