@@ -56,7 +56,7 @@
         background-color: black;
     }
     .borderFrame{
-        position: absolute;
+        position: fixed;
         margin-top: 0px;
         width: 100%;
         background-color: #679b41;
