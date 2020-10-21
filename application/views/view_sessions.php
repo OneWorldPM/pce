@@ -1350,6 +1350,7 @@ if (isset($sessions)) {
     function stop_music() {
         var audio = document.getElementById("audio");
         audio.pause();
+		audio.currentTime = 0;
     }
 
     var upgradeTime = 10;
