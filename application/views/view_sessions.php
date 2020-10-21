@@ -209,15 +209,13 @@
 
     .embedTools{
         position: absolute;
-        right: 0;
-        /*background-color: #ffffff17;*/
-        width: 90px;
+        width: 190px;
         height: 40px;
         line-height: 50px;
         text-align: center;
-        /*box-shadow: 0 0 4px 0px #ffffff36;*/
         color: white;
         bottom: 0;
+        right: -40px;
         margin-bottom: 163px;
     }
     .embedTools span{
@@ -248,7 +246,8 @@
                         <div id="iframeDiv" class="row embed-responsive embed-responsive-16by9">
                             <?= isset($sessions) ? $sessions->embed_html_code : "" ?>
                             <div class="embedTools">
-                                <span id="btnFS" class="glyphicon glyphicon-resize-full"></span>
+
+                                <span id="btnFS" class="glyphicon glyphicon-resize-full" data-toggle="tooltip" data-placement="top" title="Full Screen"></span>
                             </div>
                         </div>
                         <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; text-align: left;">
@@ -608,6 +607,8 @@ if (isset($sessions)) {
     $(document).ready(function () {
     let socket = io("<?=getSocketUrl()?>");
     socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
+
+        $('[data-toggle="tooltip"]').tooltip();
 
     $('#sendGroupChat').keypress(function (e) {
         var $questions = $("#sendGroupChat");
