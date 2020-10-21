@@ -228,7 +228,9 @@
         color: #ffff00c9;
     }
 
-
+    .parallax {
+        height: 919px;
+    }
 </style>
 
 
