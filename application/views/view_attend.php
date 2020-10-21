@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <a class="button black-light button-3d rounded right" style="margin: 0px 0;" href="<?= base_url() ?>sessions/view/<?= (isset($sessions) && !empty($sessions)) ? $sessions->sessions_id : "" ?>"><span>Take me there</span></a>
+<!--                                    <a class="button black-light button-3d rounded right" style="margin: 0px 0;" href="--><?//= base_url() ?><!--sessions/view/<?//= (isset($sessions) && !empty($sessions)) ? $sessions->sessions_id : "" ?>"><span>Take me there</span></a>-->
                                 </div>
                             </div>
                         </div>
