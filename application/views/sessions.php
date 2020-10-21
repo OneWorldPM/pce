@@ -106,7 +106,6 @@
                                                 <a href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>"> <?php if ($val->sessions_photo != "") { ?> <img alt="" src="<?= base_url() ?>uploads/sessions/<?= $val->sessions_photo ?>"> <?php } else { ?>  <img alt="" src="<?= base_url() ?>front_assets/images/session_avtar.jpg"> <?php } ?>  </a> 
                                             </div>
                                             <div class="post-content-details col-md-9 m-t-30">
-
                                                 <div class="post-title">
                                                     <h6 style="font-weight: 600"><?= $val->sessions_date . ' ' . date("h:i A", strtotime($val->time_slot)) . ' - ' . date("h:i A", strtotime($val->end_time)) ?></h6>
                                                     <h3><a href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>" style="color: #679B41; font-weight: 900;"><?= $val->session_title ?></a></h3>
@@ -115,7 +114,8 @@
                                                 if (isset($val->presenter) && !empty($val->presenter)) {
                                                     foreach ($val->presenter as $value) {
                                                         ?>
-                                                        <div class="post-info"> <span class="post-autor"><a href="#" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" data-twitter_link="<?= $value->twitter ?>" data-facebook_link="<?= $value->facebook ?>" data-linkedin_link="<?= $value->linkin ?>" class="presenter_open_modul" style="color: #A9A9A9; font-weight: 600;"><?= $value->presenter_name ?>, </a></span> <span class="post-category"> <?= $value->designation ?></span> </div>
+                                                        <div class="post-info"> <span class="post-autor"><a href="#" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" data-twitter_link="<?= $value->twitter ?>" data-facebook_link="<?= $value->facebook ?>" data-linkedin_link="<?= $value->linkin ?>" class="presenter_open_modul" style="color: #000; font-weight: 600;"><?= $value->presenter_name ?>, </a></span> <span style="color: #000; font-weight: 600;" class="post-category"> <?= $value->degree ?></span> </div>
+                                                        <div class="post-info"><span class="post-category" style="color: #000; font-weight: 600;"> <?= $value->company_name ?></span> </div>
                                                         <?php
                                                     }
                                                 }
