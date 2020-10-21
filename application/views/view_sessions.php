@@ -468,7 +468,7 @@ if (isset($sessions)) {
                             <?php } ?>
                             <?php
                             if ($val->upload_published_name) {
-                                if ($val->upload_published_name != "") {
+                                if ($val->resource_file != "") {
                                     ?>
                                     <div class="col-md-8"><a href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" download> <?= $val->upload_published_name ?> </a></div>
                                     <div class="col-md-4"><a class="button color small" style="margin: 2px 0; background-color: #c3c3c3; border-color: #c3c3c3;"  href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" target="_blank">Open</a></div>
