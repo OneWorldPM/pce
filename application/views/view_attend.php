@@ -41,6 +41,17 @@
     section{
         padding: 25px 0px;
     }
+    body{
+        background-color: black;
+    }
+    .borderFrame{
+        position: absolute;
+        margin-top: 0px;
+        width: 100%;
+        background-color: #679b41;
+        height: 29px;
+        bottom: 0;
+    }
 </style>
 <section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/attend_background.png); top: 0; padding-top: 0px;">
     <div class="container container-fullscreen"> 
@@ -143,6 +154,8 @@
         </div>
     </div>
 </div>
+<div class="borderFrame"></div>
+
 <script type="text/javascript">
     $(document).ready(function () {
         if ($("#time_second").val() <= 0) {

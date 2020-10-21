@@ -52,6 +52,17 @@
         background-color: #679B41;
         color: #fff !important;
     }
+    body{
+        background-color: black;
+    }
+    .borderFrame{
+        position: absolute;
+        margin-top: 0px;
+        width: 100%;
+        background-color: #679b41;
+        height: 29px;
+        bottom: 0;
+    }
 </style>
 <section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/attend_background.png); top: 0; padding-top: 0px;">
 <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
@@ -139,7 +150,10 @@
             </div> 
         </div>
     </div>
+    <div class="borderFrame"></div>
+
 </section>
+
 <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">

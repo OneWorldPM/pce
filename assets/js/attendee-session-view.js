@@ -9,7 +9,7 @@ document.getElementById('embededVideo').addEventListener('fullscreenchange', (ev
     if (document.fullscreenElement) {
         console.log(`Element: ${document.fullscreenElement.id} entered full-screen mode.`);
 
-        $("#btnFS").removeClass("glyphicon glyphicon-resize-full").addClass("glyphicon glyphicon-resize-small");
+        $("#btnFS").removeClass("glyphicon glyphicon-resize-full").addClass("glyphicon glyphicon-resize-small").attr("title","Exit Full Screen").attr("data-original-title","Exit Full Screen");
 
     } else {
         console.log('Leaving full-screen mode.');
@@ -18,7 +18,7 @@ document.getElementById('embededVideo').addEventListener('fullscreenchange', (ev
         iframe.setAttribute("width", "1280");
         iframe.setAttribute("height", "720");
 
-        $("#btnFS").removeClass("glyphicon glyphicon-resize-small").addClass("glyphicon glyphicon-resize-full");
+        $("#btnFS").removeClass("glyphicon glyphicon-resize-small").addClass("glyphicon glyphicon-resize-full").attr("title","Full Screen").attr("data-original-title","Full Screen");
 
     }
 });
