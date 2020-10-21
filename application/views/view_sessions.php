@@ -476,7 +476,7 @@ if (isset($sessions)) {
                                 }
                             }
                             ?>
-                            <a class="button color small resource_save" style="margin: 0px; background-color: #c3c3c3; border-color: #c3c3c3; float: right;margin-right: 25px" data-session_resource_id="<?= $val->session_resource_id ?>" id="resource_send"><span>Save</span></a>
+                            <a download href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" class="button color small resource_save" style="margin: 0px; background-color: #c3c3c3; border-color: #c3c3c3; float: right;margin-right: 25px" data-session_resource_id="<?= $val->session_resource_id ?>" id="resource_send"><span>Save</span></a>
                         </div>
                         <?php
                     }
