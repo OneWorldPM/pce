@@ -185,6 +185,7 @@ switch ($msg) {
         $("#sessions_table").dataTable({
             "ordering": false,
         });
+		  $('.datepicker').datepicker();
 
 <?php if ($msg): ?>
             alertify.<?= $t ?>("<?= $m ?>");
