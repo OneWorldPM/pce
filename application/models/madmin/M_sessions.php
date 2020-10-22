@@ -985,8 +985,9 @@ class M_sessions extends CI_Model {
                             $this->db->where("poll_question_option_id", $val->poll_question_option_id);
                             $tbl_poll_voting = $this->db->get();
                             if ($tbl_poll_voting->num_rows() > 0) {
-                                $tbl_poll_voting = $tbl_poll_voting->row();
-                                $votes = array((int) $tbl_poll_voting->cust_id);
+                                foreach ($tbl_poll_voting->result() as $tbl_poll_voting) {
+                                    $votes[] = (int) $tbl_poll_voting->cust_id;
+                                }
                             }
                             $options[] = array(
                                 'option_id' => (int) $val->poll_question_option_id,
@@ -1181,8 +1182,9 @@ class M_sessions extends CI_Model {
                             $this->db->where("poll_question_option_id", $val->poll_question_option_id);
                             $tbl_poll_voting = $this->db->get();
                             if ($tbl_poll_voting->num_rows() > 0) {
-                                $tbl_poll_voting = $tbl_poll_voting->row();
-                                $votes = array((int) $tbl_poll_voting->cust_id);
+                                foreach ($tbl_poll_voting->result() as $tbl_poll_voting) {
+                                    $votes[] = (int) $tbl_poll_voting->cust_id;
+                                }
                             }
                             $options[] = array(
                                 'option_id' => (int) $val->poll_question_option_id,
