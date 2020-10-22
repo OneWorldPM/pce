@@ -26,7 +26,7 @@
                                         <th>Date</th>
                                         <th>Title</th>
                                         <!--<th>Users</th>-->
-                                        <th>Presenteres/Moderators</th>
+                                        <th>Presenter</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
