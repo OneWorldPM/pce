@@ -125,8 +125,8 @@
                                                 if (isset($val->presenter) && !empty($val->presenter)) {
                                                     foreach ($val->presenter as $value) {
                                                         ?>
-                                                        <div class="post-info"> <span class="post-autor"><a href="#" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" data-twitter_link="<?= $value->twitter ?>" data-facebook_link="<?= $value->facebook ?>" data-linkedin_link="<?= $value->linkin ?>" class="presenter_open_modul" style="color: #000; font-weight: 600;"><?= $value->presenter_name ?>, </a></span> <span style="color: #000; font-weight: 600;" class="post-category"> <?= $value->degree ?></span> </div>
-                                                        <div class="post-info"><span class="post-category" style="color: #000; font-weight: 600;"> <?= $value->company_name ?></span> </div>
+                                                        <div class="post-info" style="color: #000 !important; font-size: larger; font-weight: 700;"><span class="post-autor"><a href="#" style="color: #000;" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" data-twitter_link="<?= $value->twitter ?>" data-facebook_link="<?= $value->facebook ?>" data-linkedin_link="<?= $value->linkin ?>" data-bio="<?= $value->bio ?>"  class="presenter_open_modul" style="color: #337ab7;"><u><?= $value->presenter_name ?></u><?= ($value->degree != "") ? "," : "" ?> </a></span> <span class="post-category"> <?= $value->degree ?></span> </div>
+                                                        <div class="post-info" style="color: #000 !important; font-size: larger; font-weight: 700;"><span class="post-category"> <?= $value->company_name ?></span> </div>
                                                         <?php
                                                     }
                                                 }
@@ -215,6 +215,7 @@
             var twitter_link = $(this).attr("data-twitter_link");
             var facebook_link = $(this).attr("data-facebook_link");
             var linkedin_link = $(this).attr("data-linkedin_link");
+            var bio = $(this).attr('data-bio');
             if (presenter_photo != "" && presenter_photo != null) {
                 $.ajax({
                     url: '<?= base_url() ?>uploads/presenter_photo/' + presenter_photo,
@@ -231,12 +232,24 @@
             } else {
                 $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/presenter_avtar.png");
             }
-            $('#presenter_title').text(presenter_name + ", " + designation);
+            if (designation != "" && designation != null) {
+                $('#presenter_title').text(presenter_name + ", " + designation);
+            } else {
+                $('#presenter_title').text(presenter_name);
+            }
+
             $('#email').text(email);
-            $('#company').text(company_name);
+            if (company_name != "" && company_name != null) {
+                $('#company').text(company_name);
+                $('#company_lbl').text("Company");
+            } else {
+                $('#company').text("");
+                $('#company_lbl').text("");
+            }
             $("#twitter_link").attr("href", twitter_link);
             $("#facebook_link").attr("href", facebook_link);
             $("#linkedin_link").attr("href", linkedin_link);
+            $("#bio_text").text(bio);
             $('#modal').modal('show');
         });
     });

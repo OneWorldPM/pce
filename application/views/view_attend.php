@@ -99,10 +99,21 @@
                                 </div>
                                 <div class="col-md-5" style="text-align: center;">
                                     <?php
+                                    $size = 0;
+                                    if (isset($sessions->presenter) && !empty($sessions->presenter)) {
+                                        $size = sizeof($sessions->presenter);
+                                    }
+                                    ?>
+                                    <?php if ($size <= 2) { ?>
+                                        <br>
+                                        <br>
+                                    <?php } ?>
+                                    <?php
                                     if (isset($sessions->presenter) && !empty($sessions->presenter)) {
                                         foreach ($sessions->presenter as $value) {
                                             ?>
-                                            <h3 style="margin-bottom: 0px;  cursor: pointer;" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" class="presenter_open_modul" ><?= $value->presenter_name ?>, <?= $value->designation ?></h3>
+                                            <h3 style="margin-bottom: 0px;  cursor: pointer;" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" class="presenter_open_modul" ><u style="color: #337ab7;"><?= $value->presenter_name ?></u><?= ($value->title != "") ? "," : "" ?> <?= $value->title ?></h3>
+                                            <h3 style="margin-bottom: 0px;  cursor: pointer;"> <?= $value->company_name ?></h3>
                                             <!--<p class="m-t-20"><?= (isset($sessions) && !empty($sessions)) ? $sessions->bio : "" ?></p>-->
                                             <!--<img alt="" src="<?= base_url() ?>uploads/presenter_photo/<?= (isset($sessions) && !empty($sessions)) ? $sessions->presenter_photo : "" ?>" class="img-circle" height="100" width="100">-->
                                             <?php
@@ -163,12 +174,14 @@
         } else {
             setInterval('timer()', 1000);
         }
-        $(".presenter_open_modul").click(function () {
+         $(".presenter_open_modul").click(function () {
+
             var presenter_photo = $(this).attr("data-presenter_photo");
             var presenter_name = $(this).attr("data-presenter_name");
             var designation = $(this).attr("data-designation");
             var company_name = $(this).attr("data-company_name");
             var email = $(this).attr("data-email");
+
             if (presenter_photo != "" && presenter_photo != null) {
                 $.ajax({
                     url: '<?= base_url() ?>uploads/presenter_photo/' + presenter_photo,
@@ -185,9 +198,19 @@
             } else {
                 $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/presenter_avtar.png");
             }
-            $('#presenter_title').text(presenter_name + ", " + designation);
+            if (designation != "" && designation != null) {
+                $('#presenter_title').text(presenter_name + ", " + designation);
+            } else {
+                $('#presenter_title').text(presenter_name);
+            }
             $('#email').text(email);
-            $('#company').text(company_name);
+            if (company_name != "" && company_name != null) {
+                $('#company').text(company_name);
+                $('#company_lbl').text("Company");
+            } else {
+                $('#company').text("");
+                $('#company_lbl').text("");
+            }
             $('#modal').modal('show');
         });
     });
