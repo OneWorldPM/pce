@@ -22,7 +22,10 @@ class M_groupchat extends CI_Model {
         if ($sessions->num_rows() > 0) {
             $result_sessions = $sessions->row();
             $result_sessions->presenter = $this->common->get_presenter_chat_data($result_sessions->presenter_id, $result_sessions->sessions_id);
-            return $result_sessions;
+            echo "<pre>";
+print_r($result_sessions);
+die;			
+		 //  return $result_sessions;
         } else {
             return '';
         }
