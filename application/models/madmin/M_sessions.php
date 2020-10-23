@@ -1386,14 +1386,8 @@ class M_sessions extends CI_Model {
 
             $data_to_post = "data=" . json_encode($create_array) . "&session_reference=" . (int) $result_sessions->sessions_id . "&session_id=" . (int) $result_sessions->sessions_id . "&source=gravity"; //if http_build_query causes any problem with JSON data, send this parameter directly in post.
 
-            echo "<pre>";
-            print_r($data_to_post);
-            die;
-            if ($result == 1) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
+            echo json_encode($create_array);
+            return true;
         } else {
             return FALSE;
         }
