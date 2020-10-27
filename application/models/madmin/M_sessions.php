@@ -1006,7 +1006,7 @@ class M_sessions extends CI_Model {
                             'status' => 4000,
                             'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_type . " " . $presurvey . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
                             'total_votes' => $total_votes,
                             'response_type' => 0,
@@ -1016,7 +1016,7 @@ class M_sessions extends CI_Model {
                         $poll = $poll + 1;
                         $polls[] = array(
                             'uuid' => '',
-                            'text' => $sessions_poll_question->poll_type . " " . $poll . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'status' => 4000,
                             'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
@@ -1032,7 +1032,7 @@ class M_sessions extends CI_Model {
                             'status' => 4000,
                             'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_type . " " . $assessment . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
                             'total_votes' => $total_votes,
                             'response_type' => 0,
@@ -1258,7 +1258,7 @@ class M_sessions extends CI_Model {
                             'status' => 4000,
                             'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_type . " " . $presurvey . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
                             'total_votes' => $total_votes,
                             'response_type' => 0,
@@ -1268,7 +1268,7 @@ class M_sessions extends CI_Model {
                         $poll = $poll + 1;
                         $polls[] = array(
                             'uuid' => '',
-                            'text' => $sessions_poll_question->poll_type . " " . $poll . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'status' => 4000,
                             'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
@@ -1284,7 +1284,7 @@ class M_sessions extends CI_Model {
                             'status' => 4000,
                             'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_type . " " . $assessment . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
                             'total_votes' => $total_votes,
                             'response_type' => 0,
