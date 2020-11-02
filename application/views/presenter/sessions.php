@@ -73,7 +73,8 @@
                     </div>
                 </div>
             </div>
-<div class="row">
+			 <?php if (isset($moderator_sessions) && !empty($moderator_sessions)) { ?>
+                <div class="row">
                 <div class="panel panel-primary" id="panel5">
                     <div class="panel-heading">
                         <h4 class="panel-title text-white">Moderator Sessions</h4>
@@ -155,6 +156,7 @@
                     </div>
                 </div>
             </div>
+			 <?php } ?>
         </div>
     </div>
 </div>
