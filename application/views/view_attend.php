@@ -83,11 +83,11 @@
                                 </div>    
                                 <div class="col-md-7 m-t-20" style="border-right: 1px solid;">
                                     <div class="row">
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <?php if ($sessions->sessions_photo != "") { ?>
-                                                <img alt="" src="<?= base_url() ?>uploads/sessions/<?= (isset($sessions) && !empty($sessions)) ? $sessions->sessions_photo : "" ?>" height="100" width="100">
+                                                <img alt="" src="<?= base_url() ?>uploads/sessions/<?= (isset($sessions) && !empty($sessions)) ? $sessions->sessions_photo : "" ?>" style="width: 100%;">
                                             <?php } else { ?>
-                                                <img alt="" src="<?= base_url() ?>front_assets/images/session_avtar.jpg" height="100" width="100">
+                                                <img alt="" src="<?= base_url() ?>front_assets/images/session_avtar.jpg" style="width: 100%;">
                                             <?php } ?>   
                                         </div>  
                                         <div class="col-md-8">
