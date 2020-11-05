@@ -230,11 +230,11 @@
     .parallax {
         height: 86.7vh;
     }
-    #embededVideo {
-        height: 96vh;
-    }
     body{
         background-color: black;
+    }
+    #embededVideo {
+        height: 83vh;
     }
 
     @media only screen and (max-width: 700px) {
