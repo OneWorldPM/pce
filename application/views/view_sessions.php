@@ -189,6 +189,8 @@
         width: 100%;
         background-color: #679b41;
         height: 29px;
+        position: absolute;
+        bottom: 0;
     }
 
     .messagesSticky input{
@@ -231,6 +233,17 @@
     #embededVideo {
         height: 96vh;
     }
+    body{
+        background-color: black;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .borderFrame {
+           position: unset;
+        }
+    }
+
+
 
 </style>
 
