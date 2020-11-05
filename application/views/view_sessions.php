@@ -94,7 +94,6 @@
     }
 
     #embededVideo {
-        height: 959px;
         margin-top: -2px;
         position: relative;
     }
@@ -190,6 +189,8 @@
         width: 100%;
         background-color: #679b41;
         height: 29px;
+        position: absolute;
+        bottom: 0;
     }
 
     .messagesSticky input{
@@ -227,8 +228,23 @@
     }
 
     .parallax {
-        height: 919px;
+        height: 86.7vh;
     }
+    body{
+        background-color: black;
+    }
+    #embededVideo {
+        height: 92vh;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .borderFrame {
+           position: unset;
+        }
+    }
+
+
+
 </style>
 
 
