@@ -94,7 +94,6 @@
     }
 
     #embededVideo {
-        height: 959px;
         margin-top: -2px;
         position: relative;
     }
@@ -227,8 +226,12 @@
     }
 
     .parallax {
-        height: 919px;
+        height: 86.7vh;
     }
+    #embededVideo {
+        height: 96vh;
+    }
+
 </style>
 
 
