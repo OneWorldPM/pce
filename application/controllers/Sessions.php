@@ -70,6 +70,22 @@ class Sessions extends CI_Controller {
         $this->load->view('footer');
     }
 
+    public function cachefly_test($sessions_id) {
+        $sesions=$this->objsessions->viewSessionsData($sessions_id);
+        $header_data["sesions_logo"]=$sesions->sessions_logo;
+        $header_data["sponsor_type"]=$sesions->sponsor_type;
+        $header_data["right_bar"]=$sesions->right_bar;
+        $header_data["tool_box_status"]=$sesions->tool_box_status;
+
+        $data["sessions"] = $sesions;
+        $data["session_resource"] = $this->objsessions->get_session_resource($sessions_id);
+        $data['music_setting'] = $this->objsessions->get_music_setting();
+
+        $this->load->view('header',$header_data);
+        $this->load->view('view_sessions_test', $data);
+        $this->load->view('footer');
+    }
+
     public function get_poll_vot_section() {
         $result_data = $this->objsessions->get_poll_vot_section();
         if (!empty($result_data)) {
