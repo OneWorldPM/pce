@@ -68,6 +68,7 @@ class Sessions extends CI_Controller {
         $header_data["tool_box_status"]=$sesions->tool_box_status;
 
         $data["sessions"] = $sesions;
+		$data["sessions_notes_download"] = $this->objsessions->get_sessions_notes_download($sessions_id);
         $data["session_resource"] = $this->objsessions->get_session_resource($sessions_id);
         $data['music_setting'] = $this->objsessions->get_music_setting();
 

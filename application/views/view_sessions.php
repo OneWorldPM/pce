@@ -128,7 +128,7 @@
 
     #briefcase_send {
         position: absolute;
-        width: 96%;
+        width: 50%;
         padding: 15px 0px !important;
         bottom: -5px;
     }
@@ -419,15 +419,15 @@ if (isset($sessions)) {
         <div id="briefcase_section" style="background-color: #fff; border-radius: 5px; padding: 5px; position: absolute; top: 36px; width: 100%;">
             <div style="text-align: center; display: flex; " id="briefcase_section">
                 <div class="col-md-12 input-group">
-                    <textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""></textarea>
+                    <textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?= isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
                 </div>
                 <a class="button color btn" style="margin: 0px; padding: 24px 7px;" id="briefcase_send"><span>Save</span></a>
+                <a class="button color btn" id="downloadbriefcase" style="position: absolute; text-align: center; width: 45%; margin-left: 155px; top: 187px; padding: 15px 0px !important; padding: 24px 7px;"><span>Download</span></a>
             </div>
             <span id='error_briefcase' style='color:red;'></span>
             <span id='success_briefcase' style='color:green;'></span>
         </div>
     </div>
-
 </div>
 <div class="rightSticykPopup resourcesSticky" style="display: none">
     <div class="header"><span></span>
@@ -1026,7 +1026,7 @@ if (isset($sessions)) {
         });
 
 
-       $(document).on("click", "#briefcase_send", function () {
+        $(document).on("click", "#briefcase_send", function () {
             if ($("#briefcase").val() == "") {
                 $("#error_briefcase").text("Enter Notes").fadeIn('slow').fadeOut(5000);
             } else {
@@ -1039,14 +1039,20 @@ if (isset($sessions)) {
                     dataType: "json",
                     success: function (data) {
                         if (data.status == "success") {
-                            $("#briefcase").val("");
+                          //  $("#briefcase").val("");
                             $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                         }
-                        $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/'+briefcase);
+                       // $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/'+briefcase);
                     }
                 });
             }
         });
+		
+        $(document).on("click", "#downloadbriefcase", function () {
+            var briefcase = $("#briefcase").val();
+            $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/' + briefcase);
+        });
+
 
         $('#briefcase').keypress(function (e) {
             var key = e.which;
