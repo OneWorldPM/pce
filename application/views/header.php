@@ -35,7 +35,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600%7CRaleway:100,300,600,700,800" rel="stylesheet" type="text/css"/>
 
     <!-- CSS CUSTOM STYLE -->
-    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>front_assets/css/custom1.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>front_assets/css/custom.css" media="screen"/>
     <!--VENDOR SCRIPT-->
     <script src="<?= base_url() ?>front_assets/vendor/jquery/jquery-1.11.2.min.js"></script>
     <script src="<?= base_url() ?>front_assets/vendor/plugins-compressed.js"></script>
