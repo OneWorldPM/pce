@@ -1,4 +1,4 @@
-
+<link href="<?= base_url() ?>assets/css/attendee-session-view.css?v=<?= rand(1, 100) ?>" rel="stylesheet">
 <style>
 
     .wrapper{
@@ -1398,4 +1398,4 @@ if (isset($sessions)) {
     }
 </script>
 
-<script src="<?= base_url() ?>assets/js/attendee-session-view.js?v=<?= rand(1, 100) ?>"></script>
+
