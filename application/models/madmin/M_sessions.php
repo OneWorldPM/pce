@@ -946,13 +946,21 @@ class M_sessions extends CI_Model {
                         $end_date_time = 0;
                         $total_time = 0;
                     }
+                    $private_notes = "";
+                    $this->db->select('note');
+                    $this->db->from('sessions_cust_briefcase');
+                    $this->db->where(array("cust_id" => $val->cust_id, "sessions_id", $sessions_id));
+                    $sessions_cust_briefcase = $this->db->get();
+                    if ($sessions_cust_briefcase->num_rows() > 0) {
+                        $private_notes = $sessions_cust_briefcase->row()->note;
+                    }
                     $sessions_history_login[] = array(
                         'uuid' => $val->cust_id,
                         'access' => 50,
                         'created_time' => $start_date_time,
                         'last_connected' => $end_date_time,
                         'total_time' => $total_time,
-                        'meta' => array("notes" => "", "personal_slide_notes" => array()),
+                        'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
                         'alertness' => array("checks_returned" => "", "understood" => ""),
                         'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
                         'identity' => array("uuid" => $val->cust_id, 'identifier' => $val->identifier_id, 'name' => $val->first_name . ' ' . $val->last_name, 'email' => $val->email, 'profile_org_name' => $val->company_name, 'profile_org_title' => $val->company_name, 'profile_org_website' => "", 'profile_bio' => $val->topic, 'profile_twitter' => $val->twitter_id, 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
@@ -1198,13 +1206,23 @@ class M_sessions extends CI_Model {
                         $end_date_time = 0;
                         $total_time = 0;
                     }
+                    
+                    $private_notes = "";
+                    $this->db->select('note');
+                    $this->db->from('sessions_cust_briefcase');
+                    $this->db->where(array("cust_id" => $val->cust_id, "sessions_id", $sessions_id));
+                    $sessions_cust_briefcase = $this->db->get();
+                    if ($sessions_cust_briefcase->num_rows() > 0) {
+                        $private_notes = $sessions_cust_briefcase->row()->note;
+                    }
+                    
                     $sessions_history_login[] = array(
                         'uuid' => $val->cust_id,
                         'access' => 50,
                         'created_time' => $start_date_time,
                         'last_connected' => $end_date_time,
                         'total_time' => $total_time,
-                        'meta' => array("notes" => "", "personal_slide_notes" => array()),
+                        'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
                         'alertness' => array("checks_returned" => "", "understood" => ""),
                         'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
                         'identity' => array("uuid" => $val->cust_id, 'identifier' => $val->identifier_id, 'name' => $val->first_name . ' ' . $val->last_name, 'email' => $val->email, 'profile_org_name' => $val->company_name, 'profile_org_title' => $val->company_name, 'profile_org_website' => "", 'profile_bio' => $val->topic, 'profile_twitter' => $val->twitter_id, 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
@@ -1372,6 +1390,8 @@ class M_sessions extends CI_Model {
                 }
             }
             
+            
+            
             $create_array = array(
                 'actual_end_time' => strtotime($result_sessions->sessions_date . ' ' . $result_sessions->end_time),
                 'cssid' => $result_sessions->cco_envent_id,
@@ -1385,7 +1405,7 @@ class M_sessions extends CI_Model {
                 'chat' => array('enabled' => true,'messages' => $messages),
                 'hostschat' => array('messages' => $messages),
                 'jpc' => array('conversations' => array()),
-                'presentation' => array('decks' => array(array("uuid"=>"","name"=>"","thumbnail_url"=>'',"slides"=>array("image_url"=>"","index"=>"","notes"=>'','title'=>"","thumbnail_url"=>"","uuid"=>""))), 'slide_events' => array(array("slide_uuid"=>"","timestamp"=>""))),
+                'presentation' => array('decks' => array(array("uuid"=>"","name"=>"","thumbnail_url"=>'',"slides"=>array("image_url"=>"","index"=>"","notes"=>"",'title'=>"","thumbnail_url"=>"","uuid"=>""))), 'slide_events' => array(array("slide_uuid"=>"","timestamp"=>""))),
                 'polling' => array("enabled" => true, "polls" => $polls),
                 'questions' => array("enabled"=>true,'submitted'=>$questions),
                 'resources'=>array("files"=>$files,'hyperlinks'=>$hyperlinks),
@@ -1401,6 +1421,6 @@ class M_sessions extends CI_Model {
         } else {
             return FALSE;
         }
-    }
+    } 
 
 }
