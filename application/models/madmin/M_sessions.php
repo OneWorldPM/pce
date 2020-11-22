@@ -959,7 +959,8 @@ class M_sessions extends CI_Model {
                         'access' => 50,
                         'created_time' => $start_date_time,
                         'last_connected' => $end_date_time,
-                        'total_time' => $total_time,
+//                        'total_time' => $total_time,
+                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
                         'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
                         'alertness' => array("checks_returned" => "", "understood" => ""),
                         'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
@@ -1221,7 +1222,8 @@ class M_sessions extends CI_Model {
                         'access' => 50,
                         'created_time' => $start_date_time,
                         'last_connected' => $end_date_time,
-                        'total_time' => $total_time,
+//                        'total_time' => $total_time,
+                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
                         'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
                         'alertness' => array("checks_returned" => "", "understood" => ""),
                         'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
@@ -1421,6 +1423,23 @@ class M_sessions extends CI_Model {
         } else {
             return FALSE;
         }
+    }
+
+    private function getTimeSpentOnSession($session_id, $user_id)
+    {
+        $this->db->select('*');
+        $this->db->from('total_time_on_session');
+        $this->db->where(array('session_id'=>$session_id, 'user_id'=>$user_id));
+
+        $response = $this->db->get();
+        if ($response->num_rows() > 0)
+        {
+            return $response->result_array()[0]['total_time'];
+        }else{
+            return 0;
+        }
+
+        return;
     }
 
 

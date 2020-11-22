@@ -248,13 +248,15 @@ switch ($msg) {
             } else if ($('#option_2').val() == '') {
                 alertify.error('Please Enter Option 2');
                 return false;
-            } else if ($('#option_3').val() == '') {
-                alertify.error('Please Enter Option 3');
-                return false;
-            } else if ($('#option_4').val() == '') {
-                alertify.error('Please Enter Option 4');
-                return false;
-            } else {
+            }
+            // else if ($('#option_3').val() == '') {
+            //     alertify.error('Please Enter Option 3');
+            //     return false;
+            // } else if ($('#option_4').val() == '') {
+            //     alertify.error('Please Enter Option 4');
+            //     return false;
+            // }
+            else {
                 $('#frm_add_Poll').attr('action', '<?= base_url() ?>admin/sessions/update_poll_data');
                 $('#frm_add_Poll').submit();
                 return true;

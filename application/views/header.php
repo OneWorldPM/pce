@@ -105,7 +105,7 @@
 
         .logo2 img {
             object-fit: contain;
-            width: 110px;
+            width: 190px;
             height: 70px;
         }  
         .logo2 span {

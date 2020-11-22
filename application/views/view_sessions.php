@@ -128,7 +128,7 @@
 
     #briefcase_send {
         position: absolute;
-        width: 50%;
+        width: 96%;
         padding: 15px 0px !important;
         bottom: -5px;
     }
@@ -239,7 +239,7 @@
 
     @media only screen and (max-width: 700px) {
         .borderFrame {
-           position: unset;
+            position: unset;
         }
     }
 
@@ -255,9 +255,11 @@
         <section class="content">
             <div>
                 <div class="videContent">
-                    <div style="background-color: black;">
-                        <h3 style="margin-bottom: 2px; color: #fff; font-weight: 700; text-transform: uppercase;"><?= isset($sessions) ? $sessions->session_title : "" ?></h3>
-                    </div>
+                    <?php if (1==2) { ?>
+                        <div style="background-color: black;">
+                            <h3 style="margin-bottom: 2px; color: #fff; font-weight: 700; text-transform: uppercase;"><?= isset($sessions) ? $sessions->session_title : "" ?></h3>
+                        </div>
+                    <?php } ?>
                     <div id="embededVideo">
                         <div id="iframeDiv" class="row embed-responsive embed-responsive-16by9">
                             <?= isset($sessions) ? $sessions->embed_html_code : "" ?>
@@ -273,7 +275,7 @@
                                         <div class="row" style="padding-top: 0px; padding-bottom: 20px;">
                                             <div class="col-sm-12">
                                                 <div class="" id="timer_sectiom" style="padding-top: 0px; padding-bottom: 0px; display: none; border-top-right-radius: 15px; border-top-left-radius: 15px; background-color: #ebeaea; ">
-                                                    <div class=""  style="text-align: right; font-size: 20px; font-weight: 700; border-top-right-radius: 15px; border-top-left-radius: 15px;  ">
+                                                    <div class="" style="text-align: right; font-size: 20px; font-weight: 700; border-top-right-radius: 15px; border-top-left-radius: 15px; ">
                                                         TIME LEFT : <span id="id_day_time" style=" font-size: 20px; font-weight: 700; color: #ef5e25; padding: 0px 10px 0px 0px;"></span>
                                                     </div>
                                                 </div>
@@ -323,7 +325,7 @@
                                                         <?php
                                                     }
                                                     ?>
-                                                    <a class="button color small resource_save" style="margin: 0px; background-color: #c3c3c3; border-color: #c3c3c3; float: right;    margin-right: 15px;" data-session_resource_id="<?= $val->session_resource_id ?>" id="resource_send"><span>Save</span></a>
+                                                    <a class="button color small resource_save" style="margin: 0px; background-color: #c3c3c3; border-color: #c3c3c3; float: right; margin-right: 15px;" data-session_resource_id="<?= $val->session_resource_id ?>" id="resource_send"><span>Save</span></a>
                                                 </div>
                                                 <?php
                                             }
@@ -419,15 +421,15 @@ if (isset($sessions)) {
         <div id="briefcase_section" style="background-color: #fff; border-radius: 5px; padding: 5px; position: absolute; top: 36px; width: 100%;">
             <div style="text-align: center; display: flex; " id="briefcase_section">
                 <div class="col-md-12 input-group">
-                    <textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?= isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
+                    <textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""></textarea>
                 </div>
                 <a class="button color btn" style="margin: 0px; padding: 24px 7px;" id="briefcase_send"><span>Save</span></a>
-                <a class="button color btn" id="downloadbriefcase" style="position: absolute; text-align: center; width: 45%; margin-left: 155px; top: 187px; padding: 15px 0px !important; padding: 24px 7px;"><span>Download</span></a>
             </div>
             <span id='error_briefcase' style='color:red;'></span>
             <span id='success_briefcase' style='color:green;'></span>
         </div>
     </div>
+
 </div>
 <div class="rightSticykPopup resourcesSticky" style="display: none">
     <div class="header"><span></span>
@@ -470,19 +472,19 @@ if (isset($sessions)) {
                         <div class="row" style="margin-bottom: 10px; padding-bottom: 5px">
                             <?php if ($val->resource_link != "") { ?>
                                 <div class="col-md-8"><a href="<?= $val->resource_link ?>" target="_blank"><?= $val->link_published_name ?></a></div>
-                                <div class="col-md-4"><a class="button color small" style="margin: 2px 0; background-color: #c3c3c3; border-color: #c3c3c3;"  href="<?= $val->resource_link ?>" target="_blank">Open</a></div>
+                                <!-- <div class="col-md-4"><a class="button color small" style="margin: 2px 0; background-color: #c3c3c3; border-color: #c3c3c3;" href="--><?//= $val.resource_link ?><!--" target="_blank">Open</a></div>-->
                             <?php } ?>
                             <?php
                             if ($val->upload_published_name) {
                                 if ($val->resource_file != "") {
                                     ?>
                                     <div class="col-md-8"><a href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" download> <?= $val->upload_published_name ?> </a></div>
-                                    <div class="col-md-4"><a class="button color small" style="margin: 2px 0; background-color: #c3c3c3; border-color: #c3c3c3;"  href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" target="_blank">Open</a></div>
+                                    <!-- <div class="col-md-4"><a class="button color small" style="margin: 2px 0; background-color: #c3c3c3; border-color: #c3c3c3;" href="--><?//= base_url() ?><!--uploads/resource_sessions/--><?//= $val.resource_file ?><!--" target="_blank">Open</a></div>-->
                                     <?php
                                 }
                             }
                             ?>
-                            <a download href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" class="button color small resource_save" style="margin: 0px; background-color: #c3c3c3; border-color: #c3c3c3; float: right;margin-right: 25px" data-session_resource_id="<?= $val->session_resource_id ?>" id="resource_send"><span>Save</span></a>
+                            <!-- <a download href="--><?//= base_url() ?><!--uploads/resource_sessions/--><?//= $val.resource_file ?><!--" class="button color small resource_save" style="margin: 0px; background-color: #c3c3c3; border-color: #c3c3c3; float: right;margin-right: 25px" data-session_resource_id="--><?//= $val.session_resource_id ?><!--" id="resource_send"><span>Save</span></a>-->
                         </div>
                         <?php
                     }
@@ -575,7 +577,7 @@ if (isset($sessions)) {
         </div>
         <div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
             <div style="padding:5px;">
-                <div style="text-align: center; display: flex; "  id="questions_section">
+                <div style="text-align: center; display: flex; " id="questions_section">
 
                     <div class="col-10 input-group">
                         <span class="input-group-addon" style="padding: 5px 6px"><img src="<?= base_url() ?>front_assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
@@ -600,11 +602,80 @@ if (isset($sessions)) {
     </div>
 
 </div>
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@9.17.0/dist/sweetalert2.all.min.js"></script>
 <script type="text/javascript">
+
+    var base_url = "<?=base_url()?>";
+    var site_url = "<?= site_url() ?>";
+    var user_id = "<?=$this->session->userdata('cid')?>";
+    var app_name = "<?=getAppName($sessions->sessions_id) ?>";
+    var session_id = "<?=$sessions->sessions_id?>";
+    var session_start_datetime = new Date("<?= date('M d, yy', strtotime($sessions->sessions_date)) . ' ' . $sessions->time_slot ?>");
+    var session_end_datetime = new Date("<?= date('M d, yy', strtotime($sessions->sessions_date)) . ' ' . $sessions->end_time ?>");
+
+    /******* Saving time spent on session - by Athul ************/
+    var timeSpentOnSessionFromDb;
+    var timeSpentUntilNow;
+    function getTimeSpentOnSession(){
+        $.ajax({
+            url: base_url+"sessions/getTimeSpentOnSession/"+session_id+'/'+user_id,
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                timeSpentOnSessionFromDb = parseInt(data);
+                startCounting();
+                return parseInt(data);
+            }
+        });
+    }
+
+    function getTimeSpentOnSiteFromLocalStorage(){
+        timeSpentOnSite = parseInt(localStorage.getItem('timeSpentOnSite'));
+        timeSpentOnSite = isNaN(timeSpentOnSite) ? 0 : timeSpentOnSite;
+        return timeSpentOnSite;
+    }
+
+    function saveTimeSpentOnSession(){
+        $.ajax({
+            url: base_url+"sessions/saveTimeSpentOnSession/"+session_id+'/'+user_id,
+            type: "post",
+            data: {'time': timeSpentUntilNow},
+            dataType: "json",
+            success: function (data) {
+                localStorage.setItem('timeSpentOnSession', "0");
+            }
+        });
+    }
+
+    function startCounting(){
+        timeSpentUntilNow = timeSpentOnSessionFromDb;
+        onSessiontimer = setInterval(function(){
+            var datetime_now_newyork = calcTime('-5');
+            if(datetime_now_newyork > session_end_datetime)
+                saveTimeSpentOnSession
+            if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
+                timeSpentUntilNow = timeSpentUntilNow+1;
+        },1000);
+
+        Swal.fire(
+            'INFO',
+            'Be sure to unmute the player located on the bottom right side of the page.',
+            'warning'
+        );
+
+    }
+
+    function initiateTimerRecorder() {
+        getTimeSpentOnSession();
+    }
+
+    initiateTimerRecorder();
+    /******* End of saving time spent on session - by Athul ************/
+
     window.onbeforeunload = function (e) {
-//      e.preventDefault();
-//      e.returnValue = '';
+        saveTimeSpentOnSession();
+// e.preventDefault();
+// e.returnValue = '';
         $.ajax({
             url: "<?= base_url() ?>sessions/update_viewsessions_history_open",
             type: "post",
@@ -615,105 +686,107 @@ if (isset($sessions)) {
             }
         });
 
+        return "We are saving your data before you leave, you can click ok to leave!";
+
     };
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-    let socket = io("<?=getSocketUrl()?>");
-    socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
+        let socket = io("<?=getSocketUrl()?>");
+        socket.emit("ConnectSessioViewUsers","<?=getAppName($sessions->sessions_id) ?>")
 
         $('[data-toggle="tooltip"]').tooltip();
 
-    $('#sendGroupChat').keypress(function (e) {
-        var $questions = $("#sendGroupChat");
-        var key = e.which;
-        if (key == 13) // the enter key code
-        {
-            if ($questions.val() == "") {
-                $questions.addClass("border borderRed");
-            } else {
-                $('#sendGroupChatButton').click()
-            }
-        }
-    });
-        $('#sendGroupChatButton').click(function (e) {
+        $('#sendGroupChat').keypress(function (e) {
             var $questions = $("#sendGroupChat");
-
+            var key = e.which;
+            if (key == 13) // the enter key code
+            {
                 if ($questions.val() == "") {
                     $questions.addClass("border borderRed");
                 } else {
-                    $questions.removeClass("border borderRed");
-                    var $questionsVal=$questions.val();
-                    $questions.val("");
-                    $.post("<?=base_url()?>"+"SessionGroupChat/newText",
-                        {
-                            "sessionId":"<?=getAppName($sessions->sessions_id) ?>",
-                            "message":$questionsVal
-                        },
-                        function(resp){
-                            if(resp){
-                                resp=JSON.parse(resp);
-                                socket.emit("sessionViewGroupChat",{
-                                    "sessionId":resp.session_id,
-                                    "message":resp.message,
-                                    "userId":resp.user_id,
-                                    "userName":resp.user_name
-                                })
-
-                            }
-                        })
-
+                    $('#sendGroupChatButton').click()
                 }
+            }
+        });
+        $('#sendGroupChatButton').click(function (e) {
+            var $questions = $("#sendGroupChat");
+
+            if ($questions.val() == "") {
+                $questions.addClass("border borderRed");
+            } else {
+                $questions.removeClass("border borderRed");
+                var $questionsVal=$questions.val();
+                $questions.val("");
+                $.post("<?=base_url()?>"+"SessionGroupChat/newText",
+                    {
+                        "sessionId":"<?=getAppName($sessions->sessions_id) ?>",
+                        "message":$questionsVal
+                    },
+                    function(resp){
+                        if(resp){
+                            resp=JSON.parse(resp);
+                            socket.emit("sessionViewGroupChat",{
+                                "sessionId":resp.session_id,
+                                "message":resp.message,
+                                "userId":resp.user_id,
+                                "userName":resp.user_name
+                            })
+
+                        }
+                    })
+
+            }
         });
 
-    $.post("<?=base_url()?>" + "SessionGroupChat/getTexts", {
-            "sessionId": "<?=getAppName($sessions->sessions_id) ?>",
-        },
-        function (resp) {
-            if (resp) {
-                resp=JSON.parse(resp);
+        $.post("<?=base_url()?>" + "SessionGroupChat/getTexts", {
+                "sessionId": "<?=getAppName($sessions->sessions_id) ?>",
+            },
+            function (resp) {
+                if (resp) {
+                    resp=JSON.parse(resp);
 
-                resp.forEach(function(par){
-                    addMessageGroupChat(par,"load")
-                })
+                    resp.forEach(function(par){
+                        addMessageGroupChat(par,"load")
+                    })
 
-            }
-        })
-
-
-    function addMessageGroupChat(data,type=""){
-        var messageType='';
-        var userName=data.userName?data.userName:data.user_name;
-        var userId=data.userId?data.userId:data.user_id;
-        var sessionId=data.sessionId?data.sessionId:data.session_id;
-        var message=data.message?data.message:data.message;
-
-        if(userId=="<?=$this->session->userdata('cid')?>"){
-            messageType= `<div class="messageMe"><p>${message}</p></div>`;
-        }
-        else{
-            messageType= `<div class="messageHe"><span>${userName}</span><p>${message}</p></div>`;
-
-            if(type!="load"){
-                if ($('.messagesSticky'+sessionId).css('display') == 'none'){
-                if($(".notify"+sessionId).hasClass("displayNone"))$(".notify"+sessionId).removeClass("displayNone");
                 }
+            })
+
+
+        function addMessageGroupChat(data,type=""){
+            var messageType='';
+            var userName=data.userName?data.userName:data.user_name;
+            var userId=data.userId?data.userId:data.user_id;
+            var sessionId=data.sessionId?data.sessionId:data.session_id;
+            var message=data.message?data.message:data.message;
+
+            if(userId=="<?=$this->session->userdata('cid')?>"){
+                messageType= `<div class="messageMe"><p>${message}</p></div>`;
+            }
+            else{
+                messageType= `<div class="messageHe"><span>${userName}</span><p>${message}</p></div>`;
+
+                if(type!="load"){
+                    if ($('.messagesSticky'+sessionId).css('display') == 'none'){
+                        if($(".notify"+sessionId).hasClass("displayNone"))$(".notify"+sessionId).removeClass("displayNone");
+                    }
+                }
+
             }
 
+            $(".messagesSticky"+sessionId+" .messages").append(messageType)
         }
 
-        $(".messagesSticky"+sessionId+" .messages").append(messageType)
-    }
+        socket.on("sessionViewGroupMessages",function(data){
+            addMessageGroupChat(data)
 
-    socket.on("sessionViewGroupMessages",function(data){
-        addMessageGroupChat(data)
-
-        var sessionId=data.sessionId;
-        var $messagesContent=$('.messagesSticky'+sessionId+' .content .messages');
-        $($messagesContent).scrollTop($($messagesContent)[0].scrollHeight);
-    })
+            var sessionId=data.sessionId;
+            var $messagesContent=$('.messagesSticky'+sessionId+' .content .messages');
+            $($messagesContent).scrollTop($($messagesContent)[0].scrollHeight);
+        })
 
 
 
@@ -907,12 +980,12 @@ if (isset($sessions)) {
             }
         });
 
-        //  get_question_answer_section();
-        //  setInterval(get_question_answer_section, 5000);
+        // get_question_answer_section();
+        // setInterval(get_question_answer_section, 5000);
         // $("#questions_section").hide();
-        //        $(document).on("click", "#ask_questions", function () {
-        //            $("#questions_section").show();
-        //        });
+        // $(document).on("click", "#ask_questions", function () {
+        // $("#questions_section").show();
+        // });
 
         $("#resource_display_status").show();
         getMessage;
@@ -982,7 +1055,7 @@ if (isset($sessions)) {
 
         $('#questions').keypress(function (e) {
             var key = e.which;
-            if (key == 13)  // the enter key code
+            if (key == 13) // the enter key code
             {
                 if ($("#questions").val() == "") {
                     $("#error_questions").text("Enter Questions").fadeIn('slow').fadeOut(5000);
@@ -1039,24 +1112,18 @@ if (isset($sessions)) {
                     dataType: "json",
                     success: function (data) {
                         if (data.status == "success") {
-                          //  $("#briefcase").val("");
+                            $("#briefcase").val("");
                             $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                         }
-                       // $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/'+briefcase);
+                        $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/'+briefcase);
                     }
                 });
             }
         });
-		
-        $(document).on("click", "#downloadbriefcase", function () {
-            var briefcase = $("#briefcase").val();
-            $(location).attr('href', '<?= base_url() ?>sessions/downloadNote/' + briefcase);
-        });
-
 
         $('#briefcase').keypress(function (e) {
             var key = e.which;
-            if (key == 13)  // the enter key code
+            if (key == 13) // the enter key code
             {
                 if ($("#briefcase").val() == "") {
                     $("#error_briefcase").text("Enter Notes").fadeIn('slow').fadeOut(5000);
@@ -1164,7 +1231,7 @@ if (isset($sessions)) {
                             timer(1);
                         }
                     } else {
-						stop_music();
+                        stop_music();
                         $("#timer_sectiom").hide();
                         $("#popup_title_lbl").css({"border-top-right-radius": "15px", "border-top-left-radius": "15px"});
                     }
@@ -1174,7 +1241,7 @@ if (isset($sessions)) {
                         if (data.result.poll_status == 1) {
                             $('#modal').modal('show');
                             $("#poll_vot_section").html("<form id='frm_reg' name='frm_reg' method='post' action=''>\n\
-            \n\<h2 id='popup_title_lbl' style='margin-bottom: 20px; color: #000; font-weight: 800;font-size: 24px; padding: 15px 5px 25px 10px; background-color: #ebeaea; border-top-right-radius: 15px; border-top-left-radius: 15px;'>" + data.result.question + "</h2>\n\
+ \n\<h2 id='popup_title_lbl' style='margin-bottom: 20px; color: #000; font-weight: 800;font-size: 24px; padding: 15px 5px 25px 10px; background-color: #ebeaea; border-top-right-radius: 15px; border-top-left-radius: 15px;'>" + data.result.question + "</h2>\n\
 <div class='col-md-12'>\n\
 \n\<input type='hidden' id='sessions_poll_question_id' value='" + data.result.sessions_poll_question_id + "'>\n\
 \n\<input type='hidden' id='sessions_id' value='" + data.result.sessions_id + "'>\n\
@@ -1208,7 +1275,7 @@ if (isset($sessions)) {
                         } else {
                             $('#modal').modal('show');
                             $("#poll_vot_section").html("<div class='row'><div class='col-md-12'><h2 style='margin-bottom: 0px; color: #fff; font-weight: 700;font-size: 15px; padding: 5px 5px 5px 10px; background-color: #b2b7bb; text-transform: uppercase; border-top-right-radius: 15px; border-top-left-radius: 15px;'>Live Poll Results</h2></div><div class='col-md-12'><div class='col-md-12'><h5 style='letter-spacing: 0px; padding-top: 10px; font-size: 13px; border-bottom: 1px solid #b1b1b1; padding-bottom: 10px;'>" + data.result.question + "</h5>\n\
-                                                        \n\<div id='result_section' style='padding-bottom: 10px;'></div></div></div></div>");
+ \n\<div id='result_section' style='padding-bottom: 10px;'></div></div></div></div>");
                             var total_vote = 0;
                             var total_vote_compere_option = 0;
                             $.each(data.result.option, function (key, val) {
@@ -1247,12 +1314,12 @@ if (isset($sessions)) {
                         }
                     }
                 } else {
-					   $("#poll_vot_section_id_status").val("");
-                            $("#poll_vot_section_last_status").val("");
-					stop_music();
+                    $("#poll_vot_section_id_status").val("");
+                    $("#poll_vot_section_last_status").val("");
+                    stop_music();
                     $('#modal').modal('hide');
                     $("#timer_sectiom").hide();
-                      $("#popup_title_lbl").css({"border-top-right-radius": "15px", "border-top-left-radius": "15px"});
+                    $("#popup_title_lbl").css({"border-top-right-radius": "15px", "border-top-left-radius": "15px"});
                     $('#poll_vot_section_is_ended').val(1);
 
                     $.ajax({
@@ -1263,7 +1330,7 @@ if (isset($sessions)) {
                         success: function (data) {
                             if (data.status == "success") {
                                 $("#poll_vot_section").html("<form id='frm_reg' name='frm_reg' method='post' action=''>\n\
-            \n\<h2 style='margin-bottom: 0px; color: #fff; font-weight: 700;font-size: 15px; padding: 5px 5px 5px 10px; background-color: #b2b7bb; text-transform: uppercase; border-top-right-radius: 15px; border-top-left-radius: 15px;'>Live Poll</h2>\n\
+ \n\<h2 style='margin-bottom: 0px; color: #fff; font-weight: 700;font-size: 15px; padding: 5px 5px 5px 10px; background-color: #b2b7bb; text-transform: uppercase; border-top-right-radius: 15px; border-top-left-radius: 15px;'>Live Poll</h2>\n\
 <div class='col-md-12'>\n\
 \n\<h5 style='letter-spacing: 0px; padding-top: 10px; font-size: 13px; border-bottom: 1px solid #b1b1b1; padding-bottom: 10px;'>" + data.result.question + "</h5></div>\n\
 \n\<input type='hidden' id='sessions_poll_question_id' value='" + data.result.sessions_poll_question_id + "'>\n\
@@ -1360,13 +1427,13 @@ if (isset($sessions)) {
 
     function play_music() {
         var audio = document.getElementById("audio");
-        audio.play();
+        //audio.play();
     }
 
     function stop_music() {
         var audio = document.getElementById("audio");
-        audio.pause();
-		audio.currentTime = 0;
+        //audio.pause();
+        //audio.currentTime = 0;
     }
 
     var upgradeTime = 10;
@@ -1395,6 +1462,22 @@ if (isset($sessions)) {
             play_music();
             seconds--;
         }
+    }
+
+    function calcTime(offset) {
+        // create Date object for current location
+        var d = new Date();
+
+        // convert to msec
+        // subtract local time zone offset
+        // get UTC time in msec
+        var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+
+        // create new Date object for different city
+        // using supplied offset
+        var nd = new Date(utc + (3600000*offset));
+
+        return nd;
     }
 </script>
 
