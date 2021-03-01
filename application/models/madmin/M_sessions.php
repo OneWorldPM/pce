@@ -1441,6 +1441,14 @@ class M_sessions extends CI_Model {
 
         return;
     }
-
-
+    function getAllSessions() {
+        $this->db->select('*');
+        $this->db->from('sessions');
+        $sessions = $this->db->get();
+        if ($sessions->num_rows() > 0) {
+            return $sessions->result_array();
+        } else {
+            return array();
+        }
+    }
 }
