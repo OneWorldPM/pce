@@ -1,4 +1,4 @@
-<div class="modal fade" id="push_notification" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; text-align: left; right: unset;">
+<div class="modal fade" id="push_notification" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; text-align: left; right: unset;top: unset;">
     <input type="hidden" id="push_notification_id" value="">
     <div class="modal-dialog">
         <div class="modal-content" style="border: 1px solid #679B41;">
