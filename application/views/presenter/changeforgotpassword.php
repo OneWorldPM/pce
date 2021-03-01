@@ -1,4 +1,4 @@
-<section class="parallax fullscreen" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.jpg); top: 0; padding-top: 0px;">
+<section class="parallax fullscreen" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.png); top: 0; padding-top: 0px;">
     <div class="container container-fullscreen">
         <div class="text-middle">
             <div class="row">
@@ -8,7 +8,7 @@
                         <?php
                         echo ($this->session->flashdata('msg')) ? $this->session->flashdata('msg') : '';
                         ?> 
-                        <form class="form-horizontal form-signin" id="frm_password" name="frm_password" method="post" action="<?= base_url() ?>presenter/forgotpassword/passwordChange">                            
+                        <form class="form-horizontal form-signin" id="frm_password" name="frm_password" method="post" action="<?= base_url() ?>presenter/forgotpassword/passwordChange">
                             <input type="hidden" class="form-control" id="cid" name="cid" value="<?= $this->input->get('id'); ?>">
                             <div class="form-group">
                                 <input type="password" class="form-control" id="user-password" name="password" placeholder="Your Password" required="" autofocus="">
@@ -36,10 +36,10 @@
                 $("#errorpassword").text("Please Enter Your Password").fadeIn('slow').fadeOut(5000);
                 return false;
             } else if ($("#user-cnf-password").val() == "") {
-                $("#errorconf_password").text("Please Enter Your Confirm Password").fadeIn('slow').fadeOut(5000);
+                $("#errorconf_password").text("Please Confirm Password").fadeIn('slow').fadeOut(5000);
                 return false;
             } else if ($("#user-password").val() != $("#user-cnf-password").val()) {
-                $("#errorconf_passwordmuch").text("Password and Confirm Password Must Match").fadeIn('slow').fadeOut(5000);
+                $("#errorconf_passwordmuch").text("Password and Password Confirmation Must Match").fadeIn('slow').fadeOut(5000);
                 return false;
             } else {
                 return true; //submit form

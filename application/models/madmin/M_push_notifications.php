@@ -18,9 +18,12 @@ class M_push_notifications extends CI_Model {
     }
 
     function add_push_notifications($post) {
+        $visibility = $post['visibility'];
+        $visibility = ($visibility == 'null')?null:$visibility;
         $data = array(
             'message' => $post['message'],
-            'notification_date' => date("Y-m-d h:i:s")
+            'notification_date' => date("Y-m-d h:i:s"),
+            'session_id'=>$visibility,
         );
         $this->db->insert('push_notification_admin', $data);
         $pid = $this->db->insert_id();
