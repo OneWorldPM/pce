@@ -144,7 +144,12 @@
                                                         </td>
                                                         <td>
 														  <a data-session-id="<?= $val->sessions_id ?>" class="btn btn-danger btn-sm delete_session"  style="font-size: 10px !important; margin-bottom: 5px;">Delete Session</a>
-                                                          <a href="<?= base_url() ?>admin/sessions/send_json/<?= $val->sessions_id ?>" class="btn btn-purple btn-sm" style="margin-bottom: 5px;">Send to PCE</a>
+                                                            <?php if($val->send_json_status==1):?>
+                                                                    <a  data-session-id="<?= $val->sessions_id ?>" class="send-json btn btn-purple btn-sm" style="margin-bottom: 5px;">Sent to PCE</a>
+                                                                <?php else: ?>
+                                                                    <a data-session-id="<?= $val->sessions_id ?>"  href="<?= base_url() ?>admin/sessions/send_json/<?= $val->sessions_id ?>" class="btn btn-green btn-sm" style="margin-bottom: 5px;">Send to PCE</a>
+                                                                <?php endif;?>
+
                                                         <a href="<?= base_url() ?>admin/sessions/view_json/<?= $val->sessions_id ?>" class="btn btn-purple btn-sm" style="margin-bottom: 5px;">View JSON</a>
 														 <a href="<?= base_url() ?>admin/sessions/reset_sessions/<?= $val->sessions_id ?>" class="btn btn-purple btn-sm">Clear JSON</a>
                                                         </td>
@@ -164,6 +169,10 @@
     </div>
 </div>
 </div>
+
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@9.17.0/dist/sweetalert2.all.min.js"></script>
+<script src="https://kit.fontawesome.com/fd91b3535c.js" crossorigin="anonymous"></script>
 <?php
 $msg = $this->input->get('msg');
 switch ($msg) {
@@ -172,6 +181,14 @@ switch ($msg) {
         $t = "success";
         break;
     case "E":
+        $m = "Something went wrong, Please try again!!!";
+        $t = "error";
+        break;
+    case "JS":
+        $m = "Json Sent";
+        $t = "success";
+        break;
+    case "JE":
         $m = "Something went wrong, Please try again!!!";
         $t = "error";
         break;
@@ -203,7 +220,27 @@ switch ($msg) {
                 }
             });
         });
-        
+
+        //======= Resend JSON notification ========//
+        $('#sessions_table').on('click','.send-json', function () {
+
+            let sesionId = $(this).data("session-id");
+            let href = $(this).attr('href-url');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will resend the Json in this session!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Resend it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "<?=base_url()?>admin/sessions/send_json/"+sesionId;
+                }
+            })
+        });
 
 <?php if ($msg): ?>
             alertify.<?= $t ?>("<?= $m ?>");
