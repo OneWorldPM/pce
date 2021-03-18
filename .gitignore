@@ -1,0 +1,14 @@
+/application/cache/session/
+/uploads/
+/front_assets/images/
+/assets/images/
+application/config/email_config.php
+application/config/config.php
+*.php
+.htaccess
+application/config/database.php
+application/config/database.php
+application/config/config.php
+.htaccess
+application/config/config.php
+application/config/database.php
