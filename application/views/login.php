@@ -60,7 +60,7 @@
                 <div class="col-md-6 col-xs-12 col-sm-12 center p-60 background-white" style="border-radius: 10px;">
                     <div class="row">
                         <div class="col-md-6 col-xs-12 col-sm-12">
-                            <h4>Welcome!</h4>
+                            <h4>Welcome to PCE!</h4>
                             <p>Sign in Below</p>
                             <?php
                             echo ($this->session->flashdata('msg')) ? $this->session->flashdata('msg') : '';
