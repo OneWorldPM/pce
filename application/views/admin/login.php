@@ -42,7 +42,7 @@
 
         <style type="text/css">
             .login{
-                background: url('<?= base_url() ?>assets/images/background_image.jpg') no-repeat center center;
+                background: url('<?= base_url() ?>assets/images/bg_login.jpg') no-repeat center center;
                 background-size: cover;
                 background-origin: content-box;
                 background-attachment: fixed;
@@ -80,7 +80,7 @@
                     <form class="form-login" id="frm_login" name="frm_login" method="post" action="<?= base_url() ?>admin/alogin/authentication">
                         <div class="row">
                             <div style="text-align: center">                           
-                                <img src="<?= base_url() ?>assets/images/logo.png" alt="admin" >
+                                <img style="width:50%" src="<?= base_url() ?>assets/images/logo.png" alt="admin" >
                             </div>
                         </div>
                         <fieldset>
@@ -101,7 +101,7 @@
                                 </span></span><span id="errorpassword" style="color:red;"></span>
                             </div>
                             <div class="form-actions">
-                                <button type="submit" class="btn btn-primary form-control" id="btn_login">
+                                <button type="submit" class="btn btn-green form-control" id="btn_login">
                                     Log In
                                 </button>
                             </div>

@@ -31,11 +31,11 @@ $user_role = $this->session->userdata('role');
                                         <label>Date Range:</label>
                                          <div class="input-group input-daterange datepicker">
                                             <input type="text" placeholder="Start Date" name="start_date" value="<?= ($this->session->userdata('start_date') != "") ? date("m/d/Y",strtotime($this->session->userdata('start_date'))) : ""  ?>" id="from_date" class="form-control">
-                                            <span class="input-group-addon bg-primary">to</span>
+                                            <span class="input-group-addon bg-green">to</span>
                                             <input type="text" placeholder="End Date" name="end_date" value="<?= ($this->session->userdata('end_date') != "") ? date("m/d/Y",strtotime($this->session->userdata('end_date'))) : ""  ?>" id="to_date" class="form-control">
                                         </div>
-                                        <input type="submit" name="btn_today" class="btn btn-primary" style="margin-top: 22px;" id="filter_btn" value="Today">
-                                        <input type="submit" name="btn_tomorrow" class="btn btn-primary" style="margin-top: 22px;" id="filter_btn" value="Tomorrow">
+                                        <input type="submit" name="btn_today" class="btn btn-green" style="margin-top: 22px;" id="filter_btn" value="Today">
+                                        <input type="submit" name="btn_tomorrow" class="btn btn-green" style="margin-top: 22px;" id="filter_btn" value="Tomorrow">
                                         
                            
                                     </div>
@@ -63,7 +63,7 @@ $user_role = $this->session->userdata('role');
                                       </div>
                                       
                                 <div class="col-md-1">
-                                    <input type="submit" name="filter_btn" class="btn btn-primary" style="margin-top: 22px;" id="filter_btn" value="Submit">
+                                    <input type="submit" name="filter_btn" class="btn btn-green" style="margin-top: 22px;" id="filter_btn" value="Submit">
                                 </div>
                                 <div class="col-md-2">
                                     <a href="<?= base_url() ?>admin/sessions/filter_clear" class="btn btn-danger" style="margin-top: 22px;">Clear</a>
@@ -220,7 +220,7 @@ $user_role = $this->session->userdata('role');
                                                     <td>
 														<a href="<?= base_url() ?>admin/sessions/view_poll/<?= $val->sessions_id ?>" class="btn btn-info btn-sm" style="margin-bottom: 5px;">Polls</a>
                                                         <?php if ($user_role == 'super_admin') { ?>
-                                                        <a href="<?= base_url() ?>admin/sessions/view_question_answer/<?= $val->sessions_id ?>" class="btn btn-primary btn-sm" style="margin-bottom: 5px;">View Q&A</a>
+                                                        <a href="<?= base_url() ?>admin/sessions/view_question_answer/<?= $val->sessions_id ?>" class="btn btn-green btn-sm" style="margin-bottom: 5px;">View Q&A</a>
                                                         <a href="<?= base_url() ?>admin/sessions/report/<?= $val->sessions_id ?>" class="btn btn-grey btn-sm" style="margin-bottom: 5px;">Report</a>
                                                         <?php } ?>
                                                         <a href="<?= base_url() ?>admin/groupchat/sessions_groupchat/<?= $val->sessions_id ?>" class="btn btn-blue btn-sm" style="margin-bottom: 5px;">Create Chat</a>

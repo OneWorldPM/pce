@@ -183,7 +183,7 @@
     .borderFrame{
         margin-top: 100px;
         width: 100%;
-        background-color: #F15A23;
+        background-color: #679b41;
         height: 29px;
         position: absolute;
         bottom: 0;
@@ -218,7 +218,7 @@
             font-size: 12px;
         }
         .rightSticky{
-            background-color: #EF5D21;
+            background-color: #679b41;
         }
     .rightSticky ul li{
             width: 32%;

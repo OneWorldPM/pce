@@ -72,8 +72,8 @@
                 <div class="box-login">
                     <form class="form-login" id="frm_login" name="frm_login" method="post" action="<?= base_url() ?>presenter/login/authentication">
                         <div class="row">
-                            <div  style="text-align: center;">                           
-                                <img src="<?= base_url() ?>assets/images/logo.png" alt="" style="text-align: center;" >
+                            <div  style="text-align: center;">
+                                <img style="width:50%" src="<?= base_url() ?>assets/images/logo.png" alt="" style="text-align: center;" >
                             </div>
                         </div>
                         <fieldset>
@@ -94,7 +94,7 @@
                                 </span><span id="errorpassword" style="color:red"></span>
                             </div>
                             <div class="form-actions" style="padding-left: 20px;">
-                                <button type="submit" class="btn btn-primary" id="btn_login">
+                                <button type="submit" class="btn " id="btn_login" style="background-color:#679B41;color:white">
                                     Login
                                 </button>
                                 <span><a href="<?= base_url().'presenter/forgotpassword/' ?>">Forgot Password</a></span> 

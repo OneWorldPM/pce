@@ -76,8 +76,8 @@ function themeColour($seesionId = null)
         if ($colour != '')
             return $query->result_array()[0]['theme_color'];
         else
-            return 'EF5D21';
+            return '679b41';
     }else{
-        return 'EF5D21';
+        return '679b41';
     }
 }

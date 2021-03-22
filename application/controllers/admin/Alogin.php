@@ -28,6 +28,7 @@ class Alogin extends CI_Controller {
             $data = $this->objlogin->user_login($arr);
 
             if ($data) {
+
                 $session = array(
                     'aid' => $data['admin_id'],
                     'aname' => 'admin',

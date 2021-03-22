@@ -33,10 +33,7 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <!--                                                <div class="modal-header" style="padding: 0px;">
-                                                                                                    <img class="kent_logo" src="<?= base_url() ?>assets/images/logo.png" alt="MLG">
-                                                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                                                </div>-->
+
                                     <div class="modal-body" style="padding: 0px;">
                                         <div class="row" style="padding-top: 0px; padding-bottom: 20px;">
                                             <div class="col-sm-12">

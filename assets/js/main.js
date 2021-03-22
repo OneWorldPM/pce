@@ -1,7 +1,7 @@
 'use strict';
 var Main = function () {
     var $html = $('html'), $win = $(window), wrap = $('.app-aside'), MEDIAQUERY = {}, app = $('#app');
-    var base_url = "https://yourconference.live/CCO/";
+    var base_url = "https://yourconference.live/pce-migration/";
     MEDIAQUERY = {
         desktopXL: 1200,
         desktop: 992,
@@ -313,11 +313,11 @@ var Main = function () {
                 case "theme-3":
                 case "theme-5":
                 case "theme-6":
-                    $(".navbar-brand img").attr("src", base_url + "front_assets/images/CCO_CORP_Logo_310wide.png");
+                    $(".navbar-brand img").attr("src", base_url + "front_assets/images/pce_logo.png");
                     break;
 
                 default:
-                    $(".navbar-brand img").attr("src", base_url + "front_assets/images/CCO_CORP_Logo_310wide.png");
+                    $(".navbar-brand img").attr("src", base_url + "front_assets/images/pce_logo.png");
                     break;
             }
         }
@@ -328,7 +328,7 @@ var Main = function () {
             $('#closed-sidebar').prop('checked', false);
             $('#fixed-footer').prop('checked', false);
             $('#skin_color').attr("href", base_url + "assets/css/themes/theme-1.css");
-            $(".navbar-brand img").attr("src", base_url + "front_assets/images/CCO_CORP_Logo_310wide.png");
+            $(".navbar-brand img").attr("src", base_url + "front_assets/images/pce_logo.png");
 
         }
 

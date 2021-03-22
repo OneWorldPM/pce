@@ -91,10 +91,10 @@ $user_role = $this->session->userdata('role');
                                     <small style="color: grey;font-size: 13px;font-weight: bold;">This colour will fill the horizontal line at the top of attendee page as well as the toolbox icon boxes.</small>
                                     <div class="input-group">
                                         <span class="input-group-addon" style="background-color: grey;border-color: grey;">#</span>
-                                        <input type="text" placeholder="Enter hex code without #" class="form-control" id="themeColor" name="theme_color" value="<?=(isset($sessions_edit->theme_color) && !empty($sessions_edit->theme_color))?$sessions_edit->theme_color:'EF5D21'?>">
+                                        <input type="text" placeholder="Enter hex code without #" class="form-control" id="themeColor" name="theme_color" value="<?=(isset($sessions_edit->theme_color) && !empty($sessions_edit->theme_color))?$sessions_edit->theme_color:'679b41'?>">
                                     </div>
                                     <small style="color: grey;">(Enter hex code in the input box or simply pick a colour using colour picker)</small><br>
-                                    <input style="margin-top: 7px" type="color" id="themeColorHex" name="theme_color_hex" value="#<?=(isset($sessions_edit->theme_color) && !empty($sessions_edit->theme_color))?$sessions_edit->theme_color:'EF5D21'?>">
+                                    <input style="margin-top: 7px" type="color" id="themeColorHex" name="theme_color_hex" value="#<?=(isset($sessions_edit->theme_color) && !empty($sessions_edit->theme_color))?$sessions_edit->theme_color:'679b41'?>">
                                 </div>
 
                                     <hr style="border: 2px solid;">

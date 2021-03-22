@@ -8,7 +8,7 @@ if (isset($_GET['testing']))
 if(isset($session_id))
     $themeColour = themeColour($session_id);
 else
-    $themeColour = 'EF5D21';
+    $themeColour = '679b41';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +88,7 @@ else
             }
 
             .button.black-light {
-                border-color: #f05d1f;
+                border-color: #679b41;
             }
 
             .logo2 {
@@ -145,7 +145,7 @@ else
 
             #mainMenu2 ul li a:hover {
                 background-color: transparent;
-                color: #ff5e00;
+                color: #679b41;
                 cursor: pointer;
             }
 
@@ -306,13 +306,13 @@ else
                             ?>
                             <div id="logo" style="margin-right: 7px;">
                                 <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png" style="margin-top: 12px; cursor: auto">
-                                    <img src="<?= base_url() ?>front_assets/images/CCO_CORP_Logo_310wide.png" alt="CCO Logo">
+                                    <img src="<?= base_url() ?>front_assets/images/logo.png" alt="CCO Logo">
                                 </a>
                             </div>
                         <?php } else { ?>
                             <div id="logo">
                                 <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png">
-                                    <img src="<?= base_url() ?>front_assets/images/CCO_CORP_Logo_310wide.png" alt="CCO Logo">
+                                    <img src="<?= base_url() ?>front_assets/images/logo.png" alt="CCO Logo">
                                 </a>
                             </div>
                         <?php } ?>
