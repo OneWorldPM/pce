@@ -134,7 +134,7 @@
 }
 
 .slider.slider-primary .slider-selection {
-  background: #f05d1f;
+  background: #679b41;
 }
 
 .slider.slider-blue .slider-selection {
@@ -176,7 +176,7 @@
   color: #5b5b60;
 }
 .box-tree .nav > li > a i {
-  color: #f05d1f;
+  color: #679b41;
 }
 .box-tree .nav > li.active > a, .box-tree .nav > li.active > a:hover, .box-tree .nav > li.active a:focus {
   color: #ffffff;
@@ -271,7 +271,7 @@ img-crop {
 .dd-item > button:before {
   content: "\e649" !important;
   font-family: "themify";
-  color: #f05d1f;
+  color: #679b41;
 }
 
 .dd-item > button[data-action="collapse"]:before {
@@ -482,7 +482,7 @@ img-crop {
 }
 
 .event-job .fc-content > span:first-child:before, .event-category.event-job:before {
-  color: #f05d1f !important;
+  color: #679b41 !important;
 }
 
 .event-off-site-work .fc-content > span:first-child:before, .event-category.event-off-site-work:before {

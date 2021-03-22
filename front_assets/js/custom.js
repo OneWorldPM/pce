@@ -143,7 +143,7 @@ $(document).ready(function () {
 
 
     $(document).on("click",".option_section_css input",function () {
-        $("#btn_vote").css("background-color","#f05d1f")
+        $("#btn_vote").css("background-color","#679b41")
     })
 
     function presenterDateJustHour() {

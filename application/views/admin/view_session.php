@@ -255,8 +255,8 @@
     }
 
     .button.color, .btn.btn-primary {
-        background-color: #f05d1f;
-        border-color: #f05d1f;
+        background-color: #679b41;
+        border-color: #679b41;
         color: #fff;
     }
     @media only screen and (max-width: 600px) {

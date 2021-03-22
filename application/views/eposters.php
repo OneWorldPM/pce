@@ -18,7 +18,7 @@
     }
 
     .icon-home {
-        color: #f05d1f;
+        color: #679b41;
         font-size: 1.5em;
         font-weight: 700;
         vertical-align: middle;
@@ -37,7 +37,7 @@
     }
 
     .box_home_active {
-        background-color: #f05d1f;
+        background-color: #679b41;
         border-radius: 20px;
         max-width: 250px;
         min-width: 250px;
@@ -49,7 +49,7 @@
     }
 
     .box-home:hover {
-        background-color: #f05d1f;
+        background-color: #679b41;
         color: #fff !important;
     }
 </style>
@@ -125,7 +125,7 @@
                                             <div class="post-content-details col-md-9 m-t-30">
                                                 <div class="post-title">
                                                     <h3 style="font-weight: 900;"><?= $val->assigned_id ?></h3>
-                                                    <h3><a href="<?= base_url() ?>eposters/view/<?= $val->eposters_id ?>" style="color: #f05d1f; font-weight: 900;"><?= $val->eposters_title ?></a></h3>
+                                                    <h3><a href="<?= base_url() ?>eposters/view/<?= $val->eposters_id ?>" style="color: #679b41; font-weight: 900;"><?= $val->eposters_title ?></a></h3>
                                                 </div>
                                                 <div class="post-info">
                                                     <?php
