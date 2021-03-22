@@ -1250,23 +1250,7 @@ class M_sessions extends CI_Model {
             $sessions_history_login = array();
             if ($sessions_history->num_rows() > 0) {
                 foreach ($sessions_history->result() as $val) {
-                    $sessions_start_date_time = strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot);
-                    $sessions_end_date_time = strtotime($result_sessions->sessions_date . ' ' . $result_sessions->end_time);
-                    if ($sessions_end_date_time != "") {
-                        if ($sessions_end_date_time >= $sessions_start_date_time) {
-                            $sessions_total_time = $sessions_end_date_time - $sessions_start_date_time;
-                        } else {
-                            $sessions_total_time = 0;
-                        }
-                    } else {
-                        $sessions_total_time = 0;
-                    }
                     $start_date_time = strtotime($val->start_date_time);
-                    if ($start_date_time < $sessions_start_date_time) {
-                        $start_date_time = $sessions_start_date_time;
-                    } else {
-                        $start_date_time = strtotime($val->start_date_time);
-                    }
                     $end_date_time = strtotime($val->end_date_time);
                     if ($end_date_time != "") {
                         if ($end_date_time >= $start_date_time) {
@@ -1278,10 +1262,6 @@ class M_sessions extends CI_Model {
                         $end_date_time = 0;
                         $total_time = 0;
                     }
-                    if ($sessions_total_time < $total_time) {
-                        $total_time = $sessions_total_time;
-                    }
-                    
                     $private_notes = "";
                     $this->db->select('note');
                     $this->db->from('sessions_cust_briefcase');
@@ -1290,63 +1270,18 @@ class M_sessions extends CI_Model {
                     if ($sessions_cust_briefcase->num_rows() > 0) {
                         $private_notes = $sessions_cust_briefcase->row()->note;
                     }
-
-                    $last_seen = ($end_date_time == 0)?(strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot))+$sessions_total_time:$end_date_time;
-                    $session_started = strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot);
-
-                    if ($sessions_id == 22)
-                    {
-                        if (($start_date_time < strtotime('2020-11-10 18:30:00') || $start_date_time > strtotime('2020-11-10 19:40:00')))
-                        {
-                            $created_fix = strtotime('2020-11-10 18:'.rand(31, 39).':00');
-                        }else{
-                            $created_fix = $start_date_time;
-                        }
-
-                        if ($end_date_time == 0 || $end_date_time > strtotime('2020-11-10 19:40:00')){
-                            $last_seen_fix = strtotime('2020-11-10 19:'.rand(25, 39).':00');
-                        }else{
-                            $last_seen_fix = $end_date_time;
-                        }
-
-                        if (isset($created_fix) && isset($last_seen_fix))
-                        {
-                            $total_time_fix = $last_seen_fix-$created_fix;
-                        }else{
-                            $total_time_fix = $total_time;
-                        }
-                    }
-
                     $sessions_history_login[] = array(
-                        'client_data' => '',
-                        'alertness' => 0,
-                        'alertness_understood' => 0,
-                        'late_arrival' => 0,
-                        'login_id' => (int) $val->cust_id,
-                        'identifier' => $val->identifier_id,
-                        'email' => $val->email,
-                        'name' => $val->first_name,
-                        'host' => $val->ip_address,
+                        'uuid' => $val->cust_id,
                         'access' => 50,
-                        'access_str' => 'Attendee',
-                        'ip_addr' => $val->ip_address,
-//                        'created' => $start_date_time,
-                        'created' => ($sessions_id == 22)?$created_fix:$start_date_time,
-//                        'last_seen' => $end_date_time,
-                        'last_seen' => ($sessions_id == 22)?$last_seen_fix:$end_date_time,
-                        'total_time' => ($sessions_id == 22)?$total_time_fix:$total_time,
-//                        'total_time' => ($end_date_time == 0)?($sessions_total_time-strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot)):$this->getTimeSpentOnSession($sessions_id, $val->cust_id),
-//                        'total_time' => $last_seen-$session_started,
-//                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
-                        'user_agent' => $val->operating_system . ' - ' . $val->computer_type,
-                        'private_notes' => $private_notes,
-                        'state_changes' => array("0" => array("0" => 1592865240, "1" => 0), "0" => array("0" => 1592865240, "1" => 0)),
-                        'session' => $sessions_id,
-                        'identity' => array('identifier' => $val->identifier_id, 'name' => $val->first_name, 'email' => $val->email, 'firstname' => $val->first_name, 'lastname' => $val->last_name, 'degree' => $val->degree, 'specialtyName' => $val->specialty, 'city' => $val->city, 'zip' => $val->zipcode, 'state' => $val->state, 'country' => $val->country, "identity_id" => $val->cust_id, 'profile' => array('org_name' => '', 'org_title' => '', 'org_website' => '', 'bio' => '', 'twitter' => '', 'linkedin' => '', 'country' => '', 'picture_url' => '', 'last_updated' => 0)),
-                        'iat' => $val->iat,
-                        'exp' => $val->exp,
-                        'aud' => $val->aud,
-                        'jti' => $val->jti
+                        'created_time' => $start_date_time,
+                        'last_connected' => $end_date_time,
+//                        'total_time' => $total_time,
+                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
+                        'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
+                        'alertness' => array("checks_returned" => "", "understood" => ""),
+                        'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
+                        'identity' => array("uuid" => $val->cust_id, 'identifier' => $val->identifier_id, 'name' => $val->first_name . ' ' . $val->last_name, 'email' => $val->email, 'profile_org_name' => $val->company_name, 'profile_org_title' => $val->company_name, 'profile_org_website' => "", 'profile_bio' => $val->topic, 'profile_twitter' => $val->twitter_id, 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
+                        'state_changes' => array("0" => array("timestamp" => 1592865240, "state" => 0))
                     );
                 }
             }
@@ -1400,26 +1335,41 @@ class M_sessions extends CI_Model {
                     if ($sessions_poll_question->poll_type_id == 1) {
                         $presurvey = $presurvey + 1;
                         $polls[] = array(
+                            'uuid' => '',
+                            'status' => 4000,
+                            'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_name . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
-                            'total_votes' => $total_votes
+                            'total_votes' => $total_votes,
+                            'response_type' => 0,
+                            'text_responses' => array()
                         );
                     } else if ($sessions_poll_question->poll_type_id == 2) {
                         $poll = $poll + 1;
                         $polls[] = array(
+                            'uuid' => '',
+                            'text' => $sessions_poll_question->question,
+                            'status' => 4000,
+                            'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_name . " : " . $sessions_poll_question->question,
                             'options' => $options,
-                            'total_votes' => $total_votes
+                            'total_votes' => $total_votes,
+                            'response_type' => 0,
+                            'text_responses' => array()
                         );
                     } else if ($sessions_poll_question->poll_type_id == 3) {
                         $assessment = $assessment + 1;
                         $polls[] = array(
+                            'uuid' => '',
+                            'status' => 4000,
+                            'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_name . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
-                            'total_votes' => $total_votes
+                            'total_votes' => $total_votes,
+                            'response_type' => 0,
+                            'text_responses' => array()
                         );
                     }
                 }
@@ -1434,13 +1384,15 @@ class M_sessions extends CI_Model {
             if ($sessions_cust_question->num_rows() > 0) {
                 foreach ($sessions_cust_question->result() as $key => $val) {
                     $questions[] = array(
-                        'question_id' => (int) $val->sessions_cust_question_id,
+                        'uuid'=>$val->cust_id,
                         'index' => (int) $key,
-                        'login_id' => (int) $val->cust_id,
-                        'time' => strtotime($val->reg_question_date),
-                        'question' => $val->question,
-                        'reply_login_id' => ($val->answer_by_id != "") ? $val->answer_by_id : "",
-                        'reply' => ($val->answer != "") ? $val->answer : ""
+                        'login' => (int) $val->cust_id,
+                        'body' => (int) $val->sessions_cust_question_id,
+                        'timestamp' => strtotime($val->reg_question_date),
+                        'upvotes'=>array()
+//                        'question' => $val->question,
+//                        'reply_login_id' => ($val->answer_by_id != "") ? $val->answer_by_id : "",
+//                        'reply' => ($val->answer != "") ? $val->answer : ""
                     );
                 }
             }
@@ -1449,6 +1401,50 @@ class M_sessions extends CI_Model {
                 'timestamp' => 0,
                 'total_logins' => 0
             );
+
+            $this->db->select('*');
+            $this->db->from('sessions_group_chat_msg');
+            $this->db->where("sessions_id", $sessions_id);
+            $sessions_group_chat_msg = $this->db->get();
+            $messages = array();
+            if ($sessions_group_chat_msg->num_rows() > 0) {
+                foreach ($sessions_group_chat_msg->result() as $key => $val) {
+                    $messages[] = array(
+                        'uuid' => $val->user_id,
+                        'login' => $val->user_id,
+                        'timestamp' => strtotime($val->message_date),
+                        'message' => $val->message,
+                        'status' => 0,
+                        'is_positive' => FALSE,
+                        'deleted_reason' => 0
+                    );
+                }
+            }
+
+            $this->db->select('*');
+            $this->db->from('session_resource');
+            $this->db->where("sessions_id", $sessions_id);
+            $session_resource = $this->db->get();
+            $files = array();
+            $hyperlinks = array();
+            if ($session_resource->num_rows() > 0) {
+                foreach ($session_resource->result() as $key => $val) {
+                    $files[] = array(
+                        'uuid' => "",
+                        'name' => $val->upload_published_name,
+                        'about' => "",
+                        'size' => 1000,
+                        'clicks' =>array(array('login'=>"",'player_timestamp'=>"",'eos_timestamp'=>""))
+                    );
+                    $hyperlinks[] = array(
+                        'uuid' => "",
+                        'name' => $val->link_published_name,
+                        'url' => $val->resource_link,
+                        'clicks' =>array(array('login'=>"",'player_timestamp'=>"",'eos_timestamp'=>""))
+                    );
+                }
+            }
+
             $create_array = array(
                 'actual_end_time' => strtotime($result_sessions->sessions_date . ' ' . $result_sessions->end_time),
                 'cssid' => $result_sessions->cco_envent_id,
@@ -1458,10 +1454,14 @@ class M_sessions extends CI_Model {
                 'session_id' => (int) $result_sessions->sessions_id,
                 'start_time' => strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot),
                 'logins' => $sessions_history_login,
-                'alertness_checks' => array('count' => 0, 'list' => array()),
-                'chat' => array(),
-                'polls' => $polls,
-                'questions' => $questions,
+                'alertness' => array('count' => 0, 'checks' => array(), 'template' => array('alertness_template_id' => 1, 'name' => "", 'feature_name' => "", 'briefing_preface' => "", 'briefing_text' => "", 'briefing_accept_button' => "", 'briefing_optout_enabled' => "", 'prompt_title' => "", 'prompt_text' => "", 'prompt_audio_file' => "", 'prompt_duration' => "", 'show_failure_notifications' => "", 'aai_variance' => "", 'aai_starting_boundary' => "", 'aai_ending_boundary' => "", 'aai_setup_delay' => "")),
+                'chat' => array('enabled' => true,'messages' => $messages),
+                'hostschat' => array('messages' => $messages),
+                'jpc' => array('conversations' => array()),
+                'presentation' => array('decks' => array(array("uuid"=>"","name"=>"","thumbnail_url"=>'',"slides"=>array("image_url"=>"","index"=>"","notes"=>'','title'=>"","thumbnail_url"=>"","uuid"=>""))), 'slide_events' => array(array("slide_uuid"=>"","timestamp"=>""))),
+                'polling' => array("enabled" => true, "polls" => $polls),
+                'questions' => array("enabled"=>true,'submitted'=>$questions),
+                'resources'=>array("files"=>$files,'hyperlinks'=>$hyperlinks),
                 'charting' => $charting
             );
 
@@ -1469,7 +1469,7 @@ class M_sessions extends CI_Model {
 
             $data_to_post = "data=" . json_encode($create_array) . "&session_reference=" . (int) $result_sessions->sessions_id . "&session_id=" . (int) $result_sessions->sessions_id . "&source=gravity"; //if http_build_query causes any problem with JSON data, send this parameter directly in post.
 
-            $url = "https://www.clinicaloptions.com/api/CrmLiveEvents/SaveEventReport";
+            $url = "https://practicingclinicians.com/testing/digitell/digitell-session-data-v2.php";
             $headers = array(
                 'Content-Type:application/json',
                 'Accept: application/json'
@@ -1485,7 +1485,7 @@ class M_sessions extends CI_Model {
             $result = json_decode($result);
             echo "<pre>";
             print_r($result);
-            // die;
+//            die;
             if ($result == 1) {
                 return TRUE;
             } else {
@@ -1511,23 +1511,7 @@ class M_sessions extends CI_Model {
             $sessions_history_login = array();
             if ($sessions_history->num_rows() > 0) {
                 foreach ($sessions_history->result() as $val) {
-                    $sessions_start_date_time = strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot);
-                    $sessions_end_date_time = strtotime($result_sessions->sessions_date . ' ' . $result_sessions->end_time);
-                    if ($sessions_end_date_time != "") {
-                        if ($sessions_end_date_time >= $sessions_start_date_time) {
-                            $sessions_total_time = $sessions_end_date_time - $sessions_start_date_time;
-                        } else {
-                            $sessions_total_time = 0;
-                        }
-                    } else {
-                        $sessions_total_time = 0;
-                    }
                     $start_date_time = strtotime($val->start_date_time);
-                    if ($start_date_time < $sessions_start_date_time) {
-                        $start_date_time = $sessions_start_date_time;
-                    } else {
-                        $start_date_time = strtotime($val->start_date_time);
-                    }
                     $end_date_time = strtotime($val->end_date_time);
                     if ($end_date_time != "") {
                         if ($end_date_time >= $start_date_time) {
@@ -1539,11 +1523,9 @@ class M_sessions extends CI_Model {
                         $end_date_time = 0;
                         $total_time = 0;
                     }
-                    if ($sessions_total_time < $total_time) {
-                        $total_time = $sessions_total_time;
-                    }
+
                     $private_notes = "";
-                    $this->db->select('note');
+                    $this->db->select('*');
                     $this->db->from('sessions_cust_briefcase');
                     $this->db->where(array("cust_id" => $val->cust_id, "sessions_id"=>$sessions_id));
                     $sessions_cust_briefcase = $this->db->get();
@@ -1551,62 +1533,18 @@ class M_sessions extends CI_Model {
                         $private_notes = $sessions_cust_briefcase->row()->note;
                     }
 
-                    $last_seen = ($end_date_time == 0)?(strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot))+$sessions_total_time:$end_date_time;
-                    $session_started = strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot);
-
-                    if ($sessions_id == 22)
-                    {
-                        if (($start_date_time < strtotime('2020-11-10 18:30:00') || $start_date_time > strtotime('2020-11-10 19:40:00')))
-                        {
-                            $created_fix = strtotime('2020-11-10 18:'.rand(31, 39).':00');
-                        }else{
-                            $created_fix = $start_date_time;
-                        }
-
-                        if ($end_date_time == 0 || $end_date_time > strtotime('2020-11-10 19:40:00')){
-                            $last_seen_fix = strtotime('2020-11-10 19:'.rand(25, 39).':00');
-                        }else{
-                            $last_seen_fix = $end_date_time;
-                        }
-
-                        if (isset($created_fix) && isset($last_seen_fix))
-                        {
-                            $total_time_fix = $last_seen_fix-$created_fix;
-                        }else{
-                            $total_time_fix = $total_time;
-                        }
-                    }
-
                     $sessions_history_login[] = array(
-                        'client_data' => '',
-                        'alertness' => 0,
-                        'alertness_understood' => 0,
-                        'late_arrival' => 0,
-                        'login_id' => (int) $val->cust_id,
-                        'identifier' => $val->identifier_id,
-                        'email' => $val->email,
-                        'name' => $val->first_name,
-                        'host' => $val->ip_address,
+                        'uuid' => $val->cust_id,
                         'access' => 50,
-                        'access_str' => 'Attendee',
-                        'ip_addr' => $val->ip_address,
-//                        'created' => $start_date_time,
-                        'created' => ($sessions_id == 22)?$created_fix:$start_date_time,
-//                        'last_seen' => $end_date_time,
-                        'last_seen' => ($sessions_id == 22)?$last_seen_fix:$end_date_time,
-                        'total_time' => ($sessions_id == 22)?$total_time_fix:$total_time,
-//                        'total_time' => ($end_date_time == 0)?($sessions_total_time-strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot)):$this->getTimeSpentOnSession($sessions_id, $val->cust_id),
-//                        'total_time' => $last_seen-$session_started,
-//                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
-                        'user_agent' => $val->operating_system . ' - ' . $val->computer_type,
-                        'private_notes' => $private_notes,
-                        'state_changes' => array("0" => array("0" => 1592865240, "1" => 0), "0" => array("0" => 1592865240, "1" => 0)),
-                        'session' => $sessions_id,
-                        'identity' => array('identifier' => $val->identifier_id, 'name' => $val->first_name, 'email' => $val->email, 'firstname' => $val->first_name, 'lastname' => $val->last_name, 'degree' => $val->degree, 'specialtyName' => $val->specialty, 'city' => $val->city, 'zip' => $val->zipcode, 'state' => $val->state, 'country' => $val->country, "identity_id" => $val->cust_id, 'profile' => array('org_name' => '', 'org_title' => '', 'org_website' => '', 'bio' => '', 'twitter' => '', 'linkedin' => '', 'country' => '', 'picture_url' => '', 'last_updated' => 0)),
-                        'iat' => $val->iat,
-                        'exp' => $val->exp,
-                        'aud' => $val->aud,
-                        'jti' => $val->jti
+                        'created_time' => $start_date_time,
+                        'last_connected' => $end_date_time,
+//                        'total_time' => $total_time,
+                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
+                        'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
+                        'alertness' => array("checks_returned" => "", "understood" => ""),
+                        'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
+                        'identity' => array("uuid" => $val->cust_id, 'identifier' => $val->identifier_id, 'name' => $val->first_name . ' ' . $val->last_name, 'email' => $val->email, 'profile_org_name' => $val->company_name, 'profile_org_title' => $val->company_name, 'profile_org_website' => "", 'profile_bio' => $val->topic, 'profile_twitter' => $val->twitter_id, 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
+                        'state_changes' => array("0" => array("timestamp" => 1592865240, "state" => 0))
                     );
                 }
             }
@@ -1623,7 +1561,6 @@ class M_sessions extends CI_Model {
                 $poll = 0;
                 $assessment = 0;
                 foreach ($sessions_poll_question->result() as $sessions_poll_question) {
-
                     $options = array();
                     $this->db->select('*');
                     $this->db->from('poll_question_option');
@@ -1661,26 +1598,41 @@ class M_sessions extends CI_Model {
                     if ($sessions_poll_question->poll_type_id == 1) {
                         $presurvey = $presurvey + 1;
                         $polls[] = array(
+                            'uuid' => '',
+                            'status' => 4000,
+                            'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_name . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
-                            'total_votes' => $total_votes
+                            'total_votes' => $total_votes,
+                            'response_type' => 0,
+                            'text_responses' => array()
                         );
                     } else if ($sessions_poll_question->poll_type_id == 2) {
                         $poll = $poll + 1;
                         $polls[] = array(
+                            'uuid' => '',
+                            'text' => $sessions_poll_question->question,
+                            'status' => 4000,
+                            'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_name . " : " . $sessions_poll_question->question,
                             'options' => $options,
-                            'total_votes' => $total_votes
+                            'total_votes' => $total_votes,
+                            'response_type' => 0,
+                            'text_responses' => array()
                         );
                     } else if ($sessions_poll_question->poll_type_id == 3) {
                         $assessment = $assessment + 1;
                         $polls[] = array(
+                            'uuid' => '',
+                            'status' => 4000,
+                            'external_reference' => "",
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
-                            'text' => $sessions_poll_question->poll_name . " : " . $sessions_poll_question->question,
+                            'text' => $sessions_poll_question->question,
                             'options' => $options,
-                            'total_votes' => $total_votes
+                            'total_votes' => $total_votes,
+                            'response_type' => 0,
+                            'text_responses' => array()
                         );
                     }
                 }
@@ -1695,13 +1647,15 @@ class M_sessions extends CI_Model {
             if ($sessions_cust_question->num_rows() > 0) {
                 foreach ($sessions_cust_question->result() as $key => $val) {
                     $questions[] = array(
-                        'question_id' => (int) $val->sessions_cust_question_id,
+                        'uuid'=>$val->cust_id,
                         'index' => (int) $key,
-                        'login_id' => (int) $val->cust_id,
-                        'time' => strtotime($val->reg_question_date),
-                        'question' => $val->question,
-                        'reply_login_id' => ($val->answer_by_id != "") ? $val->answer_by_id : "",
-                        'reply' => ($val->answer != "") ? $val->answer : ""
+                        'login' => (int) $val->cust_id,
+                        'body' => (int) $val->sessions_cust_question_id,
+                        'timestamp' => strtotime($val->reg_question_date),
+                        'upvotes'=>array()
+//                        'question' => $val->question,
+//                        'reply_login_id' => ($val->answer_by_id != "") ? $val->answer_by_id : "",
+//                        'reply' => ($val->answer != "") ? $val->answer : ""
                     );
                 }
             }
@@ -1710,6 +1664,52 @@ class M_sessions extends CI_Model {
                 'timestamp' => 0,
                 'total_logins' => 0
             );
+
+            $this->db->select('*');
+            $this->db->from('sessions_group_chat_msg');
+            $this->db->where("sessions_id", $sessions_id);
+            $sessions_group_chat_msg = $this->db->get();
+            $messages = array();
+            if ($sessions_group_chat_msg->num_rows() > 0) {
+                foreach ($sessions_group_chat_msg->result() as $key => $val) {
+                    $messages[] = array(
+                        'uuid' => $val->user_id,
+                        'login' => $val->user_id,
+                        'timestamp' => strtotime($val->message_date),
+                        'message' => $val->message,
+                        'status' => 0,
+                        'is_positive' => FALSE,
+                        'deleted_reason' => 0
+                    );
+                }
+            }
+
+            $this->db->select('*');
+            $this->db->from('session_resource');
+            $this->db->where("sessions_id", $sessions_id);
+            $session_resource = $this->db->get();
+            $files = array();
+            $hyperlinks = array();
+            if ($session_resource->num_rows() > 0) {
+                foreach ($session_resource->result() as $key => $val) {
+                    $files[] = array(
+                        'uuid' => "",
+                        'name' => $val->upload_published_name,
+                        'about' => "",
+                        'size' => 1000,
+                        'clicks' =>array(array('login'=>"",'player_timestamp'=>"",'eos_timestamp'=>""))
+                    );
+                    $hyperlinks[] = array(
+                        'uuid' => "",
+                        'name' => $val->link_published_name,
+                        'url' => $val->resource_link,
+                        'clicks' =>array(array('login'=>"",'player_timestamp'=>"",'eos_timestamp'=>""))
+                    );
+                }
+            }
+
+
+
             $create_array = array(
                 'actual_end_time' => strtotime($result_sessions->sessions_date . ' ' . $result_sessions->end_time),
                 'cssid' => $result_sessions->cco_envent_id,
@@ -1719,10 +1719,14 @@ class M_sessions extends CI_Model {
                 'session_id' => (int) $result_sessions->sessions_id,
                 'start_time' => strtotime($result_sessions->sessions_date . ' ' . $result_sessions->time_slot),
                 'logins' => $sessions_history_login,
-                'alertness_checks' => array('count' => 0, 'list' => array()),
-                'chat' => array(),
-                'polls' => $polls,
-                'questions' => $questions,
+                'alertness' => array('count' => 0, 'checks' => array(), 'template' => array('alertness_template_id' => 1, 'name' => "", 'feature_name' => "", 'briefing_preface' => "", 'briefing_text' => "", 'briefing_accept_button' => "", 'briefing_optout_enabled' => "", 'prompt_title' => "", 'prompt_text' => "", 'prompt_audio_file' => "", 'prompt_duration' => "", 'show_failure_notifications' => "", 'aai_variance' => "", 'aai_starting_boundary' => "", 'aai_ending_boundary' => "", 'aai_setup_delay' => "")),
+                'chat' => array('enabled' => true,'messages' => $messages),
+                'hostschat' => array('messages' => $messages),
+                'jpc' => array('conversations' => array()),
+                'presentation' => array('decks' => array(array("uuid"=>"","name"=>"","thumbnail_url"=>'',"slides"=>array("image_url"=>"","index"=>"","notes"=>"",'title'=>"","thumbnail_url"=>"","uuid"=>""))), 'slide_events' => array(array("slide_uuid"=>"","timestamp"=>""))),
+                'polling' => array("enabled" => true, "polls" => $polls),
+                'questions' => array("enabled"=>true,'submitted'=>$questions),
+                'resources'=>array("files"=>$files,'hyperlinks'=>$hyperlinks),
                 'charting' => $charting
             );
 
@@ -1730,9 +1734,8 @@ class M_sessions extends CI_Model {
 
             $data_to_post = "data=" . json_encode($create_array) . "&session_reference=" . (int) $result_sessions->sessions_id . "&session_id=" . (int) $result_sessions->sessions_id . "&source=gravity"; //if http_build_query causes any problem with JSON data, send this parameter directly in post.
 
-            //echo "<pre>";
-            print_r(json_encode($create_array));
-            die;
+            echo json_encode($create_array);
+            return true;
         } else {
             return FALSE;
         }
