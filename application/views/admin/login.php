@@ -42,7 +42,7 @@
 
         <style type="text/css">
             .login{
-                background: url('<?= base_url() ?>assets/images/bg_login.jpg') no-repeat center center;
+                background: url('<?= base_url() ?>assets/images/background_image.jpg') no-repeat center center;
                 background-size: cover;
                 background-origin: content-box;
                 background-attachment: fixed;
