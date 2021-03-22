@@ -306,13 +306,13 @@ else
                             ?>
                             <div id="logo" style="margin-right: 7px;">
                                 <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png" style="margin-top: 12px; cursor: auto">
-                                    <img src="<?= base_url() ?>front_assets/images/logo.png" alt="CCO Logo">
+                                    <img src="<?= base_url() ?>front_assets/images/pce_logo.png" alt="CCO Logo">
                                 </a>
                             </div>
                         <?php } else { ?>
                             <div id="logo">
                                 <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png">
-                                    <img src="<?= base_url() ?>front_assets/images/logo.png" alt="CCO Logo">
+                                    <img src="<?= base_url() ?>front_assets/images/pce_logo.png" alt="CCO Logo">
                                 </a>
                             </div>
                         <?php } ?>
