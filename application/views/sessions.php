@@ -18,7 +18,7 @@
     }
 
     .icon-home {
-        color: #679B41;
+        color: #679b41;
         font-size: 1.5em;
         font-weight: 700;
         vertical-align: middle;
@@ -37,7 +37,7 @@
     }
 
     .box_home_active {
-        background-color: #679B41;
+        background-color: #679b41 ;
         border-radius: 20px;
         max-width: 250px;
         min-width: 250px;
@@ -49,22 +49,11 @@
     }
 
     .box-home:hover {
-        background-color: #679B41;
+        background-color: #679b41  ;
         color: #fff !important;
     }
-    body{
-        background-color: black;
-    }
-    .borderFrame{
-        position: fixed;
-        margin-top: 0px;
-        width: 100%;
-        background-color: #679b41;
-        height: 29px;
-        bottom: 0;
-    }
 </style>
-<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/attend_background.png); top: 0; padding-top: 0px;">
+<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.jpg); top: 0; padding-top: 0px;height:100% !important">
 <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
     <div class="container container-fullscreen" style="min-height: 700px;">
         <div class="">
@@ -117,9 +106,10 @@
                                                 <a href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>"> <?php if ($val->sessions_photo != "") { ?> <img alt="" src="<?= base_url() ?>uploads/sessions/<?= $val->sessions_photo ?>"> <?php } else { ?>  <img alt="" src="<?= base_url() ?>front_assets/images/session_avtar.jpg"> <?php } ?>  </a> 
                                             </div>
                                             <div class="post-content-details col-md-9 m-t-30">
+
                                                 <div class="post-title">
-                                                    <h6 style="font-weight: 600"><?= $val->sessions_date . ' ' . date("h:i A", strtotime($val->time_slot)) . ' - ' . date("h:i A", strtotime($val->end_time)) ?></h6>
-                                                    <h3><a href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>" style="color: #679B41; font-weight: 900;"><?= $val->session_title ?></a></h3>
+                                                    <h6 style="font-weight: 600"><?= $val->sessions_date . ' ' . date("h:i A", strtotime($val->time_slot)) . ' - ' . date("h:i A", strtotime($val->end_time)) ?> ET</h6>
+                                                    <h3><a href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>" style="color: #679b41; font-weight: 900;"><?= $val->session_title ?></a></h3>
                                                 </div>
                                                 <?php
                                                 if (isset($val->presenter) && !empty($val->presenter)) {
@@ -133,7 +123,7 @@
                                                 ?>
                                                 <div class="post-description">
                                                     <p style="margin-bottom: 10px;"><?= $val->sessions_description ?></p>
-                                                    <a class="button black-light button-3d rounded right" style="margin: 0px 0;" href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>"><span>Attend</span></a>
+                                                    <a class="button btn-success button-3d rounded right" style="margin: 0px 0;" href="<?= base_url() ?>sessions/attend/<?= $val->sessions_id ?>"><span>Attend</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -150,10 +140,7 @@
             </div> 
         </div>
     </div>
-
 </section>
-<div class="borderFrame"></div>
-
 <div class="modal fade" id="modal" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -267,6 +254,8 @@
             success: function (data) {
             }
         });
-    });
-</script>
 
+        $('#toolbox').hide();
+    });
+
+</script>

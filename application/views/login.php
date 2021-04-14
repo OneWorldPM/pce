@@ -53,14 +53,14 @@
         }
     }
 </style>
-<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.jpg); top: 0; padding-top: 0px;">
+<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.jpg); top: 0; padding-top: 0px;background-size: contain;">
     <div class="container container-fullscreen" id="home_first_section">
         <div class="text-middle">
             <div class="row">
                 <div class="col-md-6 col-xs-12 col-sm-12 center p-60 background-white" style="border-radius: 10px;">
                     <div class="row">
-                        <div class="col-md-6 col-xs-12 col-sm-12" style="border-right: 1px solid #696f6f;"> 
-                            <h4>Welcome Back!</h4>
+                        <div class="col-md-6 col-xs-12 col-sm-12">
+                            <h4>Welcome to PCE!</h4>
                             <p>Sign in Below</p>
                             <?php
                             echo ($this->session->flashdata('msg')) ? $this->session->flashdata('msg') : '';
@@ -85,8 +85,8 @@
                             </form>
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-12">
-                            <h4>Register Now!</h4>
-                            <p class="text-left"><a href="<?= base_url() ?>register">Click here to start your registration</a> </p>
+                            <h4>-OR-</h4>
+                            <p class="text-left"><a href="<?= base_url() ?>register">Sign in as a temporary guest</a> </p>
                         </div>
                     </div>
                 </div>
@@ -110,6 +110,6 @@
             }
             return false; //Prevent form to submitting
         });
+        $('#toolbox').hide();
     });
 </script>
-

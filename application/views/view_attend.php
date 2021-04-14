@@ -41,17 +41,6 @@
     section{
         padding: 25px 0px;
     }
-    body{
-        background-color: black;
-    }
-    .borderFrame{
-        position: absolute;
-        margin-top: 0px;
-        width: 100%;
-        background-color: #679b41;
-        height: 29px;
-        bottom: 0;
-    }
 </style>
 <section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/attend_background.png); top: 0; padding-top: 0px;">
     <div class="container container-fullscreen"> 
@@ -92,7 +81,7 @@
                                         </div>  
                                         <div class="col-md-8">
                                             <h2 style="margin-bottom: 0px;"><?= (isset($sessions) && !empty($sessions)) ? $sessions->session_title : "" ?></h2>
-                                            <small><i class="fa fa-calendar" aria-hidden="true"></i> <?= date("M-d-Y", strtotime($sessions->sessions_date)) . ' ' . date("h:i A", strtotime($sessions->time_slot)) . ' - ' . date("h:i A", strtotime($sessions->end_time)) ?></small>
+                                            <small><i class="fa fa-calendar" aria-hidden="true"></i> <?= date("M-d-Y", strtotime($sessions->sessions_date)) . ' ' . date("h:i A", strtotime($sessions->time_slot)) . ' - ' . date("h:i A", strtotime($sessions->end_time)) ?></small>  ET
                                             <p class="m-t-20"><?= (isset($sessions) && !empty($sessions)) ? $sessions->sessions_description : "" ?></p>
                                         </div>    
                                     </div>
@@ -112,8 +101,8 @@
                                     if (isset($sessions->presenter) && !empty($sessions->presenter)) {
                                         foreach ($sessions->presenter as $value) {
                                             ?>
-                                            <h3 style="margin-bottom: 0px;  cursor: pointer;" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" class="presenter_open_modul" ><u style="color: #337ab7;"><?= $value->presenter_name ?></u><?= ($value->title != "") ? "," : "" ?> <?= $value->title ?></h3>
-                                            <h3 style="margin-bottom: 0px;  cursor: pointer;"> <?= $value->company_name ?></h3>
+                                            <h3 style="margin-bottom: 0px; " data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" class="" ><?= $value->presenter_name ?><?= ($value->degree != "") ? "," : "" ?> <?= $value->degree ?></h3>
+                                            <h3 style="margin-bottom: 0px; "> <?= $value->company_name ?></h3>
                                             <!--<p class="m-t-20"><?= (isset($sessions) && !empty($sessions)) ? $sessions->bio : "" ?></p>-->
                                             <!--<img alt="" src="<?= base_url() ?>uploads/presenter_photo/<?= (isset($sessions) && !empty($sessions)) ? $sessions->presenter_photo : "" ?>" class="img-circle" height="100" width="100">-->
                                             <?php
@@ -130,9 +119,11 @@
                                         <p>Entry will be enabled in <span id="id_day_time" ></span></p>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-<!--                                    <a class="button black-light button-3d rounded right" style="margin: 0px 0;" href="--><?//= base_url() ?><!--sessions/view/<?//= (isset($sessions) && !empty($sessions)) ? $sessions->sessions_id : "" ?>"><span>Take me there</span></a>-->
-                                </div>
+                                <?php if (1 == 2){ ?>
+                                    <div class="col-md-12">
+                                        <a class="button black-light button-3d rounded right" style="margin: 0px 0;" href="<?= base_url() ?>sessions/view/<?= (isset($sessions) && !empty($sessions)) ? $sessions->sessions_id : "" ?>"><span>Take me there</span></a>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </section><br><br>
@@ -165,52 +156,28 @@
         </div>
     </div>
 </div>
-<div class="borderFrame"></div>
-
 <script type="text/javascript">
+
+
+    var session_id = "<?=$sessions->sessions_id?>";
+
+
     $(document).ready(function () {
         if ($("#time_second").val() <= 0) {
             timer();
         } else {
             setInterval('timer()', 1000);
         }
-         $(".presenter_open_modul").click(function () {
-
+        $(".presenter_open_modul").click(function () {
             var presenter_photo = $(this).attr("data-presenter_photo");
             var presenter_name = $(this).attr("data-presenter_name");
             var designation = $(this).attr("data-designation");
             var company_name = $(this).attr("data-company_name");
             var email = $(this).attr("data-email");
-
-            if (presenter_photo != "" && presenter_photo != null) {
-                $.ajax({
-                    url: '<?= base_url() ?>uploads/presenter_photo/' + presenter_photo,
-                    type: 'HEAD',
-                    error: function ()
-                    {
-                        $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/presenter_avtar.png");
-                    },
-                    success: function ()
-                    {
-                        $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/" + presenter_photo);
-                    }
-                });
-            } else {
-                $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/presenter_avtar.png");
-            }
-            if (designation != "" && designation != null) {
-                $('#presenter_title').text(presenter_name + ", " + designation);
-            } else {
-                $('#presenter_title').text(presenter_name);
-            }
+            $('#presenter_profile').attr('src', "<?= base_url() ?>uploads/presenter_photo/" + presenter_photo);
+            $('#presenter_title').text(presenter_name + ", " + designation);
             $('#email').text(email);
-            if (company_name != "" && company_name != null) {
-                $('#company').text(company_name);
-                $('#company_lbl').text("Company");
-            } else {
-                $('#company').text("");
-                $('#company_lbl').text("");
-            }
+            $('#company').text(company_name);
             $('#modal').modal('show');
         });
     });

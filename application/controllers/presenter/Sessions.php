@@ -66,11 +66,12 @@ class Sessions extends CI_Controller {
     }
 
     public function update_poll_data() {
+        $post=$this->input->post('sessions_id');
         $result = $this->msessions->update_poll_data();
         if ($result) {
-            header('location:' . base_url() . 'presenter/sessions');
+            header('location:' . base_url() . 'presenter/sessions/view_poll/'.$post);
         } else {
-            header('location:' . base_url() . 'presenter/sessions');
+            header('location:' . base_url() . 'presenter/sessions/view_poll/'.$post);
         }
     }
 
@@ -178,7 +179,7 @@ class Sessions extends CI_Controller {
         if (!empty($result_data)) {
             $result_array = array("status" => "success", "question_list" => $result_data);
         } else {
-            $result_array = array("status" => "error", "question_list" => $result_data);
+            $result_array = array("status" => "error");
         }
         echo json_encode($result_array);
     }
@@ -186,7 +187,8 @@ class Sessions extends CI_Controller {
     public function hide_question() {
         $post = $this->input->post();
         if ($post['sessions_question_id'] != '') {
-            $this->db->update('sessions_cust_question', array('hide_status' => 1), array('sessions_cust_question_id' => $post['sessions_question_id']));
+            $this->db->update('sessions_cust_question', array('hide_status' => 2), array('sessions_cust_question_id' => $post['sessions_question_id']));
+            $this->db->update('tbl_favorite_question', array('hide_status' => 1), array('sessions_cust_question_id' => $post['sessions_question_id']));
             if ($this->db->affected_rows()) {
                 $result_array = array("status" => "success");
             } else {
@@ -215,8 +217,9 @@ class Sessions extends CI_Controller {
 
     public function likeQuestion() {
         $result_data = $this->msessions->likeQuestion();
-        if ($result_data) {
-            $result_array = array("status" => "success");
+
+        if ($result_data[0]) {
+            $result_array = array("status" => "success","data"=>$result_data[1]);
         } else {
             $result_array = array("status" => "error");
         }
@@ -238,7 +241,7 @@ class Sessions extends CI_Controller {
         $data["sessions"] = $this->msessions->view_session($sessions_id);
         $data["session_resource"] = $this->msessions->get_session_resource($sessions_id);
          $data['music_setting'] = $this->msessions->get_music_setting();
-        $this->load->view('presenter/header');
+        $this->load->view('presenter/session_header',$data);
         $this->load->view('presenter/view_session', $data);
         $this->load->view('presenter/footer');
     }
@@ -304,5 +307,145 @@ class Sessions extends CI_Controller {
             header('location:' . base_url() . 'presenter/sessions?msg=E');
         }
     }
+
+    ################Added by Rexter ################
+
+    public function saveAdminToAttendeeChat()
+    {
+        $post = $this->input->post();
+
+        $data = array(
+            'session_id' => $post['session_id'],
+            'from_id' => $post['from_id'],
+            'to_id' => $post['to_id'],
+            'chat_text' => $post['chat_text'],
+            'date_time' => date("Y-m-d H:i:s"),
+            'sent_from'=>$post['sent_from']
+        );
+
+        $this->db->insert('admin_to_attendee_chat', $data);
+
+        if ($this->db->affected_rows() > 0)
+            echo 1;
+        else
+            echo 0;
+
+        return;
+    }
+
+    public function getAllUsersList()
+    {
+        $post = $this->input->post();
+
+        $data = array(
+            'session_id' => $post['session_id']
+        );
+
+        $this->db->select('from_id, to_id');
+        $this->db->from('admin_to_attendee_chat');
+        $this->db->where($data);
+
+        $query = $this->db->get();
+
+        if ( $query->num_rows() > 0 )
+        {
+            $users =array();
+            foreach ($query->result_array() as $row)
+            {
+                $this->load->model('madmin/m_user', 'userModel');
+
+                if($row['from_id'] != "admin")
+                    $users[] = $row['from_id'];
+                if($row['to_id'] != "admin")
+                    $users[] = $row['to_id'];
+            }
+
+            $users = array_unique($users);
+
+            $users_details = array();
+            foreach ($users as $user)
+            {
+                $user_details = $this->userModel->getUserDetail($user);
+                $user_details->unread_msgs = $this->getUnreadMsgs($post['session_id'], $user);
+
+                $users_details[] = $user_details;
+            }
+
+            echo json_encode(($users_details));
+        }else{
+            echo json_encode(array());
+        }
+
+        return;
+    }
+
+
+    public function getAllAdminToAttendeeChat()
+    {
+        $post = $this->input->post();
+        $data = array(
+            'session_id' => $post['session_id']
+        );
+        $or_where = "((from_id = '{$post['from_id']}' AND to_id = '{$post['to_id']}') OR (from_id = '{$post['to_id']}' AND to_id = '{$post['from_id']}'))";
+
+
+        $this->db->select('*');
+        $this->db->from('admin_to_attendee_chat');
+        $this->db->where($data);
+        $this->db->or_where($or_where);
+        $this->db->order_by("date_time", "asc");
+
+        $query = $this->db->get();
+
+        if ( $query->num_rows() > 0 )
+        {
+            echo json_encode($query->result_array());
+        }else{
+            echo json_encode(array());
+        }
+
+        return;
+    }
+
+    public function getUnreadMsgs($session_id, $user_id)
+    {
+
+        $data = array(
+            'session_id' => $session_id,
+            'from_id' => $user_id,
+            'marked_read' => 0
+        );
+
+        $this->db->select('*');
+        $this->db->from('admin_to_attendee_chat');
+        $this->db->where($data);
+
+        $query = $this->db->get();
+
+        if ( $query->num_rows() > 0 )
+            return true;
+
+        return false;
+    }
+
+    public function markAllAsRead($session_id, $user_id)
+    {
+        $data = array(
+            'session_id' => $session_id,
+            'from_id' => $user_id
+        );
+
+        $this->db->where($data);
+        $this->db->update('admin_to_attendee_chat', array('marked_read'=>1));
+
+        if ($this->db->affected_rows() > 0)
+            echo 1;
+        else
+            echo 0;
+
+        return;
+    }
+    ######################End Add Rexter ##################
+
 
 }

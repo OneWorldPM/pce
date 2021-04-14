@@ -3,7 +3,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
 <style>
     .icon-home {
-        color: #679B41;
+        color: #679b41;
         font-size: 1.5em;
         font-weight: 700;
         vertical-align: middle;
@@ -98,7 +98,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center m-t-0">
-                        <h1 style="color: #679B41; font-family: 'Architects Daughter', cursive; margin-bottom: 0px; font-weight: 700; font-size: 40px;">Welcome, <?= $this->session->userdata('cname') ?></h1>
+                        <h1 style="color: orange; font-family: 'Architects Daughter', cursive; margin-bottom: 0px; font-weight: 700; font-size: 40px;">Welcome, <?= $this->session->userdata('cname') ?></h1>
                     </div>
                 </div>
                 <div class="col-md-12 m-t-30" style="text-align: -webkit-center;">

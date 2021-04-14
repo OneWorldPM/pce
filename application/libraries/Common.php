@@ -36,7 +36,6 @@ class Common {
             return 0;
         }
     }
-
     
     public function sendSmtpEmail($toEmail, $emailSubject, $emailBody)
     {
@@ -95,7 +94,7 @@ class Common {
         return;
     }
 
-
+        
     function get_user_details($cust_id) {
         $this->_CI->db->where('cust_id', trim($cust_id));
         $customer_master = $this->_CI->db->get('customer_master');
