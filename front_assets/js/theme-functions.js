@@ -1,6 +1,6 @@
 //Global var
 var INSPIRO = {};
-var loader_url = "https://yourconference.live/PCE/";
+var loader_url = "https://yourconference.live/pce-migration/pce/";
 (function ($) {
 
     // USE STRICT

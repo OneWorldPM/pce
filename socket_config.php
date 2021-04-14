@@ -9,10 +9,10 @@
  */
 
 $config = array(
-    "socket_app_name" => "PCE", //eg; cco_dev_athul
-    "socket_lounge_room" => "CCO_LOUNGE_GROUP", //eg; cco_lounge_group_dev_athul
-    "socket_lounge_oto_chat_group" => "CCO_LOUNGE_OTO", //eg; cco_lounge_oto_dev_athul
-    "socket_active_user_list" => "CCO_ACTIVE_USERS" //eg; cco_active_users_dev_athul
+    "socket_app_name" => "CCS_dev_rexter", //eg; cco_dev_athul
+    "socket_lounge_room" => "CCS_LOUNGE_GROUP_dev_rexter", //eg; cco_lounge_group_dev_athul
+    "socket_lounge_oto_chat_group" => "CCS_LOUNGE_OTO_dev_rexter", //eg; cco_lounge_oto_dev_athul
+    "socket_active_user_list" => "CCS_ACTIVE_USERS_dev_rexter" //eg; cco_active_users_dev_athul
 );
 
 echo json_encode($config);

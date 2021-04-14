@@ -5,8 +5,8 @@ class M_sessions extends CI_Model {
     function __construct() {
         parent::__construct();
     }
-
-     function getSessionsAll() {
+	
+	   function getSessionsAll() {
         $this->db->select('*');
         $this->db->from('sessions s');
         $this->db->like('s.presenter_id', $this->session->userdata("pid"));
@@ -50,6 +50,7 @@ class M_sessions extends CI_Model {
         }
     }
 
+   
     function edit_sessions($sessions_id) {
         $this->db->select('*');
         $this->db->from('sessions');
@@ -126,16 +127,32 @@ class M_sessions extends CI_Model {
         $this->db->from('sessions_poll_question s');
         $this->db->join('poll_type p', 's.poll_type_id=p.poll_type_id');
         $this->db->where("s.sessions_id", $sessions_id);
+        $this->db->order_by('cast(s.slide_number as decimal)', 'ASC');
         $poll_question = $this->db->get();
         if ($poll_question->num_rows() > 0) {
             $poll_question_array = array();
             foreach ($poll_question->result() as $val) {
                 $val->option = $this->db->get_where("poll_question_option", array("sessions_poll_question_id" => $val->sessions_poll_question_id))->result();
+                $val->total_votes = $this->getTotalVotes($val->sessions_poll_question_id);
                 $poll_question_array[] = $val;
             }
             return $poll_question_array;
         } else {
             return '';
+        }
+    }
+
+    function getTotalVotes($sessions_poll_question_id)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_poll_voting');
+        $this->db->where("sessions_poll_question_id", $sessions_poll_question_id);
+        $polls = $this->db->get();
+
+        if ($polls->num_rows() > 0) {
+            return $polls->num_rows;
+        } else {
+            return 'No votes';
         }
     }
 
@@ -199,6 +216,7 @@ class M_sessions extends CI_Model {
                 }
             }
         }
+        
         return TRUE;
     }
 
@@ -207,9 +225,10 @@ class M_sessions extends CI_Model {
         $this->db->select('*');
         $this->db->from('sessions_cust_question s');
         $this->db->join('customer_master c', 's.cust_id=c.cust_id');
-        $this->db->where(array("s.sessions_id" => $post['sessions_id'], 'sessions_cust_question_id >' => $post['list_last_id'], 'hide_status' => 0));
-        //  $this->db->order_by("s.sessions_cust_question_id", "DESC");
+        $this->db->where(array("s.sessions_id" => $post['sessions_id'], 'hide_status' => 0));
+        $this->db->order_by("s.sessions_cust_question_id", "DESC");
         $result = $this->db->get();
+        //print_r($this->db->last_query()); exit;
         $response_array = array();
         if ($result->num_rows() > 0) {
             foreach ($result->result() as $val) {
@@ -229,11 +248,24 @@ class M_sessions extends CI_Model {
         $this->db->join('sessions_cust_question s', 's.sessions_cust_question_id = fq.sessions_cust_question_id');
         $this->db->join('customer_master c', 's.cust_id=c.cust_id');
         $this->db->where(array("fq.sessions_id" => $post['sessions_id'], 'fq.hide_status' => 0));
-        $this->db->group_by('fq.sessions_cust_question_id');
+        $this->db->group_by('fq.tbl_favorite_question_id');
         $result = $this->db->get();
-        //print_r($this->db->last_query()); exit;
         if ($result->num_rows() > 0) {
             return $result->result();
+        } else {
+            return '';
+        }
+    }
+    function get_favorite_question_list_one($favorite_question_id) {
+        $this->db->select('*');
+        $this->db->from('tbl_favorite_question fq');
+        $this->db->join('sessions_cust_question s', 's.sessions_cust_question_id = fq.sessions_cust_question_id');
+        $this->db->join('customer_master c', 's.cust_id=c.cust_id');
+        $this->db->where(array("fq.tbl_favorite_question_id" => $favorite_question_id, 'fq.hide_status' => 0));
+        $this->db->group_by('fq.tbl_favorite_question_id');
+        $result = $this->db->get();
+        if ($result->num_rows() > 0) {
+            return $result->row_array();
         } else {
             return '';
         }
@@ -266,10 +298,11 @@ class M_sessions extends CI_Model {
 
     function likeQuestion() {
         $post = $this->input->post();
+        $sessions_cust_question_id=$post['sessions_cust_question_id'];
         $insert_array = array(
             'cust_id' => $this->session->userdata("pid"),
             'sessions_id' => $post['sessions_id'],
-            'sessions_cust_question_id' => $post['sessions_cust_question_id']
+            'sessions_cust_question_id' => $sessions_cust_question_id
         );
         $favorite_question_row = $this->db->get_where('tbl_favorite_question', $insert_array)->row();
         if (!empty($favorite_question_row)) {
@@ -277,7 +310,17 @@ class M_sessions extends CI_Model {
         } else {
             $this->db->insert("tbl_favorite_question", $insert_array);
         }
-        return TRUE;
+//        var_dump($post['sessions_cust_question_id']);
+
+
+        $favorite_question_id=$this->db->insert_id();
+        $favorite_question="";
+        if($favorite_question_id){
+            $favorite_question=$this->get_favorite_question_list_one($favorite_question_id);
+        }else{
+            $favorite_question=$favorite_question_row;
+        }
+        return array(true,$favorite_question);
     }
 
     function get_poll_type() {
@@ -308,7 +351,7 @@ class M_sessions extends CI_Model {
                 $poll_question_array->option = $this->db->get_where("poll_question_option", array("sessions_poll_question_id" => $poll_question_array->sessions_poll_question_id))->result();
                 return $poll_question_array;
             } else if ($poll_question_array->status == 2) {
-                if ($poll_question_array->poll_comparisons_id == 0) {
+                if ($poll_question_array->poll_comparisons_id == 0 || $poll_question_array->poll_type_id == 1) {
                     $poll_question_array->poll_status = 2;
                     $poll_question_array->option = $this->db->get_where("poll_question_option", array("sessions_poll_question_id" => $poll_question_array->sessions_poll_question_id))->result();
                     $poll_question_array->max_value = $this->get_maxvalue_option($poll_question_array->sessions_poll_question_id);

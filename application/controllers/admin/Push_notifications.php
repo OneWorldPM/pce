@@ -19,7 +19,7 @@ class Push_notifications extends CI_Controller {
     public function index() {
         $data['push_notifications'] = $this->mpushnotifications->get_push_notifications();
         $data['sessions'] = $this->sessions->getAllSessions();
-        
+
         $this->load->view('admin/header');
         $this->load->view('admin/push_notifications', $data);
         $this->load->view('admin/footer');

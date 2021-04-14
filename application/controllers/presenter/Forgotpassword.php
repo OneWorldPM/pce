@@ -20,8 +20,8 @@ class Forgotpassword extends CI_Controller {
     public function checkEmail() {
         $email = $this->input->post('email');
         $this->db->where('email', trim($email));
-        $presenter = $this->db->get('presenter');
-        if ($presenter->num_rows() > 0) { //Check Email or Phone exist with new Use
+        $customer = $this->db->get('presenter');
+        if ($customer->num_rows() > 0) { //Check Email or Phone exist with new Use
             $result['msg'] = 'exist';
             echo json_encode($result);
         } else {
@@ -51,12 +51,12 @@ class Forgotpassword extends CI_Controller {
     function sendEmail(){
           $email = $this->input->post('email');
             $this->db->where('email', trim($email));
-            $presenter = $this->db->get('presenter');
-        if ($presenter->num_rows() > 0) { //Check Email or Phone exist with new Use
-            $pres_data = $presenter->row();
+            $customer = $this->db->get('presenter');
+        if ($customer->num_rows() > 0) { //Check Email or Phone exist with new Use
+            $cust_data = $customer->row();
             $from = $email;
             $subject = 'Forgot Password';
-            $link = base_url() . 'presenter/forgotpassword/changePassword?id=' . base64_encode($pres_data->presenter_id);
+            $link = base_url() . 'presenter/forgotpassword/changePassword?id=' . base64_encode($cust_data->presenter_id);
             $message = "<p>Hello,<br><br>Please use below link to reset your account Password</p><br><br>" . $link . "<br><br>Best Regards,<br>Your Conference Live";
             $this->common->sendSmtpEmail($from, $subject, $message);
             $result['msg'] = 'sendemail';

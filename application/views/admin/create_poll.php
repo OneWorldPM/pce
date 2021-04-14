@@ -1,3 +1,12 @@
+<?php
+if (isset($_GET['testing']))
+{
+    echo "<pre>";
+    print_r($sessions_data);
+    exit ("</pre>");
+}
+?>
+
 <div class="main-content" >
     <div class="wrap-content container" id="container">
         <div class="container-fluid container-fullw bg-white">
@@ -9,11 +18,11 @@
                                 <h4 class="panel-title text-white">Import Poll</h4>
                             </div>
                             <div class="panel-body bg-white" style="border: 1px solid #b2b7bb;">
-                                <form class="form-login" id="frm_poll_data" name="frm_poll_data" enctype="multipart/form-data" method="post" action="<?= base_url() ?>admin/sessions/importSessionsPoll">
+                                <form class="form-login" id="frm_poll_data" name="frm_poll_data" enctype="multipart/form-data" method="post" action="<?= base_url() ?>admin/sessions/importSessionsPoll/<?=$sessions->sessions_id?>">
                                     <div class="form-body">
                                         <div class="form-group">
-                                            <a href="<?= base_url() ?>uploads/sample.csv" download>Download Sample CSV</a>
-                                        </div>
+                                            <a href="<?= base_url() ?>uploads/sample2.csv" download>Download Sample CSV</a>
+                                        </div>  
                                         <?php if (isset($sessions)) { ?>    
                                             <input type="hidden" name="sessions_id" value="<?= $sessions->sessions_id ?>">
                                         <?php } ?> 
@@ -41,12 +50,22 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary" id="panel5">
                         <div class="panel-heading">
-                            <h4 class="panel-title text-white">Create Poll</h4>
+                            <h4 class="panel-title text-white">Create Poll
+                                <?php if(isset($presenter)): ?>
+                                    Session <?=$presenter->sessions_id?> -
+                                <?php if(isset($presenter->presenter)&& !empty($presenter->presenter)): ?>
+                                    <?php foreach($presenter->presenter as $presenterData): ?>
+                                        <?=$presenterData->presenter_name?> |
+                                    <?php endforeach; ?>
+                                    <?php endif;?>
+                                    <?=$presenter->session_title?>
+                                <?php endif; ?>
+                            </h4>
                         </div>
                         <div class="panel-body bg-white" style="border: 1px solid #b2b7bb;">
                             <form name="frm_add_Poll" id="frm_add_Poll" method="POST" >
                                 <?php if (isset($sessions_data)) { ?>
-                                    <input type="hidden" name="sessions_id" value="<?= $sessions_data->sessions_id ?>">
+                                    <input type="hidden" id="sessions_id" name="sessions_id" value="<?= $sessions_data->sessions_id ?>">
                                     <input type="hidden" name="sessions_poll_question_id" value="<?= $sessions_data->sessions_poll_question_id ?>">
                                 <?php } ?>
                                 <?php if (isset($sessions)) { ?>    
@@ -58,9 +77,18 @@
                                             <label class="text-large">Question:</label>
                                             <input type="text" name="question" id="question" value="<?= isset($sessions_data) ? $sessions_data->question : "" ?>" placeholder="Question" class="form-control">
                                         </div>
+                                        <div class="form-group">
+                                            <label class="text-large">Poll Name:</label>
+                                            <input type="text" name="poll_name" id="poll_name" value="<?= isset($sessions_data) ? $sessions_data->poll_name : "" ?>" placeholder="eg; Presurvey 1" class="form-control">
+                                        </div>
 										<div class="form-group">
                                             <label class="text-large">Slide Number:</label>
                                             <input type="text" name="slide_number" id="slide_number" value="<?= isset($sessions_data) ? $sessions_data->slide_number : "" ?>" placeholder="Slide Number" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="text-large">Instruction:</label>
+                                            <input type="text" name="poll_instruction" id="poll_instruction" value="<?= isset($sessions_data) ? $sessions_data->poll_instruction : "" ?>" placeholder="Slide Number" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label class="text-large">Select Poll Type:</label>
@@ -114,9 +142,9 @@
                                         if (!isset($sessions_data)) {
                                             ?>
                                             <div class="form-group">
-                                                <label class="text-large">Poll Comparisons with us:</label>
+                                                <label class="text-large">Poll Comparisons with:</label>
                                                 <select class="form-control" id="poll_comparisons_with_us" name="poll_comparisons_with_us">
-                                                    <option value="">Select Poll Comparisons</option>
+                                                    <option value="">Select Poll Comparison</option>
                                                     <?php
                                                     if (isset($poll_type) && !empty($poll_type)) {
                                                         foreach ($poll_type as $value) {
@@ -129,7 +157,23 @@
                                                 </select>
                                             </div>
                                             <?php
-                                        }
+                                        }else{ ?>
+                                            <div class="form-group">
+                                                <label class="text-large">Poll Comparisons with:</label>
+                                                <select class="form-control" id="poll_comparisons_id" name="poll_comparisons_id">
+                                                    <option value="">None</option>
+                                                    <?php
+                                                    if (isset($poll_type) && !empty($poll_type)) {
+                                                        foreach ($poll_type as $value) {
+                                                            ?>
+                                                            <option value="<?= $value->poll_type_id ?>" <?= isset($sessions_data) ? ($sessions_data->poll_type_id == $value->poll_type_id) ? "selected" : "" : "" ?>><?= $value->poll_type ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                       <?php }
                                         ?>
                                         <h5 class="over-title margin-bottom-15">
                                             <button type="button" id="<?= isset($sessions_data) ? "edit_create_poll" : "save_create_poll" ?>" name="<?= isset($sessions_data) ? "edit_create_poll" : "save_create_poll" ?>" class="btn btn-green add-row">
@@ -174,6 +218,7 @@ switch ($msg) {
 ?>
 
 <script>
+
     $(document).ready(function () {
 
 <?php if ($msg): ?>
@@ -219,16 +264,26 @@ switch ($msg) {
             } else if ($('#option_2').val() == '') {
                 alertify.error('Please Enter Option 2');
                 return false;
-            } else if ($('#option_3').val() == '') {
-                alertify.error('Please Enter Option 3');
-                return false;
-            } else if ($('#option_4').val() == '') {
-                alertify.error('Please Enter Option 4');
-                return false;
-//            } else if ($('#option_1').val().length > 25 || $('#option_2').val().length > 25 || $('#option_3').val().length > 25 || $('#option_4').val().length > 25 || $('#option_5').val().length > 25 || $('#option_6').val().length > 25 || $('#option_7').val().length > 25 || $('#option_8').val().length > 25 || $('#option_9').val().length > 25 || $('#option_10').val().length > 25) {
-//                alertify.error('Polls have 25 character limit including spaces in order to fit in attendee interface. Please reduce your characters');
-//                return false;
             } else {
+
+            let allOptions = $('.input_cust_class');
+            let optionValues = [];
+            for (option = 0; option < allOptions.length; option++)
+            {
+                if((allOptions[option]).value != '')
+                {
+                    optionValues.push((allOptions[option]).value);
+                }
+            }
+
+            if(new Set(optionValues).size !== optionValues.length)
+            {
+                alertify.error('You have duplicate options');
+                let optionValues = [];
+                return false;
+            }
+
+
                 $('#frm_add_Poll').attr('action', '<?= base_url() ?>admin/sessions/add_poll_data');
                 $('#frm_add_Poll').submit();
                 return true;
@@ -248,20 +303,33 @@ switch ($msg) {
             } else if ($('#option_2').val() == '') {
                 alertify.error('Please Enter Option 2');
                 return false;
+            } else {
+
+            let allOptions = $('.input_cust_class');
+            let optionValues = [];
+            for (option = 0; option < allOptions.length; option++)
+            {
+                if((allOptions[option]).value != '')
+                {
+                    optionValues.push((allOptions[option]).value);
+                }
             }
-            // else if ($('#option_3').val() == '') {
-            //     alertify.error('Please Enter Option 3');
-            //     return false;
-            // } else if ($('#option_4').val() == '') {
-            //     alertify.error('Please Enter Option 4');
-            //     return false;
-            // }
-            else {
-                $('#frm_add_Poll').attr('action', '<?= base_url() ?>admin/sessions/update_poll_data');
+            if(new Set(optionValues).size !== optionValues.length)
+            {
+                alertify.error('You have duplicate options');
+                let optionValues = [];
+                return false;
+            }
+            
+                var sessions_id = $('#sessions_id').val();
+                $('#frm_add_Poll').attr('action', '<?= base_url() ?>admin/sessions/update_poll_data/'+sessions_id);
                 $('#frm_add_Poll').submit();
                 return true;
             }
         });
+
+
+
     });
 </script>
 

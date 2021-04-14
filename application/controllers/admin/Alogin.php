@@ -28,14 +28,16 @@ class Alogin extends CI_Controller {
             $data = $this->objlogin->user_login($arr);
 
             if ($data) {
+
                 $session = array(
                     'aid' => $data['admin_id'],
                     'aname' => 'admin',
-                    'uname' => $data['username']
+                    'uname' => $data['username'],
+                    'role'  => $data['role']
                 );
 
                 $this->session->set_userdata($session);
-                redirect('admin/dashboard');
+                redirect('admin/sessions');
             } else {
                 $this->session->set_flashdata('msg', '<div class="col-md-12 text-red" style="padding: 0 0 10px 0;">Username or Password is Wrong.</div><br>');
                 redirect('admin/alogin');
@@ -47,7 +49,8 @@ class Alogin extends CI_Controller {
         $session_array = array(
             "aid" => "",
             "aname" => "",
-            "uname" => ""
+            "uname" => "",
+            "role" => ""
         );
         $this->session->unset_userdata($session_array);
         header('location:' . base_url() . 'admin/alogin');

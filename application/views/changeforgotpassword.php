@@ -1,4 +1,4 @@
-<section class="parallax fullscreen" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.jpg); top: 0; padding-top: 0px;">
+<section class="parallax fullscreen" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.png); top: 0; padding-top: 0px;">
     <div class="container container-fullscreen">
         <div class="text-middle">
             <div class="row">
@@ -8,7 +8,7 @@
                         <?php
                         echo ($this->session->flashdata('msg')) ? $this->session->flashdata('msg') : '';
                         ?> 
-                        <form class="form-horizontal form-signin" id="frm_password" name="frm_password" method="post" action="<?= base_url() ?>presenter/forgotpassword/passwordChange">                            
+                        <form class="form-horizontal form-signin" id="frm_password" name="frm_password" method="post" action="<?= base_url() ?>forgotpassword/passwordChange">                            
                             <input type="hidden" class="form-control" id="cid" name="cid" value="<?= $this->input->get('id'); ?>">
                             <div class="form-group">
                                 <input type="password" class="form-control" id="user-password" name="password" placeholder="Your Password" required="" autofocus="">
