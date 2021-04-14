@@ -7,25 +7,24 @@ document.getElementById('embededVideo').addEventListener('fullscreenchange', (ev
     // is in fullscreen mode if there is one. If there isn't one,
     // the value of the property is null.
     if (document.fullscreenElement) {
+        $("#btnFS").attr("class","glyphicon glyphicon-resize-small");
+        $("#btnFS").attr("data-original-title","Exit Full Screen");
+        $("iframe").removeClass("embed-responsive-item");
         console.log(`Element: ${document.fullscreenElement.id} entered full-screen mode.`);
-
-        $("#btnFS").removeClass("glyphicon glyphicon-resize-full").addClass("glyphicon glyphicon-resize-small").attr("title","Exit Full Screen").attr("data-original-title","Exit Full Screen");
-
     } else {
         console.log('Leaving full-screen mode.');
+        $("#btnFS").attr("class","glyphicon glyphicon-resize-full");
+        $("#btnFS").attr("data-original-title","Full Screen");
+        $("iframe").addClass("embed-responsive-item");
+
         exitFullscreen();
         var iframe = document.getElementById('embededVideo').getElementsByTagName("iframe")[0];
         iframe.setAttribute("width", "1280");
         iframe.setAttribute("height", "720");
-
-        $("#btnFS").removeClass("glyphicon glyphicon-resize-small").addClass("glyphicon glyphicon-resize-full").attr("title","Full Screen").attr("data-original-title","Full Screen");
-
     }
 });
 
 function goFullScreen() {
-
-
     var iframe = document.getElementById('embededVideo').getElementsByTagName("iframe")[0];
     iframe.setAttribute("width", "100%");
     iframe.setAttribute("height", "100%");
@@ -100,7 +99,6 @@ function launchIntoFullscreen(element) {
 
 // Whack fullscreen
 function exitFullscreen() {
-
     var iframe = document.getElementById('embededVideo').getElementsByTagName("iframe")[0];
     iframe.setAttribute("width", "1280");
     iframe.setAttribute("height", "720");
@@ -155,11 +153,3 @@ function exitFullscreen() {
         document.webkitExitFullscreen();
     }
 }
-
-// $("#embededVideo").children("iframe").on("load", function () {
-//     console.log($("#embededVideo").children("iframe").contents());
-// });
-
-$('#modal').on('shown.bs.modal', function () {
-    $(".modal-backdrop.in").hide();
-})

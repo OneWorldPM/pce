@@ -5,7 +5,7 @@
     height: max-content;
     position: absolute;
     right: -150px;
-    bottom: 300px;
+    bottom: 200px;
     margin: auto;
     z-index: 4445;
 
@@ -18,7 +18,7 @@
 
 .rightSticky ul li {
     list-style: none;
-    background-color: #679B41;
+    background-color: #679b41;
     color: white;
     padding: 5px 13px;
     transition: all 200ms ease-in-out;
@@ -34,11 +34,21 @@
     text-align: center;
     border-radius: 100%;
     font-size: 10px;
-    width: 14px;
-    height: 14px;
+    width: 30px;
+    height: 18px;
     line-height: 18px;
     top: -4px;
     left: -20px;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.blink-element{
+    animation: blinker 1s linear infinite;
 }
 
 
@@ -78,7 +88,7 @@
 }
 
 .rightSticykPopup .header {
-    background-color: #679B41;
+    background-color: #679b41;
     width: 100%;
     height: 36px;
     color: white;
@@ -111,14 +121,33 @@
     left: 29px;
 }
 
-.rightSticykPopup .contentHeader{
+.rightSticykPopup .contentHeader {
     color: #ff8d00;
     font-weight: bold;
     padding: 5px 15px;
     font-size: 14px;
 }
 
-#briefcase_section{
+.presenterRightSticykPopup {
+    position: unset;
+    box-shadow: 0 0px 2px black;
+    margin-bottom: 15px;
+    width: 450px;
+    max-width: 100%;
+    height: 390px;
+}
+
+.presenterRightSticykPopup .dropdown-menu {
+    margin-left: -135px;
+}
+
+.presenterRightSticky {
+    bottom: unset;
+    top: 200px;
+}
+
+
+#briefcase_section {
     top: 68px !important;
 }
 
@@ -128,18 +157,21 @@
     height: 200px;
     overflow: auto;
 }
+
 .messagesStickyPresenter .content .messages {
     padding: 5px 3px;
 
 }
-.messagesStickyPresenter .content .messages{
+
+.messagesStickyPresenter .content .messages {
     height: 200px;
 }
-.messagesSticky .content .messages>div:nth-of-type(1n+2){
+
+.messagesSticky .content .messages > div:nth-of-type(1n+2) {
     margin-top: 5px;
 }
 
-.messagesSticky .content .messages .messageHe ,.messagesSticky .content .messages .messageMe {
+.messagesSticky .content .messages .messageHe, .messagesSticky .content .messages .messageMe {
     padding: 10px 12px;
     font-size: 12px;
     color: black;
@@ -148,24 +180,29 @@
     border-radius: 10px;
 
 }
-.messagesSticky .content .messages .messageHe span{
+
+.messagesSticky .content .messages .messageHe span {
     font-weight: 600;
 }
-.messagesSticky .content .messages .messageHe p{
+
+.messagesSticky .content .messages .messageHe p {
     margin-top: 5px;
 }
-.messagesSticky .content .messages .messageHe p ,.messagesSticky .content .messages .messageMe p{
+
+.messagesSticky .content .messages .messageHe p, .messagesSticky .content .messages .messageMe p {
     margin-bottom: 0;
     color: #2f2f2f;
 }
 
-.messagesSticky .content .messages .messageHe{
+.messagesSticky .content .messages .messageHe {
     background-color: #ECEAEB;
     border-radius: 10px;
 }
+
 .messagesSticky .content .messages .messageMe {
     background-color: #D0D0D0;
 }
+
 .messagesSticky input {
     width: 270px;
     height: 40px;
@@ -185,16 +222,15 @@
         position: fixed;
     }
 
-    .rightSticykPopup {
-        width: 100%;
-        right: 0px;
-        position: fixed;
-        margin: auto;
-        top: 0px;
-        bottom: 0px !important;
-        height: 100%;
-    }
-
+    /*.rightSticykPopup {*/
+    /*width: 100%;*/
+    /*right: 0px;*/
+    /*position: fixed;*/
+    /*margin: auto;*/
+    /*top: 0px;*/
+    /*bottom: 0px !important;*/
+    /*height: 100%;*/
+    /*}*/
     #briefcase_section .input-group {
         width: 100%;
     }
@@ -205,12 +241,10 @@
         top: 36px !important;
     }
 
-    .rightSticykPopup .content > #briefcase_section textarea {
-        width: 100%;
-        height: 80vh;
-
-    }
-
+    /*.rightSticykPopup .content > #briefcase_section textarea {*/
+    /*    width: 100%;*/
+    /*    height: 80vh;*/
+    /*}*/
     .rightSticykPopup .content > #briefcase_section .button {
         position: absolute;
         bottom: -37px;
@@ -230,23 +264,65 @@
         text-align: center !important;
         display: block !important;
     }
-    .messagesStickyPresenter .content .messages{
+
+    .messagesStickyPresenter .content .messages {
         max-height: 100vh;
         height: 89vh !important;
     }
 }
 
-.totalAttende{
+.totalAttende {
     font-size: 15px;
 }
 
-.border{
+.border {
     border: 1px solid;
 }
-.borderRed{
+
+.borderRed {
     border-color: red !important;
 }
 
-.displayNone{
+.displayNone {
     display: none !important;
+}
+
+.adminChatSticky .content .admin-messages {
+    padding: 5px 3px;
+    max-height: 240px;
+    height: 200px;
+    overflow: auto;
+}
+
+.adminChatSticky input {
+    width: 270px;
+    height: 40px;
+    border-radius: 50px;
+    margin: 1px auto 0 auto;
+}
+
+.admin-to-user-text{
+    color: white;
+    background-color: #df941f;
+    text-align: left;
+    display: list-item;
+    list-style: none;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding-left: 12px;
+    border-radius: 15px;
+    margin-right: 40px;
+}
+
+.user-to-admin-text{
+    color: white;
+    background-color: #1f8edf;
+    text-align: right;
+    display: list-item;
+    list-style: none;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding-right: 12px;
+    border-radius: 15px;
+    margin-left: 50px;
 }

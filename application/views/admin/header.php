@@ -6,6 +6,9 @@
 <?php
 $uri_segment = $this->uri->segment(2);
 $uri_segment1 = $this->uri->segment(3);
+
+$user_role = $this->session->userdata('role');
+$user_name = ucfirst($this->session->userdata('uname'));
 ?>
 <html lang="en">
     <!--<![endif]-->
@@ -28,7 +31,7 @@ $uri_segment1 = $this->uri->segment(3);
         <!--<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />-->
         <!-- end: GOOGLE FONTS -->
         <!-- start: MAIN CSS -->
-        <link rel="stylesheet" href="<?= base_url() ?>assets/vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
         <link rel="stylesheet" href="<?= base_url() ?>assets/vendor/fontawesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?= base_url() ?>assets/vendor/themify-icons/themify-icons.min.css">
         <link href="<?= base_url() ?>assets/vendor/animate.css/animate.min.css" rel="stylesheet" media="screen">
@@ -55,23 +58,21 @@ $uri_segment1 = $this->uri->segment(3);
         <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/vendor/iCheck/all.css"/>
         <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/vendor/iCheck/minimal/blue.css"  />
 
-        <link href="<?= base_url() ?>assets/alertify/alertify.core.css" rel="stylesheet" type="text/css"/>
-        <link href="<?= base_url() ?>assets/alertify/alertify.default.css" rel="stylesheet" type="text/css"/>
         <link href="<?= base_url() ?>assets/css/myset.css" rel="stylesheet" type="text/css"/>
         <!-- <link rel="stylesheet" type="text/css" href="assets/toggel/css/on-off-switch.css"/> -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <script src="<?= base_url() ?>assets/vendor/jquery/jquery.min.js"></script>
-        <script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
         <!-- <script type="text/javascript" src="assets/toggel/js/on-off-switch.js"></script> -->
         <!-- <script type="text/javascript" src="assets/toggel/js/on-off-switch-onload.js"></script> -->
-        <script src="<?= base_url() ?>front_assets/js/custom.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
+        <script src="<?= base_url() ?>front_assets/js/custom.js?v=4"></script>
+        <?= getSocketScript()?>
         <script>
         
         // let socket = io("https://socket.yourconference.live:443");
-        let socket = io("<?=getSocketUrl()?>");
+        //let socket = io("<?//=getSocketUrl()?>//");
         
         socket.on("newViewUsers",function(resp){
             if(resp){
@@ -114,18 +115,34 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
-                            <li class="<?= ($uri_segment == 'user') ? 'active' : ''; ?>" >
-                                <a href="<?= site_url() ?>admin/user" id="dash">
-                                    <div class="item-content">
-                                        <div class="item-media">
-                                            <i class="fa fa-users"></i>
+
+                            <?php if ($user_role == 'super_admin') { ?>
+                                <li class="<?= ($uri_segment == 'user') ? 'active' : ''; ?>" >
+                                    <a href="<?= site_url() ?>admin/admins" id="dash">
+                                        <div class="item-content">
+                                            <div class="item-media">
+                                                <i class="fa fa-user-circle"></i>
+                                            </div>
+                                            <div class="item-inner">
+                                                <span class="title">Admin Users</span>
+                                            </div>
                                         </div>
-                                        <div class="item-inner">
-                                            <span class="title">User</span>
+                                    </a>
+                                </li>
+                            <?php } ?>
+
+                                <li class="<?= ($uri_segment == 'user') ? 'active' : ''; ?>" >
+                                    <a href="<?= site_url() ?>admin/user" id="dash">
+                                        <div class="item-content">
+                                            <div class="item-media">
+                                                <i class="fa fa-users"></i>
+                                            </div>
+                                            <div class="item-inner">
+                                                <span class="title">Users</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </li>
+                                    </a>
+                                </li>
 
                             <li class="<?= ($uri_segment == 'presenters') ? 'active' : ''; ?>" >
                                 <a href="<?= site_url() ?>admin/presenters" id="dash">
@@ -139,6 +156,7 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+
                             <li class="<?= ($uri_segment == 'sessions') ? 'active' : ''; ?>">
                                 <a href="<?= site_url() ?>admin/sessions" id="dash">
                                     <div class="item-content">
@@ -151,6 +169,21 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+
+                            <li class="<?= ($uri_segment == 'chat_with_attendee') ? 'active' : ''; ?>">
+                                <a href="<?= site_url() ?>admin/chat_with_attendee" id="dash">
+                                    <div class="item-content">
+                                        <div class="item-media">
+                                            <i class="fa fa-commenting"></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <span class="title">Attendee Chat</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <?php if ($user_role == 'super_admin') { ?>
 							<li class="<?= ($uri_segment == 'eposters') ? 'active' : ''; ?>">
                                 <a href="<?= site_url() ?>admin/eposters" id="dash">
                                     <div class="item-content">
@@ -163,6 +196,9 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+                            <?php } ?>
+
+                            <?php if ($user_role == 'super_admin') { ?>
                             <li class="<?= ($uri_segment == 'sponsors') ? 'active' : ''; ?>">
                                 <a href="<?= site_url() ?>admin/sponsors " id="dash">
                                     <div class="item-content">
@@ -175,6 +211,9 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+                            <?php } ?>
+
+                            <?php if ($user_role == 'super_admin') { ?>
                             <li class="<?= ($uri_segment == 'plan_pricing') ? 'active' : ''; ?>">
                                 <a href="<?= site_url() ?>admin/plan_pricing" id="dash">
                                     <div class="item-content">
@@ -187,6 +226,9 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+                            <?php } ?>
+
+                            <?php if ($user_role == 'super_admin') { ?>
                             <li class="<?= ($uri_segment == 'promo_code') ? 'active' : ''; ?>" >
                                 <a href="<?= site_url() ?>admin/promo_code" id="dash">
                                     <div class="item-content">
@@ -199,6 +241,9 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+                            <?php } ?>
+
+                            <?php if ($user_role == 'super_admin') { ?>
                             <li class="<?= ($uri_segment == 'cms_setting') ? 'active' : ''; ?>" >
                                 <a href="<?= site_url() ?>admin/cms_setting" id="dash">
                                     <div class="item-content">
@@ -211,6 +256,8 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+                            <?php } ?>
+
                             <li class="<?= ($uri_segment == 'tracking') ? 'active' : ''; ?>">
                                 <a href="<?= site_url() ?>admin/tracking" id="dash">
                                     <div class="item-content">
@@ -223,6 +270,8 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+
+                            <?php if ($user_role == 'super_admin') { ?>
                             <li class="<?= ($uri_segment == 'sessions_configurations') ? 'active' : ''; ?>" >
                                 <a href="<?= site_url() ?>admin/sessions_configurations" id="dash">
                                     <div class="item-content">
@@ -235,6 +284,9 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+                            <?php } ?>
+
+                            <?php if ($user_role == 'super_admin') { ?>
 							 <li class="<?= ($uri_segment == 'graphics') ? 'active' : ''; ?>" >
                                 <a href="<?= site_url() ?>admin/graphics" id="dash">
                                     <div class="item-content">
@@ -247,7 +299,9 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
-							<li class="<?= ($uri_segment == 'push_notifications') ? 'active' : ''; ?>" >
+                            <?php } ?>
+
+							 <li class="<?= ($uri_segment == 'push_notifications') ? 'active' : ''; ?>" >
                                 <a href="<?= site_url() ?>admin/push_notifications" id="dash">
                                     <div class="item-content">
                                         <div class="item-media">
@@ -259,7 +313,8 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
-							<li class="<?= ($uri_segment == 'dummy_user') ? 'active' : ''; ?>" >
+
+							 <li class="<?= ($uri_segment == 'dummy_user') ? 'active' : ''; ?>">
                                 <a href="<?= site_url() ?>admin/dummy_user" id="dash">
                                     <div class="item-content">
                                         <div class="item-media">
@@ -271,6 +326,8 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+
+                            <?php if ($user_role == 'super_admin') { ?>
                             <li class="<?= ($uri_segment == 'music_setting') ? 'active' : ''; ?>" >
                                 <a href="<?= site_url() ?>admin/music_setting" id="dash">
                                     <div class="item-content">
@@ -283,6 +340,7 @@ $uri_segment1 = $this->uri->segment(3);
                                     </div>
                                 </a>
                             </li>
+                            <?php } ?>
 							
                         </ul>
                     </nav>
@@ -300,8 +358,8 @@ $uri_segment1 = $this->uri->segment(3);
                         <a href="#" class="sidebar-mobile-toggler pull-left hidden-md hidden-lg" class="btn btn-navbar sidebar-toggle" data-toggle-class="app-slide-off" data-toggle-target="#app" data-toggle-click-outside="#sidebar">
                             <i class="ti-align-justify"></i>
                         </a>
-                        <a class="navbar-brand" href="<?= base_url() ?>admin/dashboard">
-                            <img src="<?= base_url() ?>assets/images/logo.png" class="kent_logo" alt="admin"/>
+                        <a class="" href="<?= base_url() ?>admin/dashboard">
+                            <img src="<?= base_url() ?>front_assets/images/pce_logo.png" class="kent_logo" alt="PCE Logo" style="max-width: 200px"/>
                         </a>
                         <a href="#" class="sidebar-toggler pull-right visible-md visible-lg" data-toggle-class="app-sidebar-closed" data-toggle-target="#app">
                             <i class="ti-align-justify"></i>
@@ -317,14 +375,14 @@ $uri_segment1 = $this->uri->segment(3);
                         <ul class="nav navbar-right">
                             <li class="dropdown current-user">
                                 <a href class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="<?= base_url() ?>assets/images/Avatar.png" alt="admin"> <span class="username">ADMIN <i class="ti-angle-down"></i></i></span>
+                                    <img src="<?= base_url() ?>assets/images/Avatar.png" alt="admin"> <span class="username"><?=$user_name?> <i class="ti-angle-down"></i></i></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-dark">
-<!--                                    <li>
+                                    <li>
                                         <a href="<?= base_url() ?>admin/stripe_key_setting">
                                             Stripe Key Setting
                                         </a>
-                                    </li>-->
+                                    </li>
                                     <li>
                                         <a href="<?= base_url() ?>admin/changepassword">
                                             Change Password

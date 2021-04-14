@@ -1,3 +1,12 @@
+<?php
+if (isset($_GET['testing']))
+{
+    echo "<pre>";
+    print_r($sessions);
+    exit("</pre>");
+}
+?>
+
 <div class="main-content" >
     <div class="wrap-content container" id="container">
         <form name="frm_credit" id="frm_credit" method="POST" action="">
@@ -11,6 +20,27 @@
                             <div class="panel-body bg-white" style="border: 1px solid #b2b7bb;">
                                 <div class="row">
                                     <div class="col-md-10 col-md-offset-1">
+                                        <div class="form-group">
+                                            <label for="visibility">Visibility :</label>
+                                            <select class="form-control" id="visibility" name="visibility">
+                                                <option value="null">Whole Site</option>
+                                                <?php
+                                                foreach ($sessions as $session)
+                                                { ?>
+                                                    <option value="<?=$session['sessions_id']?>">Session <?=$session['sessions_id']?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
+                                            <br>
+                                            <div class="form-group">
+                                            <input type="checkbox" id="presenter" name="chk_presenter" value="presenter">
+                                            <label for="presenter">Presenter</label><br>
+                                            <input type="checkbox" id="attendee" name="chk_attendee" value="attendee">
+                                            <label for="attendee">Attendee</label><br>
+                                            </div>
+                                            <small style="color: grey;">Note: Sending a session specific push notification will go to both the attend and view pages.</small>
+                                        </div>
                                         <div class="form-group">
                                             <label class="text-large">Message :</label>
                                             <textarea name="message" id="message" rows="3" class="form-control" placeholder="Enter Message..." style="color: #5b5b60"></textarea>
@@ -40,7 +70,9 @@
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
+                                                <th>Visibility</th>
                                                 <th>Message</th>
+                                                <th>Viewer</th>
                                                 <th>Action</th>                          
                                             </tr>
                                         </thead>
@@ -51,12 +83,25 @@
                                                     ?>
                                                     <tr>
                                                         <td><?= date("Y-m-d", strtotime($val->notification_date)) ?></td>
+                                                        <td><?= ($val->session_id == null)?'Whole Site':'Session '.$val->session_id ?></td>
                                                         <td><?= $val->message ?></td>
 <!--                                                        <td>
                                                             <?php if ($val->status == 1) { ?>
                                                                 <label class="label label-primary">Sent</label>
                                                             <?php } ?>
                                                         </td>-->
+                                                        
+                                                        <?php if (isset($val->receiver)){
+                                                                if ($val->receiver=="both"){
+                                                                  echo '<td> All </td>';
+                                                                }else{
+                                                                    echo '<td>'.Ucfirst($val->receiver).'</td>';
+                                                                }
+                                                        }else{
+                                                            echo'<td> All </td>';
+                                                        }?>
+                                                      
+                                                      <!--  -->
                                                         <td> 
                                                             <?php if ($val->status == 0) { ?>
                                                                 <a class="btn btn-success btn-sm send_notification" data-id="<?= $val->push_notification_id ?>" href="#">
@@ -133,6 +178,7 @@ switch ($msg) {
             }
         });
 
+        var app_name_main = "<?=getAppName("") ?>";
 
         $(document).on("click", ".send_notification", function () {
             var send_notification_id = $(this).attr('data-id');
@@ -149,8 +195,15 @@ switch ($msg) {
                         console.log(cr_data);
                         if (cr_data.status == "success")
                         {
-                            var delayInMilliseconds = 8000; //1 second
+                            if (socket){
+                                socket.emit('send_push_notification', app_name_main);
+                            }else{
+                                alertify.error('Socket config not found, notification might not have been sent!');
+                            }
+
+                            var delayInMilliseconds = 30000; //1 second
                             setTimeout(function () {
+                                socket.emit('close_push_notification', app_name_main);
                                 $.ajax({
                                     url: "<?= base_url() ?>admin/push_notifications/close_notification/" + send_notification_id,
                                     type: "post",

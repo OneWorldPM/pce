@@ -6,13 +6,35 @@ class M_sessions extends CI_Model {
         parent::__construct();
     }
 
+    function addBriefcase() {
+        $post = $this->input->post();
+        $insert_array = array(
+            'cust_id' => $this->session->userdata("aid"),
+            'sessions_id' => $post['sessions_id'],
+            'note' => $post['briefcase'],
+            'reg_briefcase_date' => date("Y-m-d")
+        );
+        $result_data = $this->db->get_where("sessions_cust_briefcase", array("cust_id" => $this->session->userdata("aid"), 'sessions_id' => $post['sessions_id']))->row();
+        if (empty($result_data)) {
+            $this->db->insert("sessions_cust_briefcase", $insert_array);
+        } else {
+            $this->db->update("sessions_cust_briefcase", $insert_array, array("sessions_cust_briefcase_id" => $result_data->sessions_cust_briefcase_id));
+        }
+        return TRUE;
+    }
+
     function getSessionsAll() {
-        $this->db->select('*');
+        $this->db->select('s.*');
         $this->db->from('sessions s');
-		($this->session->userdata('start_date') != "") ? $where['DATE(s.sessions_date) >='] = date('Y-m-d', strtotime($this->session->userdata('start_date'))) : '';
+		 ($this->session->userdata('start_date') != "") ? $where['DATE(s.sessions_date) >='] = date('Y-m-d', strtotime($this->session->userdata('start_date'))) : '';
         ($this->session->userdata('end_date') != "") ? $where['DATE(s.sessions_date) <='] = date('Y-m-d', strtotime($this->session->userdata('end_date'))) : '';
         if (!empty($where)) {
             $this->db->where($where);
+        }
+        else{
+            $where['DATE(sessions_date) >='] = date('Y-m-d', strtotime("-1 day"));
+            $this->db->where($where);
+            $this->db->or_where('s.sessions_id=',25);
         }
         $this->db->order_by("s.sessions_date", "asc");
         $this->db->order_by("s.time_slot", "asc");
@@ -21,6 +43,11 @@ class M_sessions extends CI_Model {
             $return_array = array();
             foreach ($sessions->result() as $val) {
                 $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                $val->moderators = $this->getModerators($val->sessions_id);
+                $val->groupchatPresenter= $this->getGroupChatDetailsPresenter($val->sessions_id);
+                $val->getChatAll= $this->getChatAll($val->sessions_id);
+                $val->check_send_json_exist= $this->check_send_json_exist($val->sessions_id);
+
                 $return_array[] = $val;
             }
             return $return_array;
@@ -28,12 +55,147 @@ class M_sessions extends CI_Model {
             return '';
         }
     }
+  
+    function getSessionsAllDesc() {
+        $this->db->select('s.*');
+        $this->db->from('sessions s');
+        $this->db->where("(sessions_date < now())");
+        $this->db->order_by("s.sessions_date", "desc");
+        $this->db->order_by("s.time_slot", "desc");
+        $sessions = $this->db->get();
+        if ($sessions->num_rows() > 0) {
+            $return_array = array();
+            foreach ($sessions->result() as $val) {
+                $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                $val->moderators = $this->getModerators($val->sessions_id);
+
+                $return_array[] = $val;
+            }
+            return $return_array;
+        } else {
+            return '';
+        }
+    }
+
+    function getArchivedSessions() {
+        $this->db->select('s.*');
+        $this->db->from('sessions s');
+		 ($this->session->userdata('start_date') != "") ? $where['DATE(s.sessions_date) >='] = date('Y-m-d', strtotime($this->session->userdata('start_date'))) : '';
+        ($this->session->userdata('end_date') != "") ? $where['DATE(s.sessions_date) <='] = date('Y-m-d', strtotime($this->session->userdata('end_date'))) : '';
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        else{
+            $where['DATE(sessions_date) <='] = date('Y-m-d', strtotime("-1 day"));
+            $this->db->where($where);
+            $this->db->or_where('s.sessions_id=',25);
+        }
+        $this->db->order_by("s.sessions_date", "asc");
+        $this->db->order_by("s.time_slot", "asc");
+        $sessions = $this->db->get();
+        if ($sessions->num_rows() > 0) {
+            $return_array = array();
+            foreach ($sessions->result() as $val) {
+                $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                $val->moderators = $this->getModerators($val->sessions_id);
+                $val->groupchatPresenter= $this->getGroupChatDetailsPresenter($val->sessions_id);
+                $val->getChatAll= $this->getChatAll($val->sessions_id);
+                $val->check_send_json_exist= $this->check_send_json_exist($val->sessions_id);
+
+                $return_array[] = $val;
+            }
+            return $return_array;
+        } else {
+            return '';
+        }
+    }
+
+    function getAllSessions() {
+        $this->db->select('*');
+        $this->db->from('sessions');
+        $sessions = $this->db->get();
+        if ($sessions->num_rows() > 0) {
+            return $sessions->result_array();
+        } else {
+            return array();
+        }
+    }
 	
 	function getSessionsFilter() {
         $this->db->select('*');
         $this->db->from('sessions s');
-
         $post = $this->input->post();
+        if (isset($post['btn_today'])){
+            if ($post['btn_today']){
+                 $session_filter = array(
+                     'start_date' => date('Y-m-d'),
+                     'end_date' => date('Y-m-d')
+                 );
+                 $this->session->set_userdata($session_filter);
+                $this->session->set_userdata('session_viewing','Today');
+                 ($post['session_type'] != "") ? $where['s.sessions_type_id ='] = trim($post['session_type']) : '';
+                 ($post['btn_today'] != "") ? $where['DATE(s.sessions_date) >='] = date('Y-m-d') : '';
+                 ($post['btn_today'] != "") ? $where['DATE(s.sessions_date) <='] = date('Y-m-d') : '';
+                 if (!empty($where)) {
+                     $this->db->where($where);
+                 }
+                 $this->db->order_by("s.sessions_date", "asc");
+                 $this->db->order_by("s.time_slot", "asc");
+                 $sessions = $this->db->get();
+                 if ($sessions->num_rows() > 0) {
+                     $return_array = array();
+                     foreach ($sessions->result() as $val) {
+                          $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                          $val->moderators = $this->getModerators($val->sessions_id);
+                          $val->check_send_json_exist= $this->check_send_json_exist($val->sessions_id);
+                         $return_array[] = $val;
+                     }
+                     return $return_array;
+                 } else {
+                     return '';
+                 }
+             }
+         }
+         else if (isset($post['btn_tomorrow'])){
+             $tomorrow = date("Y-m-d", strtotime("+1 day"));
+            if ($post['btn_tomorrow']){
+                 $session_filter = array(
+                     'start_date' => date('Y-m-d', strtotime("+1 day")),
+                     'end_date' => date('Y-m-d', strtotime("+1 day"))
+                 );
+                 $this->session->set_userdata($session_filter);
+                $this->session->set_userdata('session_viewing','Tomorrow');
+                 ($post['session_type'] != "") ? $where['s.sessions_type_id ='] = trim($post['session_type']) : '';
+                 ($post['btn_tomorrow'] != "") ? $where['DATE(s.sessions_date) >='] = date('Y-m-d', strtotime("+1 day")) : '';
+                 ($post['btn_tomorrow'] != "") ? $where['DATE(s.sessions_date) <='] = date('Y-m-d', strtotime("+1 day")) : '';
+                 if (!empty($where)) {
+                     $this->db->where($where);
+                 }
+                 $this->db->order_by("s.sessions_date", "asc");
+                 $this->db->order_by("s.time_slot", "asc");
+                 $sessions = $this->db->get();
+                 if ($sessions->num_rows() > 0) {
+                     $return_array = array();
+                     foreach ($sessions->result() as $val) {
+                          $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                          $val->moderators = $this->getModerators($val->sessions_id);
+                          $val->check_send_json_exist= $this->check_send_json_exist($val->sessions_id);
+                         $return_array[] = $val;
+                     }
+                     return $return_array;
+                 } else {
+                     return '';
+                 }
+                 
+             }
+             
+         }
+         else {
+             $session_filter = array(
+                 'start_date' => date('Y-m-d', strtotime($post['start_date'])),
+                 'end_date' => date('Y-m-d', strtotime($post['end_date']))
+             );
+        
         $session_filter = array(
             'start_date' => date('Y-m-d', strtotime($post['start_date'])),
             'end_date' => date('Y-m-d', strtotime($post['end_date']))
@@ -57,23 +219,23 @@ class M_sessions extends CI_Model {
             $return_array = array();
             foreach ($sessions->result() as $val) {
                  $val->presenter = $this->common->get_presenter($val->presenter_id, $val->sessions_id);
+                 $val->moderators = $this->getModerators($val->sessions_id);
+                 $val->check_send_json_exist= $this->check_send_json_exist($val->sessions_id);
+
                 $return_array[] = $val;
             }
+            //echo "<pre>"; print_r($return_array);exit("</pre>");
             return $return_array;
         } else {
             return '';
         }
     }
-
+    }
 
     function getSession_Unique_Identifier_ID() {
         $this->db->order_by("sessions_id", "desc");
         $row_data = $this->db->get("sessions")->row();
-        if (!empty($row_data)) {
-            return $row_data->sessions_id + 1;
-        } else {
-            return 1;
-        }
+        return $row_data->sessions_id + 1;
     }
 
     function getPresenterDetails() {
@@ -126,8 +288,14 @@ class M_sessions extends CI_Model {
         } else {
             $moderator_id = "";
         }
+        if (!empty($post['select_presenter_id'])) {
+            $presenter_id = implode(",", $post['select_presenter_id']);
+        } else {
+            $presenter_id = "";
+        }
+
         $set = array(
-            'presenter_id' => implode(",", $post['select_presenter_id']),
+            'presenter_id' => $presenter_id,
 			'moderator_id' => $moderator_id,
             'session_title' => trim($post['session_title']),
             'sessions_description' => trim($post['sessions_description']),
@@ -136,19 +304,32 @@ class M_sessions extends CI_Model {
             'time_slot' => date("H:i", strtotime($post['time_slot'])),
             'end_time' => date("H:i", strtotime($post['end_time'])),
              'zoom_link' => trim($post['zoom_link']),
+             'zoom_number' => trim($post['zoom_number']),
             'zoom_password' => trim($post['zoom_password']),
             'embed_html_code' => trim($post['embed_html_code']),
             'embed_html_code_presenter' => trim($post['embed_html_code_presenter']),
             'sessions_type_id' => $sessions_type_id,
             'sessions_tracks_id' => $sessions_tracks_id,
-            'sessions_type_status' => trim(sponsor_type),
+            'sessions_type_status' => trim($post['sessions_type_status']),
+			'attendee_view_links_status' => (isset($post['attendee_view_links_status'])) ? $post['attendee_view_links_status'] : 1,
+            'url_link' => trim($post['url_link']),
+            'link_text' => trim($post['link_text']),
+            "reg_date" => date("Y-m-d h:i"),
             'right_bar' => $session_right_bar,
             'sponsor_type' => $post['sponsor_type'],
-            "reg_date" => date("Y-m-d h:i")
+            'sessions_logo_width' => $post['sessions_logo_width'],
+            'sessions_logo_height' => $post['sessions_logo_height'],
+            'theme_color' => $post['theme_color'],
+            'ppt_uploaded' => (isset($post['ppt_uploaded'])) ? $post['ppt_uploaded'] : 0,
+            'ppt_link_shared' => (isset($post['ppt_link_shared'])) ? $post['ppt_link_shared'] : 0,
+            'session_notes'=>$post['session_notes'],
+            
         );
         $this->db->insert("sessions", $set);
         $sessions_id = $this->db->insert_id();
         if ($sessions_id > 0) {
+
+
 
             if ($_FILES['sessions_logo']['name'] != "") {
 
@@ -159,6 +340,14 @@ class M_sessions extends CI_Model {
                 $this->db->update('sessions', array('sessions_logo' => $file_upload_name['file_name']), array('sessions_id' => $sessions_id));
             }
 
+            if ($_FILES['sessions_addnl_logo']['name'] != "") {
+
+                $this->load->library('upload');
+                $this->upload->initialize($this->set_upload_logo_options());
+                $this->upload->do_upload('sessions_addnl_logo');
+                $file_upload_name = $this->upload->data();
+                $this->db->update('sessions', array('sessions_addnl_logo' => $file_upload_name['file_name']), array('sessions_id' => $sessions_id));
+            }
 
 
             if ($_FILES['sessions_photo']['name'] != "") {
@@ -234,7 +423,6 @@ class M_sessions extends CI_Model {
         $config['file_name'] = "sessions_" . $randname;
         return $config;
     }
-
     function set_upload_logo_options() {
         $this->load->helper('string');
         $randname = random_string('numeric', '8');
@@ -258,6 +446,7 @@ class M_sessions extends CI_Model {
     function updateSessions() {
         $post = $this->input->post();
 
+
         $session_right_bar = "";
         if (isset($post["session_right_bar"])) {
             $session_right_bar = implode(",", $post["session_right_bar"]);
@@ -280,15 +469,28 @@ class M_sessions extends CI_Model {
         } else {
             $moderator_id = "";
         }
+        if (!empty($post['select_presenter_id'])) {
+            $presenter_id = implode(",", $post['select_presenter_id']);
+        } else {
+            $presenter_id = "";
+        }
+		
+ if (!empty($post['moderator_id'])) {
+            $moderator_id = implode(",", $post['moderator_id']);
+        } else {
+            $moderator_id = "";
+        }
 
+		
         $set = array(
-            'presenter_id' => implode(",", $post['select_presenter_id']),
+            'presenter_id' => $presenter_id,
 			'moderator_id' => $moderator_id,
             'session_title' => trim($post['session_title']),
             'cco_envent_id' => trim($post['cco_envent_id']),
             'sessions_description' => trim($post['sessions_description']),
             'sessions_date' => date("Y-m-d", strtotime($post['sessions_date'])),
-            'zoom_link' => trim($post['zoom_link']),
+             'zoom_link' => trim($post['zoom_link']),
+             'zoom_number' => trim($post['zoom_number']),
             'zoom_password' => trim($post['zoom_password']),
             'time_slot' => date("H:i", strtotime($post['time_slot'])),
             'end_time' => date("H:i", strtotime($post['end_time'])),
@@ -298,35 +500,53 @@ class M_sessions extends CI_Model {
             'sessions_tracks_id' => $sessions_tracks_id,
             'sessions_type_status' => trim($post['sessions_type_status']),
             'tool_box_status' => (isset($post['tool_box_status'])) ? $post['tool_box_status'] : 1,
+			'attendee_view_links_status' => (isset($post['attendee_view_links_status'])) ? $post['attendee_view_links_status'] : 1,
+            'url_link' => trim($post['url_link']),
+            'link_text' => trim($post['link_text']),
             'sponsor_type' => $post['sponsor_type'],
-            'right_bar' => $session_right_bar
+            'sessions_logo_width' => $post['sessions_logo_width'],
+            'sessions_logo_height' => $post['sessions_logo_height'],
+            'right_bar' => $session_right_bar,
+            'theme_color' => $post['theme_color'],
+            'ppt_uploaded' => (isset($post['ppt_uploaded'])) ? $post['ppt_uploaded'] : 0,
+            'ppt_link_shared' => (isset($post['ppt_link_shared'])) ? $post['ppt_link_shared'] : 0,
+            'session_notes'=>$post['session_notes'],
+
         );
         $this->db->update("sessions", $set, array("sessions_id" => $post['sessions_id']));
         $sessions_id = $post['sessions_id'];
         if ($sessions_id > 0) {
 
+
             if ($_FILES['sessions_logo']['name'] != "") {
-                $_FILES['sessions_logo']['name'] = $_FILES['sessions_logo']['name'];
-                $_FILES['sessions_logo']['type'] = $_FILES['sessions_logo']['type'];
-                $_FILES['sessions_logo']['tmp_name'] = $_FILES['sessions_logo']['tmp_name'];
-                $_FILES['sessions_logo']['error'] = $_FILES['sessions_logo']['error'];
-                $_FILES['sessions_logo']['size'] = $_FILES['sessions_logo']['size'];
                 $this->db->select('sessions_logo');
                 $this->db->from('sessions');
                 $this->db->where("sessions_id", $post['sessions_id']);
                 $session = $this->db->get()->row();
-
-                unlink("./uploads/sessions_logo/" . $session->sessions_logo);
+                unlink("./uploads/sessions_logo/".$session->sessions_logo);
 
 
                 $this->load->library('upload');
                 $this->upload->initialize($this->set_upload_logo_options());
                 $this->upload->do_upload('sessions_logo');
                 $file_upload_name = $this->upload->data();
-               
                 $this->db->update('sessions', array('sessions_logo' => $file_upload_name['file_name']), array('sessions_id' => $sessions_id));
             }
 
+            if ($_FILES['sessions_addnl_logo']['name'] != "") {
+                $this->db->select('sessions_addnl_logo');
+                $this->db->from('sessions');
+                $this->db->where("sessions_id", $post['sessions_id']);
+                $session = $this->db->get()->row();
+                unlink("./uploads/sessions_logo/".$session->sessions_addnl_logo);
+
+
+                $this->load->library('upload');
+                $this->upload->initialize($this->set_upload_logo_options());
+                $this->upload->do_upload('sessions_addnl_logo');
+                $file_upload_name = $this->upload->data();
+                $this->db->update('sessions', array('sessions_addnl_logo' => $file_upload_name['file_name']), array('sessions_id' => $sessions_id));
+            }
 
             if ($_FILES['sessions_photo']['name'] != "") {
                 $_FILES['sessions_photo']['name'] = $_FILES['sessions_photo']['name'];
@@ -395,7 +615,7 @@ class M_sessions extends CI_Model {
         }
     }
 
-     function delete_sessions() {
+    function delete_sessions() {
         $post = $this->input->post();
         $sessions_id = $post["sesionId"];
         $this->db->delete("sessions", array("sessions_id" => $sessions_id));
@@ -410,7 +630,9 @@ class M_sessions extends CI_Model {
             'sessions_id' => trim($post['sessions_id']),
             'poll_type_id' => $post['poll_type_id'],
             'question' => trim($post['question']),
-			'slide_number' => trim($post['slide_number']),
+            'poll_name' => trim($post['poll_name']),
+            'slide_number' => trim($post['slide_number']),
+            'poll_instruction' => trim($post['poll_instruction']),
             'poll_comparisons_id' => 0,
             "create_poll_date" => date("Y-m-d h:i")
         );
@@ -440,6 +662,7 @@ class M_sessions extends CI_Model {
             'sessions_id' => trim($post['sessions_id']),
             'poll_type_id' => $post['poll_comparisons_with_us'],
             'question' => trim($post['question']),
+            'poll_name' => trim($post['poll_name']),
 			'slide_number' => trim($post['slide_number']),
             'poll_comparisons_id' => $insert_id,
             "create_poll_date" => date("Y-m-d h:i")
@@ -467,6 +690,7 @@ class M_sessions extends CI_Model {
         $this->db->from('sessions_poll_question s');
         $this->db->join('poll_type p', 's.poll_type_id=p.poll_type_id');
         $this->db->where("s.sessions_id", $sessions_id);
+        $this->db->order_by('cast(s.slide_number as decimal)', 'ASC');
         $poll_question = $this->db->get();
         if ($poll_question->num_rows() > 0) {
             $poll_question_array = array();
@@ -479,7 +703,21 @@ class M_sessions extends CI_Model {
             return '';
         }
     }
-
+    ####################
+    function getPollPresenter($sessions_id){
+        $this->db->select('*');
+        $this->db->from('sessions s');
+        $this->db->where("sessions_id", $sessions_id);
+        $sessions = $this->db->get();
+        if ($sessions->num_rows() > 0) {
+            $result_sessions = $sessions->row();
+            $result_sessions->presenter = $this->common->get_presenter($result_sessions->presenter_id, $result_sessions->sessions_id);
+            return $result_sessions;
+        } else {
+            return '';
+        }
+    }
+    #############################
     function deletePollQuestion($sessions_poll_question_id) {
         $this->db->delete("sessions_poll_question", array("sessions_poll_question_id" => $sessions_poll_question_id));
         $this->db->delete("poll_question_option", array("sessions_poll_question_id" => $sessions_poll_question_id));
@@ -494,18 +732,39 @@ class M_sessions extends CI_Model {
         if ($poll_question->num_rows() > 0) {
             $poll_question_array = $poll_question->row();
             $poll_question_array->option = $this->db->get_where("poll_question_option", array("sessions_poll_question_id" => $poll_question_array->sessions_poll_question_id))->result();
+            if ($poll_question_array->poll_comparisons_id != 0 || $poll_question_array->poll_comparisons_id != '' )
+                $poll_question_array->comparison_with = $this->db->get_where("sessions_poll_question", array("sessions_poll_question_id" => $poll_question_array->poll_comparisons_id))->result();
+            $poll_question_array->all_other_surveys = $this->db->get_where("sessions_poll_question", array("sessions_id" => $poll_question_array->sessions_id, "sessions_poll_question_id !=" => $poll_question_array->sessions_poll_question_id))->result();
             return $poll_question_array;
         } else {
             return '';
         }
     }
 
+    
+    function update_poll_instruction($sesion_id){
+        $post = $this->input->post();
+        $set = array(
+            'poll_instruction' => trim($post['poll_instruction']),
+            
+        );
+        $this->db->update("sessions_poll_question", $set, array("sessions_poll_question_id" => $sesion_id));
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     function update_poll_data() {
         $post = $this->input->post();
         $set = array(
             'question' => trim($post['question']),
-			'slide_number' => trim($post['slide_number']),
-            'poll_type_id' => $post['poll_type_id']
+            'question' => trim($post['question']),
+            'poll_name' => trim($post['poll_name']),
+            'slide_number' => trim($post['slide_number']),
+            'poll_instruction' => trim($post['poll_instruction']),
+            'poll_type_id' => $post['poll_type_id'],
+            'poll_comparisons_id' => (isset($post['poll_comparisons_id']))?$post['poll_comparisons_id']:0
         );
         $this->db->update("sessions_poll_question", $set, array("sessions_poll_question_id" => $post['sessions_poll_question_id']));
         $option_result = $this->db->get_where("poll_question_option", array("sessions_poll_question_id" => $post['sessions_poll_question_id']))->result();
@@ -543,12 +802,14 @@ class M_sessions extends CI_Model {
         return TRUE;
     }
 
+    
     function get_question_list() {
         $post = $this->input->post();
         $this->db->select('*');
         $this->db->from('sessions_cust_question s');
         $this->db->join('customer_master c', 's.cust_id=c.cust_id');
-        $this->db->where(array("s.sessions_id" => $post['sessions_id'], 'sessions_cust_question_id >' => $post['list_last_id'], 'hide_status' => 0));
+        $this->db->where(array("s.sessions_id" => $post['sessions_id'], 'sessions_cust_question_id >' => $post['list_last_id']));
+        $this->db->where('hide_status!=',1);
         //  $this->db->order_by("s.sessions_cust_question_id", "DESC");
         $result = $this->db->get();
         if ($result->num_rows() > 0) {
@@ -583,6 +844,31 @@ class M_sessions extends CI_Model {
         } else {
             return '';
         }
+    }
+
+    function getSessionQuestionReportData($sessions_id) {
+        $post = $this->input->post();
+        $this->db->select("question");
+        $this->db->from('sessions_cust_question');
+        $this->db->where('sessions_id',$sessions_id);
+        return $this->db->get();
+    }
+
+    function getSessionQuestion($sessions_id) {
+        $post = $this->input->post();
+        $this->db->select("CONCAT(first_name, ' ', last_name) AS name");
+        $this->db->select('question');
+        $this->db->from('sessions_cust_question s');
+        $this->db->join('customer_master cm','cm.cust_id=s.cust_id');
+        $this->db->where('sessions_id',$sessions_id);
+        $get_question= $this->db->get();
+            if ($get_question->num_rows() > 0) {
+                return $get_question;
+            
+        }else{
+            $result = '';
+        }
+        
     }
 
     function get_poll_type() {
@@ -753,11 +1039,25 @@ class M_sessions extends CI_Model {
     }
 
     function get_favorite_question_list() {
+//        $post = $this->input->post();
+//        $this->db->select('*');
+//        $this->db->from('tbl_favorite_question_admin fq');
+//        $this->db->join('sessions_cust_question s', 's.sessions_cust_question_id = fq.sessions_cust_question_id');
+//        $this->db->where(array("fq.sessions_id" => $post['sessions_id'], 'fq.cust_id' => $this->session->userdata("aid"), 'fq.tbl_favorite_question_admin_id >' => $post['list_last_id'], 'fq.hide_status' => 0));
+//        $result = $this->db->get();
+//        if ($result->num_rows() > 0) {
+//            return $result->result();
+//        } else {
+//            return '';
+//        }
+
         $post = $this->input->post();
         $this->db->select('*');
-        $this->db->from('tbl_favorite_question_admin fq');
+        $this->db->from('tbl_favorite_question fq');
         $this->db->join('sessions_cust_question s', 's.sessions_cust_question_id = fq.sessions_cust_question_id');
-        $this->db->where(array("fq.sessions_id" => $post['sessions_id'], 'fq.cust_id' => $this->session->userdata("aid"), 'fq.tbl_favorite_question_admin_id >' => $post['list_last_id'], 'fq.hide_status' => 0));
+        $this->db->join('customer_master c', 's.cust_id=c.cust_id');
+        $this->db->where(array("fq.sessions_id" => $post['sessions_id'], 'fq.hide_status' => 0));
+        $this->db->group_by('fq.tbl_favorite_question_id');
         $result = $this->db->get();
         if ($result->num_rows() > 0) {
             return $result->result();
@@ -856,12 +1156,28 @@ class M_sessions extends CI_Model {
                 $csv_array = $this->csvimport->get_array($file_path);
                 if (!empty($csv_array)) {
                     foreach ($csv_array as $val) {
+                        $poll_type_id=$val['poll_type_id'];
+                        if (trim(strtolower($poll_type_id)) == "presurvey"){
+                            $poll_type="1";
+                        }
+                        elseif (trim(strtolower($poll_type_id)) =="poll" ){
+                            $poll_type="2";
+                        }
+                        elseif (trim(strtolower($poll_type_id)) =='assessment'){
+                            $poll_type="3";
+                        }else{
+                            $poll_type=$poll_type_id;
+                        }
+
                         if ($val['question'] != "" && $val['poll_type_id'] != "") {
                             $post = $this->input->post();
                             $set = array(
                                 'sessions_id' => trim($post['sessions_id']),
-                                'poll_type_id' => $val['poll_type_id'],
+                                'poll_type_id' => $poll_type,
+                                'poll_name' => trim($val['poll_name']),
                                 'question' => trim($val['question']),
+                                'slide_number'=>$val['slide_number'],
+                                'poll_instruction'=>trim($val['poll_instruction']),
                                 'poll_comparisons_id' => 0,
                                 "create_poll_date" => date("Y-m-d h:i")
                             );
@@ -919,7 +1235,7 @@ class M_sessions extends CI_Model {
         }
     }
 
-     function send_json($sessions_id) {
+    function send_json($sessions_id) {
         $this->db->select('*');
         $this->db->from('sessions');
         $this->db->where("sessions_id", $sessions_id);
@@ -1104,7 +1420,7 @@ class M_sessions extends CI_Model {
                     );
                 }
             }
-            
+
             $this->db->select('*');
             $this->db->from('session_resource');
             $this->db->where("sessions_id", $sessions_id);
@@ -1128,7 +1444,7 @@ class M_sessions extends CI_Model {
                     );
                 }
             }
-            
+
             $create_array = array(
                 'actual_end_time' => strtotime($result_sessions->sessions_date . ' ' . $result_sessions->end_time),
                 'cssid' => $result_sessions->cco_envent_id,
@@ -1169,7 +1485,7 @@ class M_sessions extends CI_Model {
             $result = json_decode($result);
             echo "<pre>";
             print_r($result);
-            die;
+//            die;
             if ($result == 1) {
                 return TRUE;
             } else {
@@ -1207,7 +1523,7 @@ class M_sessions extends CI_Model {
                         $end_date_time = 0;
                         $total_time = 0;
                     }
-                    
+
                     $private_notes = "";
                     $this->db->select('*');
                     $this->db->from('sessions_cust_briefcase');
@@ -1216,7 +1532,7 @@ class M_sessions extends CI_Model {
                     if ($sessions_cust_briefcase->num_rows() > 0) {
                         $private_notes = $sessions_cust_briefcase->row()->note;
                     }
-                    
+
                     $sessions_history_login[] = array(
                         'uuid' => $val->cust_id,
                         'access' => 50,
@@ -1367,7 +1683,7 @@ class M_sessions extends CI_Model {
                     );
                 }
             }
-            
+
             $this->db->select('*');
             $this->db->from('session_resource');
             $this->db->where("sessions_id", $sessions_id);
@@ -1391,9 +1707,9 @@ class M_sessions extends CI_Model {
                     );
                 }
             }
-            
-            
-            
+
+
+
             $create_array = array(
                 'actual_end_time' => strtotime($result_sessions->sessions_date . ' ' . $result_sessions->end_time),
                 'cssid' => $result_sessions->cco_envent_id,
@@ -1424,6 +1740,130 @@ class M_sessions extends CI_Model {
             return FALSE;
         }
     }
+	
+	 function get_flash_report($sessions_id) {
+        $this->db->select('*');
+        $this->db->from('login_sessions_history l');
+        $this->db->join('sessions s', 'l.sessions_id=s.sessions_id');
+        $this->db->join('customer_master c', 'c.cust_id=l.cust_id');
+        $this->db->where("l.sessions_id", $sessions_id);
+        $sessions_history = $this->db->get();
+        if ($sessions_history->num_rows() > 0) {
+            $return_array = array();
+            foreach ($sessions_history->result() as $value) {
+
+                $this->db->select('*');
+                $this->db->from('sessions_group_chat_msg');
+                $this->db->where(array("sessions_id" => $sessions_id, 'user_id' => $value->cust_id));
+                $sessions_group_chat_msg = $this->db->get();
+                $messages = 0;
+                if ($sessions_group_chat_msg->num_rows() > 0) {
+                    $messages = $sessions_group_chat_msg->num_rows();
+                }
+
+                $polls = 0;
+                $this->db->select('*');
+                $this->db->from('tbl_poll_voting');
+                $this->db->where(array("sessions_id" => $sessions_id, "cust_id" => $value->cust_id));
+                $tbl_poll_voting = $this->db->get();
+                if ($tbl_poll_voting->num_rows() > 0) {
+                    $polls = $tbl_poll_voting->num_rows();
+                }
+
+                $this->db->select('*');
+                $this->db->from('sessions_cust_question');
+                $this->db->where(array("sessions_id" => $sessions_id, "cust_id" => $value->cust_id));
+                $sessions_cust_question = $this->db->get();
+                $questions = 0;
+                if ($sessions_cust_question->num_rows() > 0) {
+                    $questions = $sessions_cust_question->num_rows();
+                }
+
+                $value->total_time_new = $this->getTimeSpentOnSession($sessions_id, $value->cust_id);
+
+                $value->total_chat = $messages;
+                $value->total_questions = $questions;
+                $value->total_polls = $polls;
+                $return_array[] = $value;
+            }
+            return $sessions_history->result();
+        } else {
+            return "";
+        }
+    }
+
+    function get_poll($sessions_id) {
+        $this->db->select('*');
+        $this->db->from('sessions_poll_question s');
+        $this->db->join('poll_type p', 's.poll_type_id=p.poll_type_id');
+        $this->db->where("s.sessions_id", $sessions_id);
+        $sessions_poll_question = $this->db->get();
+        $polls = array();
+        if ($sessions_poll_question->num_rows() > 0) {
+            $presurvey = 0;
+            $poll = 0;
+            $assessment = 0;
+            foreach ($sessions_poll_question->result() as $sessions_poll_question) {
+                if ($sessions_poll_question->poll_type_id == 1) {
+                    $presurvey = $presurvey + 1;
+                    $polls[] = array(
+                        'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
+                        'text' => $sessions_poll_question->poll_type . " " . $presurvey . " : " . $sessions_poll_question->question,
+                    );
+                } else if ($sessions_poll_question->poll_type_id == 2) {
+                    $poll = $poll + 1;
+                    $polls[] = array(
+                        'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
+                        'text' => $sessions_poll_question->poll_type . " " . $poll . " : " . $sessions_poll_question->question,
+                    );
+                } else if ($sessions_poll_question->poll_type_id == 3) {
+                    $assessment = $assessment + 1;
+                    $polls[] = array(
+                        'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
+                        'text' => $sessions_poll_question->poll_type . " " . $assessment . " : " . $sessions_poll_question->question,
+                    );
+                }
+            }
+        }
+        return $polls;
+    }
+
+    function get_polling_report($sessions_id, $poll_list) {
+        $this->db->select('*');
+        $this->db->from('login_sessions_history l');
+        $this->db->join('customer_master c', 'c.cust_id=l.cust_id');
+        $this->db->where("l.sessions_id", $sessions_id);
+        $sessions_history = $this->db->get();
+        if ($sessions_history->num_rows() > 0) {
+            $return_array = array();
+            foreach ($sessions_history->result() as $value) {
+                if (!empty($poll_list)) {
+                    foreach ($poll_list as $val) {
+                        $value->polling_answer[] = $this->get_polling_answer($val['poll_id'], $value->cust_id);
+                    }
+                }
+                $return_array[] = $value;
+            }
+            return $return_array;
+        } else {
+            return "";
+        }
+    }
+
+    function get_polling_answer($poll_id, $cust_id) {
+        $this->db->select('*');
+        $this->db->from('tbl_poll_voting');
+        $this->db->where(array("sessions_poll_question_id" => $poll_id, "cust_id" => $cust_id));
+        $tbl_poll_voting = $this->db->get();
+        if ($tbl_poll_voting->num_rows() > 0) {
+            $tbl_poll_voting = $tbl_poll_voting->row();
+            $option = $this->db->get_where("poll_question_option", array("poll_question_option_id" => $tbl_poll_voting->poll_question_option_id))->row()->option;
+            return $option;
+        } else {
+            return "";
+        }
+    }
+
 
     private function getTimeSpentOnSession($session_id, $user_id)
     {
@@ -1442,5 +1882,149 @@ class M_sessions extends CI_Model {
         return;
     }
 
+    private function getModerators($session_id)
+    {
+        $moderators = array();
+        $moderators_id = array();
+
+        $this->db->select('moderator_id');
+        $this->db->from('sessions');
+        $this->db->where(array('sessions_id'=>$session_id));
+
+        $response = $this->db->get();
+        if ($response->num_rows() > 0)
+        {
+            foreach ($response->result_array() as $row)
+            {
+                $moderators_id = explode(',', $row['moderator_id']);
+            }
+
+            foreach ($moderators_id as $moderator_id)
+            {
+                $this->db->select('first_name, last_name');
+                $this->db->from('presenter');
+                $this->db->where(array('presenter_id'=>$moderator_id));
+
+                $response = $this->db->get();
+                if ($response->num_rows() > 0)
+                {
+                    foreach ($response->result_array() as $row)
+                    {
+                        $moderators[] = $row['first_name'].' '.$row['last_name'];
+                    }
+                }
+            }
+
+            return $moderators;
+        }else{
+            return 0;
+        }
+
+        return;
+    }
+
+    function getGroupChatDetailsPresenter($session_id) {
+
+        $presenters = array();
+        $groupChatPresenters = array();
+
+
+        $this->db->select('*');
+        $this->db->from('sessions_group_chat');
+        $this->db->where('sessions_id',$session_id);
+        $groupChat = $this->db->get();
+        if ($groupChat->num_rows() > 0) {
+            foreach ($groupChat->result_array() as $row)
+            {
+                $groupChatPresenters = explode(',', $row['presenter_id']);
+            }
+
+             foreach ($groupChatPresenters as $presenter_id)
+            {
+                $this->db->select('first_name, last_name');
+                $this->db->from('presenter');
+                $this->db->where(array('presenter_id'=>$presenter_id));
+
+                $response = $this->db->get();
+                if ($response->num_rows() > 0)
+                {
+                    foreach ($response->result_array() as $row)
+                    {
+                        $presenters[] = $row['first_name'].' '.$row['last_name'];
+                    }
+                }
+            }
+            
+            return $presenters;
+        } else {
+            return '';
+        }
+    }
+
+
+    function getChatAll($session){
+        $this->db->select('*');
+        $this->db->from('sessions_group_chat');
+        $this->db->where('sessions_id',$session);
+        $this->db->order_by("group_chat_date", "desc");
+        $presenter = $this->db->get();
+        if ($presenter->num_rows() > 0) {
+            return $presenter->result();
+        } else {
+            return '';
+        }
+    }
+
+    private function fixZeroTotalTime($start)
+    {
+
+    }
+
+    function delete_all_session_photos($session_id) {
+
+        $set = array(
+            'sessions_logo'=>null,
+            'sessions_addnl_logo'=>null,
+            'sessions_photo'=>null,
+        );
+      $result= $this->db->update("sessions", $set, array("sessions_id" => $session_id));
+       if ($result){
+           return true;
+       }else
+       return false;
+    }
+
+    function delete_session_photo($session_id,$session_table) {
+        $set = array(
+            $session_table=>null,
+        );
+      $result= $this->db->update("sessions", $set, array("sessions_id" => $session_id));
+       if ($result){
+                $res=$result;
+       }else {
+           $res = false;
+       }
+
+       return $res;
+    }
+
+    function update_json_status($session_id){
+        $set=array(
+            'send_json_status'=>'1',
+        );
+        $this->db->update('sessions',$set,  array("sessions_id" =>$session_id));
+    }
+
+    // this will check if the json already sent
+    function check_send_json_exist($session_id){
+        $this->db->select('send_json_status');
+        $this->db->from('sessions');
+        $this->db->where('sessions_id',$session_id);
+        $qstr=$this->db->get();
+        if ($qstr->num_rows() > 0) {
+              return $qstr->result();
+            } 
+              return false;
+    }
 
 }

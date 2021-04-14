@@ -29,7 +29,7 @@ class M_sessions extends CI_Model {
         $this->db->select("s.sessions_date,DAYNAME(s.sessions_date) as dayname");
         $this->db->from("sessions s");
         $this->db->where('DATE_FORMAT(s.sessions_date, "%Y-%m-%d") >=', date('Y-m-d'));
-        $this->db->where('DATE_FORMAT(s.sessions_date, "%Y-%m-%d") <=', date('Y-m-d', strtotime("+7 days")));
+        $this->db->where('DATE_FORMAT(s.sessions_date, "%Y-%m-%d") <', date('Y-m-d', strtotime("+7 days")));
         $this->db->group_by('dayname');
         $this->db->order_by("s.sessions_date", "asc");
         $result = $this->db->get();
@@ -137,7 +137,7 @@ class M_sessions extends CI_Model {
                     return $poll_question_array;
                 }
             } else if ($poll_question_array->status == 2) {
-                if ($poll_question_array->poll_comparisons_id == 0) {
+                if ($poll_question_array->poll_comparisons_id == 0 || $poll_question_array->poll_type_id == 1) {
                     $poll_question_array->poll_status = 2;
                     $poll_question_array->option = $this->db->get_where("poll_question_option", array("sessions_poll_question_id" => $poll_question_array->sessions_poll_question_id))->result();
                     $poll_question_array->max_value = $this->get_maxvalue_option($poll_question_array->sessions_poll_question_id);
@@ -276,6 +276,18 @@ class M_sessions extends CI_Model {
         }
     }
 
+    function getMyQuestions($session_id) {
+        $this->db->select('*');
+        $this->db->from('sessions_cust_question');
+        $this->db->where(array("cust_id" => $this->session->userdata("cid"), 'sessions_id' => $session_id));
+        $questions = $this->db->get();
+        if ($questions->num_rows() > 0) {
+            return $questions->result_array();
+        } else {
+            return false;
+        }
+    }
+
     function addBriefcase() {
         $post = $this->input->post();
         $insert_array = array(
@@ -291,6 +303,24 @@ class M_sessions extends CI_Model {
             $this->db->update("sessions_cust_briefcase", $insert_array, array("sessions_cust_briefcase_id" => $result_data->sessions_cust_briefcase_id));
         }
         return TRUE;
+    }
+	
+ function downloadbriefcase($sessions_id) {
+	 
+        $result_data = $this->db->get_where("sessions_cust_briefcase", array("cust_id" => $this->session->userdata("cid"), 'sessions_id' => $sessions_id))->row()->note;
+        return $result_data;
+    }
+	
+	  function get_sessions_notes_download($sessions_id) {
+        $this->db->select('*');
+        $this->db->from('sessions_cust_briefcase');
+        $this->db->where(array("cust_id" => $this->session->userdata("cid"), 'sessions_id' => $sessions_id));
+        $sessions_cust = $this->db->get();
+        if ($sessions_cust->num_rows() > 0) {
+            return $sessions_cust->row()->note;
+        } else {
+            return '';
+        }
     }
 
     function addresource() {
@@ -379,18 +409,6 @@ class M_sessions extends CI_Model {
     function get_music_setting() {
         $query = $this->db->get_where('music_setting');
         return $query->row();
-    }
-	
-	function get_sessions_notes_download($sessions_id) {
-        $this->db->select('*');
-        $this->db->from('sessions_cust_briefcase');
-        $this->db->where(array("cust_id" => $this->session->userdata("cid"), 'sessions_id' => $sessions_id));
-        $sessions_cust = $this->db->get();
-        if ($sessions_cust->num_rows() > 0) {
-            return $sessions_cust->row()->note;
-        } else {
-            return '';
-        }
     }
 
 }

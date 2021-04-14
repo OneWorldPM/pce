@@ -22,8 +22,7 @@ class M_groupchat extends CI_Model {
         if ($sessions->num_rows() > 0) {
             $result_sessions = $sessions->row();
             $result_sessions->presenter = $this->common->get_presenter_chat_data($result_sessions->presenter_id, $result_sessions->sessions_id);
-          	
-		   return $result_sessions;
+            return $result_sessions;
         } else {
             return '';
         }
@@ -116,7 +115,7 @@ class M_groupchat extends CI_Model {
         $this->db->from('sessions_group_chat_msg as sgc');
         $this->db->join('sessions_group_chat as s', 'sgc.sessions_group_chat_id = s.sessions_group_chat_id', 'left');
         $this->db->where($where);
-        $this->db->order_by("sgc.sessions_group_chat_msg_id", "desc");
+        $this->db->order_by("sgc.sessions_group_chat_msg_id", "asc");
         $result = $this->db->get();
         return ($result->num_rows() > 0) ? $result->result() : '';
     }

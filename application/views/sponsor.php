@@ -3,7 +3,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
 <style>
     .icon-home {
-        color: #679B41;
+        color: #679b41;
         font-size: 1.5em;
         font-weight: 700;
         vertical-align: middle;

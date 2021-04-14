@@ -2,3 +2,7 @@
 /uploads/
 /front_assets/images/
 /assets/images/
+application/config/email_config.php
+application/config/config.php
+application/config/database.php
+.htaccess
