@@ -405,7 +405,7 @@ else
                                             if (isset($right_bar) && isset($tool_box_status)) {
                                             if ($tool_box_status == "1" && sessionRightBarControl($right_bar, "resources")) {
                                             ?>
-                                                <li class="sticky_resources_open" data-type="resourcesSticky"><a data-type2="off" class="hoverThemeColour">RESOURCES</a></li>
+<!--                                                <li class="sticky_resources_open" data-type="resourcesSticky"><a data-type2="off" class="hoverThemeColour">RESOURCES</a></li>-->
                                             <?php
                                                }}
                                             ?>
