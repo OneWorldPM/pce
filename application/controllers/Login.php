@@ -116,7 +116,7 @@ class Login extends CI_Controller {
                 $this->session->set_userdata($session);
                 $sessions = $this->db->get_where('sessions', array('sessions_id' => $response_array->session));
                 if ($sessions->num_rows() > 0) {
-                    redirect('sessions/view/' . $response_array->session);
+                    redirect('sessions/attend/' . $response_array->session);
                 } else {
                     redirect('sessions');
                 }
@@ -166,7 +166,7 @@ class Login extends CI_Controller {
                     $this->session->set_userdata($session);
                     $sessions = $this->db->get_where('sessions', array('sessions_id' => $response_array->session));
                     if ($sessions->num_rows() > 0) {
-                        redirect('sessions/view/' . $response_array->session);
+                        redirect('sessions/attend/' . $response_array->session);
                     } else {
                         redirect('sessions');
                     }
