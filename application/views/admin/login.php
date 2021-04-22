@@ -80,7 +80,7 @@
                     <form class="form-login" id="frm_login" name="frm_login" method="post" action="<?= base_url() ?>admin/alogin/authentication">
                         <div class="row">
                             <div style="text-align: center">                           
-                                <img style="width:50%" src="<?= base_url() ?>assets/images/pce_logo.png" alt="admin" >
+                                <img style="width:50%" src="<?= base_url() ?>front_assets/images/pce_logo.png" alt="admin" >
                             </div>
                         </div>
                         <fieldset>
