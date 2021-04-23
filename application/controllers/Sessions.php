@@ -61,10 +61,22 @@ class Sessions extends CI_Controller {
 
         $sesions = $this->objsessions->viewSessionsData($sessions_id);
 
-        if (date("Y-m-d H:i:s") > date("Y-m-d H:i:s", strtotime($sesions->sessions_date . ' ' . $sesions->end_time)) && $sessions_id != 25) {
-            header("location:" . base_url() . "sessions/session_end/$sessions_id");
-            die();
+        if ($sesions->session_ended == 1) {
+
+            if ($next_session = $this->objsessions->findNextOpenSession($sessions_id))
+            {
+                header("location:" . base_url() . "sessions/attend/$next_session");
+                die();
+            }else{
+                header("location:" . base_url() . "sessions/session_end/$sessions_id");
+                die();
+            }
         }
+
+//        if (date("Y-m-d H:i:s") > date("Y-m-d H:i:s", strtotime($sesions->sessions_date . ' ' . $sesions->end_time)) && $sessions_id != 25) {
+//            header("location:" . base_url() . "sessions/session_end/$sessions_id");
+//            die();
+//        }
 
         $header_data["sesions_logo"] = $sesions->sessions_logo;
         $header_data["sesions_logo_width"] = $sesions->sessions_logo_width;
@@ -580,6 +592,11 @@ class Sessions extends CI_Controller {
         }
 
         return;
+    }
+
+    public function testing_next_session($session)
+    {
+        var_dump($this->objsessions->findNextOpenSession($session));
     }
 
 

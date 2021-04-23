@@ -1022,5 +1022,24 @@ public function archive_session() {
     $this->load->view('admin/footer');
 }
 
+
+public function change_session_status()
+{
+    $post = $this->input->post();
+    $session_id = $post['id'];
+    $status = $post['status'];
+
+    $this->db->set('session_ended', $status);
+    $this->db->where('sessions_id', $session_id);
+    $this->db->update('sessions');
+
+    if($this->db->affected_rows() > 0)
+        echo json_encode(array('status'=>'success'));
+    else
+        echo json_encode(array('status'=>'failed'));
+
+
+}
+
 // 
 }

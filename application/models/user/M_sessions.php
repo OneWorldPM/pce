@@ -423,4 +423,49 @@ class M_sessions extends CI_Model {
         return '';
     }
 
+    public function isSessionOpen($session_id)
+    {
+        $this->db->select('session_ended');
+        $this->db->from('sessions');
+        $this->db->where('sessions_id', $session_id);
+        $response =$this->db->get();
+        if ($response->num_rows() > 0)
+            if ($response->result()[0]->session_ended == 0)
+                return true;
+
+        return false;
+    }
+
+    public function findSubsequentSession($session_id)
+    {
+        $this->db->select('subsequent_session_1');
+        $this->db->from('sessions');
+        $this->db->where('sessions_id', $session_id);
+        $response =$this->db->get();
+        if ($response->num_rows() > 0)
+            if ($response->result()[0]->subsequent_session_1 != NULL)
+                return $response->result()[0]->subsequent_session_1;
+
+        return false;
+    }
+
+    public function findNextOpenSession($session_id)
+    {
+        if ($this->isSessionOpen($session_id))
+        {
+            return $session_id;
+        }else{
+            if ($subsequent = $this->findSubsequentSession($session_id))
+            {
+                if ($this->isSessionOpen($subsequent))
+                    return $subsequent;
+                else
+                    return $this->findNextOpenSession($subsequent);
+            }else{
+                return false;
+            }
+        }
+    }
+
+
 }
