@@ -17,10 +17,6 @@ socket.on('subsequent-session-redirect-signal', function (app_name_to_reload) {
 
 function fireSubsequentRedirection()
 {
-    if (session_id == 131)
-    {
-        window.open("https://www.clinicaloptions.com/event/PsychUpdateNEU2021Webinar", "_self");
-    }
 
     if (this_session_type == 1) // CME Session
     {
@@ -102,17 +98,17 @@ function fireSubsequentRedirection()
                     Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
                     window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
                 }else{
-                    window.open(base_url+'home/', "_self");
+                    window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
                 }
             })
         }else{
             console.log("Subsequent sessions are not set.");
-            console.log("You will be redirected to the lobby automatically.");
+            //console.log("You will be redirected to the lobby automatically.");
         }
 
-        setTimeout(()=>{
-            window.open(base_url+'home/', "_self");
-        } , 60000 );
+        // setTimeout(()=>{
+        //     window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+        // } , 60000 );
     }
 
     return true;
