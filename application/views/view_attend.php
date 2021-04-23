@@ -41,8 +41,18 @@
     section{
         padding: 25px 0px;
     }
+    #bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        /* Preserve aspet ratio */
+        min-width: 100%;
+        min-height: 100%;
+    }
 </style>
-<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/attend_background.png); top: 0; padding-top: 0px;">
+<img src="<?= base_url() ?>front_assets/images/Green_BG.jpg" id="bg" alt="">
+<section class="parallax" style=" top: 0; padding-top: 0px;">
     <div class="container container-fullscreen"> 
         <div class="text-middle">
             <div class="row">
