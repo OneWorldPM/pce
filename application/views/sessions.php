@@ -52,8 +52,18 @@
         background-color: #679b41  ;
         color: #fff !important;
     }
+    #bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        /* Preserve aspet ratio */
+        min-width: 100%;
+        min-height: 100%;
+    }
 </style>
-<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.jpg); top: 0; padding-top: 0px;height:100% !important">
+<img src="<?= base_url() ?>front_assets/images/Green_BG.jpg" id="bg" alt="">
+<section class="parallax" style="top: 0; padding-top: 0px;height:100% !important">
 <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
     <div class="container container-fullscreen" style="min-height: 700px;">
         <div class="">
