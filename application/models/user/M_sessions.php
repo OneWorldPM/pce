@@ -411,4 +411,16 @@ class M_sessions extends CI_Model {
         return $query->row();
     }
 
+    public function sessionNameById($session_id)
+    {
+        $this->db->select('session_title');
+        $this->db->from('sessions');
+        $this->db->where('sessions_id', $session_id);
+        $response =$this->db->get();
+        if ($response->num_rows() > 0) {
+            return $response->result()[0]->session_title;
+        }
+        return '';
+    }
+
 }

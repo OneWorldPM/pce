@@ -215,6 +215,7 @@ $user_role = $this->session->userdata('role');
                                                         <a href="<?= base_url() ?>admin/sessions/edit_sessions/<?= $val->sessions_id ?>" class="btn btn-green btn-sm">Edit</a>
                                                         <?php if ($user_role == 'super_admin') { ?>
                                                         <button class="reload-attendee btn btn-danger" app-name="<?=getAppName($val->sessions_id) ?>">Reload Attendee</button>
+                                                        <button class="subsequent_session_redirect btn btn-success margin-top-5" app-name="<?=getAppName($val->sessions_id)?>" session-id="<?=$val->sessions_id?>">Redirect</button>
                                                         <?php } ?>
                                                     </td>
                                                     <td>
@@ -338,6 +339,26 @@ switch ($msg) {
     $('.reload-attendee').on('click', function () {
         socket.emit('reload-attendee', $(this).attr('app-name'));
     });
+
+        $('#sessions_table').on('click', '.subsequent_session_redirect', function () {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                html: "This will either redirect the attendee to the subsequent session or open a pop-up asking where to go<br>(Regardless the session is over or not)",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed!'
+            }).then((result) => {
+                if (result.isConfirmed)
+                {
+                    socket.emit('subsequent-session-redirect', $(this).attr('app-name'));
+                    alertify.success('Redirection initiated!');
+                }
+            })
+
+        });
 
     $('#sessions_table').on('click', '.clear-json-btn', function () {
 

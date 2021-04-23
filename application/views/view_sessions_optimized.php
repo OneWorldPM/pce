@@ -442,6 +442,14 @@ if (isset($sessions)) {
     var session_end_datetime =  new Date("<?= date('M d, Y', strtotime($sessions->sessions_date)) . ' ' . $sessions->end_time ?>");
 
     var socket_session_name = "<?=getAppName('_admin-to-attendee-chat')?>";
+
+    var this_session_type = "<?=$sessions->sessions_type_id?>";
+    var subsequent_session_1 = "<?=($sessions->subsequent_session_1 && $sessions->subsequent_session_1 != null)?$sessions->subsequent_session_1:'null'?>";
+    var subsequent_session_1_name = "<?=$sessions->subsequent_session_1_name?>";
+    var subsequent_session_2 = "<?=($sessions->subsequent_session_2 && $sessions->subsequent_session_2 != null)?$sessions->subsequent_session_2:'null'?>";
+    var subsequent_session_2_name = "<?=$sessions->subsequent_session_2_name?>";
+    var subsequent_session_popup_text = `<?=$sessions->subsequent_session_popup_text?>`;
+
 </script>
 <?= getSocketScript()?>
 <script src="<?= base_url() ?>front_assets/js/custom-fullscreen.js"></script>
