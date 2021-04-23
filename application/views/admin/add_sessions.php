@@ -1,6 +1,11 @@
 <?php
 $user_role = $this->session->userdata('role');
 ?>
+<style>
+    .panel{
+        color: #333;
+    }
+</style>
 <div class="main-content">
     <div class="wrap-content container" id="container">
         <!-- start: PAGE TITLE -->
@@ -43,6 +48,10 @@ $user_role = $this->session->userdata('role');
                                     <div class="form-group">
                                         <label class="text-large text-bold">Sessions Description</label>
                                         <textarea class="form-control" style="color: #000;" name="sessions_description" id="sessions_description"><?= (isset($sessions_edit) && !empty($sessions_edit) ) ? $sessions_edit->sessions_description : "" ?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-large text-bold">Landing Page Text</label>
+                                        <textarea class="form-control" style="color: #000;" name="landing_page_text" id="landing_page_text"><?= (isset($sessions_edit->landing_page_text) && ($sessions_edit->landing_page_text != NULL) ) ? $sessions_edit->landing_page_text : "" ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="text-large text-bold">Session Notes</label>
@@ -498,8 +507,31 @@ $user_role = $this->session->userdata('role');
 </div>
 </div>
 
+
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
+
+
+        $('#landing_page_text').summernote({
+            height: 200,
+            toolbar:
+                [
+                    ["history", ["undo", "redo"]],
+                    ["style", ["style"]],
+                    ["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+                    ['fontsize', ['fontsize']],
+                    ["color", ["forecolor", "backcolor", "color"]],
+                    ["paragraph", ["ul", "ol", "paragraph", "height"]],
+                    ["table", ["table"]],
+                    ["insert", ["link", "resizedDataImage", "picture", "video"]],
+                    ["view", ["codeview"] ]
+                ],
+            fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
+        });
+
 
         $('input[readonly]').on('click', function () {
             alertify.error("You are not authorized to edit this field!");
