@@ -7,6 +7,119 @@ socket.on('reload-attendee-signal', function (app_name_to_relaod) {
 });
 
 
+/*** Subsequent redirection feature ***/
+socket.on('subsequent-session-redirect-signal', function (app_name_to_reload) {
+    if (app_name_to_reload == app_name)
+    {
+        fireSubsequentRedirection();
+    }
+});
+
+function fireSubsequentRedirection()
+{
+    if (session_id == 131)
+    {
+        window.open("https://www.clinicaloptions.com/event/PsychUpdateNEU2021Webinar", "_self");
+    }
+
+    if (this_session_type == 1) // CME Session
+    {
+        if (subsequent_session_1 != 'null' && subsequent_session_2 != 'null') // Subsequent PT session is set
+        {
+            Swal.fire({
+                title: '',
+                text: subsequent_session_popup_text,
+                icon: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Join Product Theater',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Redirecting you to '+subsequent_session_2_name, '', 'success');
+                    window.open(base_url+'sessions/attend/'+subsequent_session_2, "_self");
+                }else{
+                    window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+                }
+            })
+
+            setTimeout(()=>{
+                window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+            }, 60000 );
+
+        }else{
+            console.log("Subsequent sessions are not set.");
+            if (subsequent_session_1 != 'null')
+            {
+                console.log("Redirecting to "+subsequent_session_1);
+                window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+            }
+        }
+
+        if (subsequent_session_1 != 'null' && subsequent_session_2 == 'null')
+        {
+            // Swal.fire({
+            //     title: '',
+            //     text: subsequent_session_popup_text,
+            //     icon: 'info',
+            //     showCancelButton: false,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Join CME/CE Session',
+            //     cancelButtonText: 'Cancel'
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
+            //         window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+            //     }else{
+            //         window.open(base_url+'home/', "_self");
+            //     }
+            // })
+
+            setTimeout(()=>{
+                window.open(base_url+'home', "_self");
+            }, 60000 );
+        }else{
+            console.log("You won't be redirected to the next GME session automatically.");
+        }
+
+    }else // PT Session
+    {
+        if (subsequent_session_1 != 'null') // Subsequent CME session is set
+        {
+            Swal.fire({
+                title: '',
+                text: subsequent_session_popup_text,
+                icon: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Join CME/CE Session',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
+                    window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+                }else{
+                    window.open(base_url+'home/', "_self");
+                }
+            })
+        }else{
+            console.log("Subsequent sessions are not set.");
+            console.log("You will be redirected to the lobby automatically.");
+        }
+
+        setTimeout(()=>{
+            window.open(base_url+'home/', "_self");
+        } , 60000 );
+    }
+
+    return true;
+}
+/*** End of subsequent redirection feature ***/
+
+
 /******* Saving time spent on session - by Athul ************/
 var timeSpentOnSessionFromDb;
 var timeSpentUntilNow;

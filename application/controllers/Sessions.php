@@ -83,6 +83,9 @@ class Sessions extends CI_Controller {
         $header_data["link_text"] = $sesions->link_text;
         $header_data['session_id'] = $sessions_id;
 
+        $sesions->subsequent_session_1_name = $this->objsessions->sessionNameById($sesions->subsequent_session_1);
+        $sesions->subsequent_session_2_name = $this->objsessions->sessionNameById($sesions->subsequent_session_2);
+
         $data['isMobile'] = $this->MobileDetect->isMobile();
 
         $this->load->view('header', $header_data);

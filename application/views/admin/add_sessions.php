@@ -1,28 +1,3 @@
-<style>
-@media screen and (-webkit-min-device-pixel-ratio:0) {  /*safari and chrome*/
-    select {
-        height:30px;
-        line-height:30px;
-        background:#f4f4f4;
-    } 
-}
-select::-moz-focus-inner { /*Remove button padding in FF*/ 
-    border: 0;
-    padding: 0;
-}
-@-moz-document url-prefix() { /* targets Firefox only */
-    select {
-        padding: 15px 0!important;
-    }
-}        
-@media screen\0 { /* IE Hacks: targets IE 8, 9 and 10 */        
-    select {
-        height:30px;
-        line-height:30px;
-    }     
-}
-</style>
-
 <?php
 $user_role = $this->session->userdata('role');
 ?>
@@ -198,6 +173,52 @@ $user_role = $this->session->userdata('role');
                                         }
                                         ?>
                                     </div>
+
+
+                                <hr style="border: 2px solid;"/>
+
+                                <div class="row" <?=($user_role != 'super_admin')?'style="display:none"':''?>>
+                                    <label class="col-md-12 text-large text-bold">
+                                        Redirect On Button Click <span class="badge badge-success">new</span>
+                                        <br><small style="color: red;font-size: 12px;">Regardless the session is over or not, this feature will redirect the user on a button click.</small>
+                                        <br><small style="color: red;font-size: 12px;">This will have no effect unless configured before attendees loading their page.</small>
+                                    </label>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-large" style="color: #05969d;">Subsequent CME Session</label>
+                                            <select class="form-control" id="subsequent_session_1" name="subsequent_session_1" <?=($user_role != 'super_admin')?"style='pointer-events:none;' readonly":''?>>
+                                                <option value="null">Unset</option>
+                                                <?php foreach ($all_sessions as $session): ?>
+                                                    <option value="<?=$session['sessions_id']?>" <?=(isset($sessions_edit->subsequent_session_1) && $sessions_edit->subsequent_session_1 == $session['sessions_id'])?'selected':''?>>(<?=$session['sessions_id']?>) <?=$session['session_title']?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+
+                                            <small style="color: darkred;">Choose subsequent CME session regardless the order of the sessions.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-large" style="color: #05969d;">Subsequent PT Session</label>
+                                            <select class="form-control" id="subsequent_session_2" name="subsequent_session_2" <?=($user_role != 'super_admin')?"style='pointer-events:none;' readonly":''?>>
+                                                <option value="null">Unset</option>
+                                                <?php foreach ($all_sessions as $session): ?>
+                                                    <option value="<?=$session['sessions_id']?>" <?=(isset($sessions_edit->subsequent_session_2) && $sessions_edit->subsequent_session_2 == $session['sessions_id'])?'selected':''?>>(<?=$session['sessions_id']?>) <?=$session['session_title']?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <small style="color: darkred;">Choose subsequent PT session regardless the order of the sessions.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-large">Text in the pop-up</label>
+                                            <textarea class="form-control" id="subsequent_session_popup_text" name="subsequent_session_popup_text" maxlength="65000" style="color: black;"><?=(isset($sessions_edit->subsequent_session_popup_text))?$sessions_edit->subsequent_session_popup_text:'This session is over. Click on the following buttons to attend one of the next sessions.'?></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+
 
                                     <div class="row" <?=($user_role != 'super_admin')?'style="display:none"':''?>>
                                         <label class="col-md-12 text-large text-bold">Select Sessions Tracks</label>
