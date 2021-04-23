@@ -9,6 +9,7 @@ class Login extends CI_Controller {
         parent::__construct();
         $this->common->set_timezone();
         $this->load->model('user/m_login', 'objlogin');
+        $this->load->model('user/m_sessions', 'objsessions');
     }
 
     public function index() {
@@ -116,7 +117,11 @@ class Login extends CI_Controller {
                 $this->session->set_userdata($session);
                 $sessions = $this->db->get_where('sessions', array('sessions_id' => $response_array->session));
                 if ($sessions->num_rows() > 0) {
-                    redirect('sessions/attend/' . $response_array->session);
+                    $where_to = $this->objsessions->findNextOpenSession($response_array->session);
+                    if ($where_to)
+                        redirect('sessions/attend/' . $where_to);
+                    else
+                        redirect('sessions');
                 } else {
                     redirect('sessions');
                 }
@@ -166,7 +171,11 @@ class Login extends CI_Controller {
                     $this->session->set_userdata($session);
                     $sessions = $this->db->get_where('sessions', array('sessions_id' => $response_array->session));
                     if ($sessions->num_rows() > 0) {
-                        redirect('sessions/attend/' . $response_array->session);
+                        $where_to = $this->objsessions->findNextOpenSession($response_array->session);
+                        if ($where_to)
+                            redirect('sessions/attend/' . $where_to);
+                        else
+                            redirect('sessions');
                     } else {
                         redirect('sessions');
                     }
