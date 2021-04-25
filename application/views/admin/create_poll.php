@@ -90,6 +90,12 @@ if (isset($_GET['testing']))
                                             <label class="text-large">Instruction:</label>
                                             <input type="text" name="poll_instruction" id="poll_instruction" value="<?= isset($sessions_data) ? $sessions_data->poll_instruction : "" ?>" placeholder="Slide Number" class="form-control">
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="text-large">External Reference:</label>
+                                            <input type="text" name="external_reference" id="external_reference" value="<?= isset($sessions_data->external_reference) ? $sessions_data->external_reference : "" ?>" placeholder="External Reference" class="form-control">
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="text-large">Select Poll Type:</label>
                                             <select class="form-control" id="poll_type_id" name="poll_type_id">

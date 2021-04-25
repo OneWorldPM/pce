@@ -15,7 +15,7 @@ $user_name = ucfirst($this->session->userdata('uname'));
     <!-- start: HEAD -->
     <head>
         <meta charset="UTF-8">
-        <title>Admin</title>
+        <title>PCE | Admin</title>
         <!-- start: META -->
         <!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
         <meta charset="utf-8" />

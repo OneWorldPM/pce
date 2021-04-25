@@ -186,6 +186,10 @@ $user_role = $this->session->userdata('role');
                                                         <small><span style="float: left;">Resources</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("resources", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
                                                         <small><span style="float: left;">Attendee Chat</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("chat", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
                                                         <small><span style="float: left;">Notes</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("notes", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
+                                                        <small><span style="float: left;">Ask A Rep</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("askarep", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
+
+                                                        <br>
+
                                                         <?php $total=$mod_count+$pres_count;?>
                                                         <small><span style="float: left;">Presenters + Moderators </span> <?= (isset($total) && !empty($total) ) ?'<span style="float:right">'. $total : "".'</span>' ?></small><br>
                                                         <?php if(isset($val->getChatAll) && !empty($val->getChatAll)){

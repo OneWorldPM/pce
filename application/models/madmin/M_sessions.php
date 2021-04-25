@@ -641,6 +641,7 @@ class M_sessions extends CI_Model {
             'poll_name' => trim($post['poll_name']),
             'slide_number' => trim($post['slide_number']),
             'poll_instruction' => trim($post['poll_instruction']),
+            'external_reference' => trim($post['external_reference']),
             'poll_comparisons_id' => 0,
             "create_poll_date" => date("Y-m-d h:i")
         );
@@ -771,6 +772,7 @@ class M_sessions extends CI_Model {
             'poll_name' => trim($post['poll_name']),
             'slide_number' => trim($post['slide_number']),
             'poll_instruction' => trim($post['poll_instruction']),
+            'external_reference' => trim($post['external_reference']),
             'poll_type_id' => $post['poll_type_id'],
             'poll_comparisons_id' => (isset($post['poll_comparisons_id']))?$post['poll_comparisons_id']:0
         );
@@ -1345,7 +1347,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,
@@ -1359,7 +1361,7 @@ class M_sessions extends CI_Model {
                             'uuid' => '',
                             'text' => $sessions_poll_question->question,
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'options' => $options,
                             'total_votes' => $total_votes,
@@ -1371,7 +1373,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,
@@ -1608,7 +1610,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,
@@ -1622,7 +1624,7 @@ class M_sessions extends CI_Model {
                             'uuid' => '',
                             'text' => $sessions_poll_question->question,
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'options' => $options,
                             'total_votes' => $total_votes,
@@ -1634,7 +1636,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,

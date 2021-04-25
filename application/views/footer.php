@@ -21,7 +21,7 @@
 <a class="gototop gototop-button" href="#"><i class="fa fa-chevron-up"></i></a>
 
 <!-- Theme Base, Components and Settings -->
-<script src="<?= base_url() ?>front_assets/js/theme-functions.js"></script>
+<script src="<?= base_url() ?>front_assets/js/theme-functions.js?v2"></script>
 
 <!-- Custom js file -->
 <script src="<?= base_url() ?>front_assets/js/custom.js?v=4"></script>
@@ -30,6 +30,47 @@
 
 
 <script src="https://kit.fontawesome.com/fd91b3535c.js" crossorigin="anonymous"></script>
+
+<script src="https://cdn.ravenjs.com/3.26.4/raven.min.js" crossorigin="anonymous"></script>
+<script>
+    $(function() {
+        // Error Tracking
+        Raven.config("https://1f9f33373b3147e587d0911d839e0680@o578409.ingest.sentry.io/5734623").install();
+    });
+</script>
+
+<!-- Live Support Chat -->
+<script>
+    var base_url = "<?=base_url()?>";
+    let support_app_name = "<?=getAppName("") ?>";
+    let attendee_id = "<?=$this->session->userdata('cid')?>";
+    let attendee_name = "<?=$this->session->userdata('fullname')?>";
+</script>
+<script src="https://athulak.com/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="<?=base_url()?>front_assets/support_chat/style.css?v=2">
+<script src="<?= base_url() ?>front_assets/support_chat/live-support-chat.js?v=1"></script>
+<div class="live-support-chat-popup" id="liveSupportChatForm">
+    <span class="live-support-chat-title"><i class="far fa-life-ring"></i> Live Technical Support</span>
+    <div class="live-support-chat-body">
+
+        <div id="live-support-chat-texts" class="live-support-chat-texts">
+            <!-- Will be filled by fillAllPreviousChats() function on pageReady -->
+        </div>
+
+        <div class="input-group text-center" style="width: 100%;position: absolute;bottom: 90px;">
+            <span id="adminTypingHint" style="display: none;">Admin is typing...</span>
+        </div>
+        <div class="input-group" style="position: absolute;bottom: 45px;">
+            <input id="liveSupportText" type="text" class="form-control" placeholder="Enter your message here...">
+            <span class="input-group-btn">
+                <button id="sendLiveSupportText" class="btn btn-default" type="button"><i class="far fa-paper-plane"></i> Send</button>
+            </span>
+        </div>
+
+    </div>
+    <button type="button" class="btn btn-sm end-chat-btn" onclick="endLiveSupportChat()">End Chat <i class="fas fa-times-circle"></i></button>
+</div>
+<!-- End of Live Support Chat -->
 
 <script>
     var user_id = <?= $this->session->userdata("cid") ?>;
@@ -41,6 +82,7 @@
     }
 
     $(function() {
+
 
         $.get( "<?=base_url()?>socket_config.php", function( data ) {
             var config = JSON.parse(data);
@@ -69,66 +111,64 @@
                 $(this).data("prevType", e.type);
             });
 
-        });
+            // Active again
+            function resetActive(){
+                socket.emit('userActiveChangeInApp', {"app":socket_app_name, "room":socket_active_user_list, "name":user_name, "userId":user_id, "status":true});
+            }
+            // No activity let everyone know
+            function inActive(){
+                socket.emit('userActiveChangeInApp', {"app":socket_app_name, "room":socket_active_user_list, "name":user_name, "userId":user_id, "status":false});
+            }
 
-        // Active again
-        function resetActive(){
-            socket.emit('userActiveChangeInApp', {"app":socket_app_name, "room":socket_active_user_list, "name":user_name, "userId":user_id, "status":true});
-        }
-        // No activity let everyone know
-        function inActive(){
-            socket.emit('userActiveChangeInApp', {"app":socket_app_name, "room":socket_active_user_list, "name":user_name, "userId":user_id, "status":false});
-        }
+            function push_notification_admin()
+            {
+                var push_notification_id = $("#push_notification_id").val();
 
-
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var app_name_main = "<?=getAppName("") ?>";
-        push_notification_admin();
-        //setInterval(push_notification_admin, 2000);
-        socket.on('push_notification_change', (socket_app_name) => {
-            if (socket_app_name == app_name_main)
-                push_notification_admin();
-        });
-        function push_notification_admin()
-        {
-            var push_notification_id = $("#push_notification_id").val();
-
-            $.ajax({
-                url: "<?= base_url() ?>push_notification/get_push_notification_admin",
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    if (data.status == "success") {
-                        if (push_notification_id == "0") {
-                            $("#push_notification_id").val(data.result.push_notification_id);
-                        }
-                        if (push_notification_id != data.result.push_notification_id && data.result.session_id == null) {
-                                if (data.result.receiver=="attendee" || data.result.receiver=="both" || data.result.receiver==null){
-                            $("#push_notification_id").val(data.result.push_notification_id);
-                            $('#push_notification').modal('show');
-                            $("#push_notification_message").text(data.result.message);
-                            }
-                        }
-
-                        if (push_notification_id != data.result.push_notification_id && data.result.session_id != null)
-                        {
-                            if (data.result.receiver=="attendee" || data.result.receiver=="both" || data.result.receiver==null){
-                            if (typeof session_id !== 'undefined' && session_id == data.result.session_id)
-                            {
+                $.ajax({
+                    url: "<?= base_url() ?>push_notification/get_push_notification_admin",
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.status == "success") {
+                            if (push_notification_id == "0") {
                                 $("#push_notification_id").val(data.result.push_notification_id);
-                                $('#push_notification').modal('show');
-                                $("#push_notification_message").text(data.result.message);
-                            }}
+                            }
+                            if (push_notification_id != data.result.push_notification_id && data.result.session_id == null) {
+                                if (data.result.receiver=="attendee" || data.result.receiver=="both" || data.result.receiver==null){
+                                    $("#push_notification_id").val(data.result.push_notification_id);
+                                    $('#push_notification').modal('show');
+                                    $("#push_notification_message").text(data.result.message);
+                                }
+                            }
+
+                            if (push_notification_id != data.result.push_notification_id && data.result.session_id != null)
+                            {
+                                if (data.result.receiver=="attendee" || data.result.receiver=="both" || data.result.receiver==null){
+                                    if (typeof session_id !== 'undefined' && session_id == data.result.session_id)
+                                    {
+                                        $("#push_notification_id").val(data.result.push_notification_id);
+                                        $('#push_notification').modal('show');
+                                        $("#push_notification_message").text(data.result.message);
+                                    }}
+                            }
+                        } else {
+                            $('#push_notification').modal('hide');
                         }
-                    } else {
-                        $('#push_notification').modal('hide');
                     }
-                }
+                });
+            }
+
+            var app_name_main = "<?=getAppName("") ?>";
+            push_notification_admin();
+            //setInterval(push_notification_admin, 2000);
+            socket.on('push_notification_change', (socket_app_name) => {
+                if (socket_app_name == app_name_main)
+                    push_notification_admin();
             });
-        }
+
+        });
+
+
     });
 </script>
 
