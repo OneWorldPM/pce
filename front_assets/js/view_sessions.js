@@ -29,7 +29,7 @@ function fireSubsequentRedirection()
                 showCancelButton: false,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Join Product Theater',
+                confirmButtonText: 'Join Presentation Theater',
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -648,7 +648,7 @@ function update_viewsessions_history_open()
                     dataType: "json",
                     success: function (data) {
                         if (data.status == "success") {
-                            //  $("#briefcase").val("");
+                            $("#briefcase").val("");
                             $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                         }
                         // $(location).attr('href', base_url+'sessions/downloadNote/'+briefcase);
@@ -681,7 +681,7 @@ function update_viewsessions_history_open()
                                 $("#briefcase").val("");
                                 $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                             }
-                            $(location).attr('href', base_url+'sessions/downloadNote/'+briefcase);
+                            //$(location).attr('href', base_url+'sessions/downloadNote/'+briefcase);
                         }
                     });
                 }
@@ -1199,3 +1199,28 @@ function calcTime(offset) {
 
     return nd;
 }
+
+
+$(document).ready(function () {
+
+    //Ask a rep
+    $('#askARepSendBtn').on('click', function () {
+
+        let rep_type = $('input[name=askarepRadio]:checked').val();
+
+        $.post(base_url+"sessions/askARep",
+            {
+                rep_type: rep_type,
+                user_id: user_id,
+                session_id: session_id
+            })
+            .done(function( data ) {
+                data = JSON.parse(data);
+                $('.ask-a-rep').html(data.msg);
+            })
+            .fail(function() {
+                $('.ask-a-rep').html('Unable to request, please try again.');
+            });
+
+    });
+});

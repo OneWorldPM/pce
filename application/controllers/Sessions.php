@@ -78,6 +78,7 @@ class Sessions extends CI_Controller {
 //            die();
 //        }
 
+        $header_data["sessions"] = $sesions;
         $header_data["sesions_logo"] = $sesions->sessions_logo;
         $header_data["sesions_logo_width"] = $sesions->sessions_logo_width;
         $header_data["sesions_logo_height"] = $sesions->sessions_logo_height;
@@ -332,11 +333,19 @@ class Sessions extends CI_Controller {
 
     public function attend($sessions_id) {
 
-        $headerData['session_id'] = $sessions_id;
+        $sesions = $this->objsessions->viewSessionsData($sessions_id);
 
-        $data["sessions"] = $this->objsessions->viewSessionsData($sessions_id);
+        $data["sessions"] = $sesions;
 
-        $this->load->view('header', $headerData);
+        $header_data['sessions'] = $sesions;
+        $header_data['session_id'] = $sessions_id;
+        $header_data["sesions_logo"] = $sesions->sessions_logo;
+        $header_data["sesions_logo_width"] = $sesions->sessions_logo_width;
+        $header_data["sesions_logo_height"] = $sesions->sessions_logo_height;
+        $header_data["sessions_addnl_logo"] = $sesions->sessions_addnl_logo;
+        $header_data["sponsor_type"] = $sesions->sponsor_type;
+
+        $this->load->view('header', $header_data);
         $this->load->view('view_attend', $data);
         $this->load->view('footer');
     }
@@ -599,5 +608,35 @@ class Sessions extends CI_Controller {
         var_dump($this->objsessions->findNextOpenSession($session));
     }
 
+
+    public function askARep()
+    {
+        $post = $this->input->post();
+
+        $data = array(
+            'session_id' => $post['session_id'],
+            'user_id' => $post['user_id'],
+            'rep_type' => $post['rep_type'],
+            'date_time' => date('Y-m-d H:i:s')
+        );
+
+        $this->db->select('*');
+        $this->db->from('ask_a_rep');
+        $this->db->where(array('session_id'=>$post['session_id'], 'user_id'=>$post['user_id'], 'rep_type'=>$post['rep_type']));
+        $response = $this->db->get();
+        if ($response->num_rows() > 0)
+            echo json_encode(array('status'=>'failed', 'msg'=>"You have already requested to be contacted by a representative ({$post['rep_type']}).<br> A representative will contact you shortly."));
+        else
+        {
+            $this->db->insert('ask_a_rep', $data);
+            if ($this->db->affected_rows() > 0)
+                echo json_encode(array('status'=>'success', 'msg'=>"Thank you for your request. <br> A representative will contact you shortly."));
+            else
+                echo json_encode(array('status'=>'failed', 'msg'=>"Unable to request, please try again."));
+        }
+
+        return;
+
+    }
 
 }

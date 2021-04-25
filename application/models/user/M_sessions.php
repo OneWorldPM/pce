@@ -300,7 +300,8 @@ class M_sessions extends CI_Model {
         if (empty($result_data)) {
             $this->db->insert("sessions_cust_briefcase", $insert_array);
         } else {
-            $this->db->update("sessions_cust_briefcase", $insert_array, array("sessions_cust_briefcase_id" => $result_data->sessions_cust_briefcase_id));
+            $this->db->insert("sessions_cust_briefcase", $insert_array);
+            //$this->db->update("sessions_cust_briefcase", $insert_array, array("sessions_cust_briefcase_id" => $result_data->sessions_cust_briefcase_id));
         }
         return TRUE;
     }

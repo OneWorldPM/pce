@@ -24,7 +24,7 @@ class Login extends CI_Controller {
         } else {
             $arr = array(
                 'email' => $username,
-                'password' => $password
+                'password' => base64_encode($password)
             );
             $data = $this->objlogin->user_login($arr);
             if ($data) {
