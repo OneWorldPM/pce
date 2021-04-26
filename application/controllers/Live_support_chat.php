@@ -41,8 +41,7 @@ class Live_support_chat extends CI_Controller {
                       (lsc.chat_from_type = 'attendee' AND lsc.from_id = '{$user_id}') 
                           OR 
                       (lsc.chat_from_type = 'admin' AND lsc.to_id = '{$user_id}')
-                  )
-            ORDER BY date_time ASC 
+                  ) 
             ";
 
         $chats = $this->db->query($sql);

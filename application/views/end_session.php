@@ -1,3 +1,10 @@
+<?php
+if(isset($_GET['testing2']))
+{
+    print_r($sessions); exit;
+}
+?>
+
 <style>
     .jumbotron{
         width: 900px;
@@ -25,6 +32,12 @@
 <div class="container container-fullscreen">
     <div class="jumbotron">
         <h2>This session is now closed.</h2>
+        <?php if($sessions->subsequent_session_popup_text != null && $sessions->subsequent_session_popup_text != ''): ?>
+            <h3 style="width: 100%;"><?=$sessions->subsequent_session_popup_text?></h3>
+        <?php endif; ?>
+        <?php if($sessions->subsequent_session_1 != null && $sessions->subsequent_session_1 != ''): ?>
+            <h5><a href="<?=base_url()?>sessions/attend/<?=$sessions->subsequent_session_1?>">Next CME/CE Session</a></h5>
+        <?php endif; ?>
     </div>
 </div>
 </section>

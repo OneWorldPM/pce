@@ -69,19 +69,6 @@ $user_name = ucfirst($this->session->userdata('uname'));
         <!-- <script type="text/javascript" src="assets/toggel/js/on-off-switch-onload.js"></script> -->
         <script src="<?= base_url() ?>front_assets/js/custom.js?v=4"></script>
         <?= getSocketScript()?>
-        <script>
-        
-        // let socket = io("https://socket.yourconference.live:443");
-        //let socket = io("<?//=getSocketUrl()?>//");
-        
-        socket.on("newViewUsers",function(resp){
-            if(resp){
-            var totalUsers=resp.users?resp.users.length:0;
-            var sessionId=resp.sessionId;
-            $(".totalAttende"+sessionId+" b").html(totalUsers);
-         }
-        })
-        </script>
         <style type="text/css">
             .action-row{
                 margin: 10px 0;
@@ -111,6 +98,19 @@ $user_name = ucfirst($this->session->userdata('uname'));
                                         </div>
                                         <div class="item-inner">
                                             <span class="title">Dashboard </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="<?= ($uri_segment == 'live_support_chat') ? 'active' : ''; ?>" >
+                                <a href="<?= site_url() ?>admin/live_support_chat" id="live_support_chat">
+                                    <div class="item-content">
+                                        <div class="item-media">
+                                            <i class="fa fa-life-ring" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <span class="title">Live Support Chat</span>
                                         </div>
                                     </div>
                                 </a>
@@ -373,6 +373,11 @@ $user_name = ucfirst($this->session->userdata('uname'));
                     <!-- start: NAVBAR COLLAPSE -->
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-right">
+
+                            <li style="margin-top: 20px;margin-right: 15px;">
+                                <span style="color: green;font-weight: bold;">Total Users Online: <span id="online-users-count">--</span></span>
+                            </li>
+
                             <li class="dropdown current-user">
                                 <a href class="dropdown-toggle" data-toggle="dropdown">
                                     <img src="<?= base_url() ?>assets/images/Avatar.png" alt="admin"> <span class="username"><?=$user_name?> <i class="ti-angle-down"></i></i></span>
@@ -402,3 +407,65 @@ $user_name = ucfirst($this->session->userdata('uname'));
 
                 </header>
                 <!-- end: TOP NAVBAR -->
+
+                <!-- end: TOP NAVBAR -->
+                <script>
+                    function extract(variable) {
+                        for (var key in variable) {
+                            window[key] = variable[key];
+                        }
+                    }
+
+                    $.get("<?=base_url()?>socket_config.php", function (data) {
+                        var config = JSON.parse(data);
+                        extract(config);
+
+                        socket.emit("getSessionViewUsers", socket_app_name, function (resp) {
+                            if (resp) {
+                                var totalUsers = resp.users ? resp.users.length : 0;
+                                var sessionId = resp.sessionId;
+                                //$(".totalAttende" + sessionId + " b").html(totalUsers);
+                                $('#online-users-count').html(totalUsers);
+                            }
+                        });
+
+                        socket.on('activeUserListPerApp', function(data) {
+                            if (data == null)
+                                return;
+
+                            var result = [];
+                            var keys = Object.keys(data);
+                            keys.forEach(function(key){
+                                result.push(data[key]);
+                            });
+                            const mySet = new Set(result);
+                            const uniqValuesArray = [...mySet];
+
+                            //$('#online-users-count').html(uniqValuesArray.length);
+                        });
+
+                        socket.emit('getActiveUserListPerApp', socket_app_name);
+
+                        socket.on('userActiveChangeInApp', function() {
+                            socket.emit('getActiveUserListPerApp', socket_app_name);
+
+                            socket.emit("getSessionViewUsers", socket_app_name, function (resp) {
+                                if (resp) {
+                                    var totalUsers = resp.users ? resp.users.length : 0;
+                                    var sessionId = resp.sessionId;
+                                    //$(".totalAttende" + sessionId + " b").html(totalUsers);
+                                    $('#online-users-count').html(totalUsers);
+                                }
+                            });
+                        });
+
+                        socket.on("newViewUsers",function(resp){
+                            if(resp){
+                                var totalUsers=resp.users?resp.users.length:0;
+                                var sessionId=resp.sessionId;
+                                $(".totalAttende"+sessionId+" b").html(totalUsers);
+                            }
+                        });
+
+                    });
+                </script>
