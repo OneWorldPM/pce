@@ -1397,7 +1397,7 @@ class M_sessions extends CI_Model {
                         'uuid'=>$val->cust_id,
                         'index' => (int) $key,
                         'login' => (int) $val->cust_id,
-                        'body' => (int) $val->sessions_cust_question_id,
+                        'body' => $val->question,
                         'timestamp' => strtotime($val->reg_question_date),
                         'upvotes'=>array()
 //                        'question' => $val->question,
@@ -1660,7 +1660,7 @@ class M_sessions extends CI_Model {
                         'uuid'=>$val->cust_id,
                         'index' => (int) $key,
                         'login' => (int) $val->cust_id,
-                        'body' => (int) $val->sessions_cust_question_id,
+                        'body' => $val->question,
                         'timestamp' => strtotime($val->reg_question_date),
                         'upvotes'=>array()
 //                        'question' => $val->question,
@@ -2035,6 +2035,20 @@ class M_sessions extends CI_Model {
               return $qstr->result();
             } 
               return false;
+    }
+
+    function getAskRepReport($session_id) {
+
+        $this->db->select("r.date_time,r.session_id,first_name,last_name,r.rep_type,");
+        $this->db->from('ask_a_rep r') ;
+        $this->db->join('customer_master cm', 'r.user_id = cm.cust_id');
+        $this->db->where('session_id',$session_id);
+        $result = $this->db->get();
+        if($result){
+            return $result;
+        }else{
+            return '';
+        }
     }
 
 }
