@@ -123,6 +123,7 @@ function sendNewText()
 
     /*** Listen for new texts ***/
     supportSocket.on("newLiveSupportText", function (data) {
+
         if (data.room == live_support_chat_room && data.fromType == "admin" && data.to_id == attendee_id) // Chat is to this user in this app
         {
             $('#live-support-chat-texts').append(

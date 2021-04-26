@@ -26,6 +26,9 @@
 <!-- Custom js file -->
 <script src="<?= base_url() ?>front_assets/js/custom.js?v=4"></script>
 <script src="<?= base_url() ?>assets/alertify/alertify.min.js" type="text/javascript"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@9.17.0/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
 
 
@@ -89,9 +92,19 @@
             extract(config);
 
             var socketServer = "https://socket.yourconference.live:443";
-            let socket = io(socketServer);
+            var socket = io(socketServer);
+
             socket.on('serverStatus', function (data) {
                 socket.emit('addMeToActiveListPerApp', {'user_id':user_id, 'app': socket_app_name, 'room': socket_active_user_list});
+                socket.emit("ConnectSessioViewUsers", socket_app_name);
+            });
+
+            var app_name_main = "<?=getAppName("") ?>";
+            push_notification_admin();
+            //setInterval(push_notification_admin, 2000);
+            socket.on('push_notification_change', (socket_app_name) => {
+                if (socket_app_name == app_name_main)
+                    push_notification_admin();
             });
 
             $(window).on("blur focus", function(e) {
@@ -158,13 +171,7 @@
                 });
             }
 
-            var app_name_main = "<?=getAppName("") ?>";
-            push_notification_admin();
-            //setInterval(push_notification_admin, 2000);
-            socket.on('push_notification_change', (socket_app_name) => {
-                if (socket_app_name == app_name_main)
-                    push_notification_admin();
-            });
+
 
         });
 

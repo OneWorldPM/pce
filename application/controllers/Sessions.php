@@ -63,10 +63,17 @@ class Sessions extends CI_Controller {
 
         if ($sesions->session_ended == 1) {
 
+
             if ($next_session = $this->objsessions->findNextOpenSession($sessions_id))
             {
-                header("location:" . base_url() . "sessions/attend/$next_session");
-                die();
+                if ($sesions->sessions_type_id != 16)
+                {
+                    header("location:" . base_url() . "sessions/attend/$next_session");
+                    die();
+                }else{
+                    header("location:" . base_url() . "sessions/session_end/$sessions_id");
+                    die();
+                }
             }else{
                 header("location:" . base_url() . "sessions/session_end/$sessions_id");
                 die();
@@ -484,8 +491,11 @@ class Sessions extends CI_Controller {
           $header_data["link_text"] = $sesions->link_text;
           $header_data['session_id'] = $session_id;
 
+          $data['sessions'] = $sesions;
+          //$data['subsequent'] = $this->objsessions->viewSessionsData($sesions->sessions_id);
+
         $this->load->view('header', $header_data);
-        $this->load->view('end_session');
+        $this->load->view('end_session', $data);
         $this->load->view('footer');
     }
 

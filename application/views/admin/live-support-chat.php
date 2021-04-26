@@ -149,6 +149,7 @@
                                 <h3 class="attendees-list-title panel-title">Users</h3>
                             </div>
                             <div class="panel-body users-list-body">
+                                <input id="searchUsers" type="text" style="width: 100%;margin-bottom: 5px;" placeholder="Search users ">
                                 <ul class="users-list list-group">
                                     <!-- Will be filled by listAllUsers() method -->
                                     <li class="users-list-item list-group-item">Loading...</li>
@@ -465,6 +466,18 @@
                     '<li class="users-list-item list-group-item" user-id="'+user.cust_id+'" user-name="'+user.first_name+' '+user.last_name+'" new-text="0">'+user.first_name+' '+user.last_name+'<img class="typingHint" src="'+base_url+'front_assets/support_chat/typing-animation-3x.gif" style="margin-left: 20px;width: 30px;display: none;"> <span class="badge" style="display: none;">new</span></li>'
                 );
             });
+
+            $("#searchUsers").keyup(function () {
+                let filter = $(this).val();
+                $(".users-list-item").each(function () {
+                    if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                        $(this).hide();
+                    } else {
+                        $(this).show()
+                    }
+                });
+            });
+
 
         }).fail(()=>{
             Swal.fire(
