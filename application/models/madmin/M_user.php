@@ -9,7 +9,7 @@ class M_user extends CI_Model {
     function getUserData() {
         $this->db->select('*');
         $this->db->from('customer_master c');
-        $this->db->order_by("c.cust_id", "DESC");
+        $this->db->order_by("c.first_name", "ASC");
         $user = $this->db->get();
         if ($user->num_rows() > 0) {
             return $user->result();

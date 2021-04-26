@@ -38,6 +38,7 @@ class Presenters extends CI_Controller {
         $q = $this->db->get_where('presenter', array('presenter_id' => $pid));
         if ($q->num_rows() > 0) {
             $plan = $q->row();
+            $plan->password = base64_decode($plan->password);
             $data['msg'] = 'success';
             $data['data'] = $plan;
         } else {

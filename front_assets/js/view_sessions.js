@@ -7,6 +7,115 @@ socket.on('reload-attendee-signal', function (app_name_to_relaod) {
 });
 
 
+/*** Subsequent redirection feature ***/
+socket.on('subsequent-session-redirect-signal', function (app_name_to_reload) {
+    if (app_name_to_reload == app_name)
+    {
+        fireSubsequentRedirection();
+    }
+});
+
+function fireSubsequentRedirection()
+{
+
+    if (this_session_type == 1) // CME Session
+    {
+        if (subsequent_session_1 != 'null' && subsequent_session_2 != 'null') // Subsequent PT session is set
+        {
+            Swal.fire({
+                title: '',
+                text: subsequent_session_popup_text,
+                icon: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Join Presentation Theater',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Redirecting you to '+subsequent_session_2_name, '', 'success');
+                    window.open(base_url+'sessions/attend/'+subsequent_session_2, "_self");
+                }else{
+                    window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+                }
+            })
+
+            setTimeout(()=>{
+                window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+            }, 60000 );
+
+        }else{
+            console.log("Subsequent sessions are not set.");
+            if (subsequent_session_1 != 'null')
+            {
+                console.log("Redirecting to "+subsequent_session_1);
+                window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+            }
+        }
+
+        if (subsequent_session_1 != 'null' && subsequent_session_2 == 'null')
+        {
+            // Swal.fire({
+            //     title: '',
+            //     text: subsequent_session_popup_text,
+            //     icon: 'info',
+            //     showCancelButton: false,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Join CME/CE Session',
+            //     cancelButtonText: 'Cancel'
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
+            //         window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+            //     }else{
+            //         window.open(base_url+'home/', "_self");
+            //     }
+            // })
+
+            setTimeout(()=>{
+                window.open(base_url+'home', "_self");
+            }, 60000 );
+        }else{
+            console.log("You won't be redirected to the next GME session automatically.");
+        }
+
+    }else // PT Session
+    {
+        if (subsequent_session_1 != 'null') // Subsequent CME session is set
+        {
+            Swal.fire({
+                title: '',
+                text: subsequent_session_popup_text,
+                icon: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Join CME/CE Session',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
+                    window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+                }else{
+                    window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+                }
+            })
+        }else{
+            console.log("Subsequent sessions are not set.");
+            //console.log("You will be redirected to the lobby automatically.");
+        }
+
+        // setTimeout(()=>{
+        //     window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+        // } , 60000 );
+    }
+
+    return true;
+}
+/*** End of subsequent redirection feature ***/
+
+
 /******* Saving time spent on session - by Athul ************/
 var timeSpentOnSessionFromDb;
 var timeSpentUntilNow;
@@ -539,7 +648,7 @@ function update_viewsessions_history_open()
                     dataType: "json",
                     success: function (data) {
                         if (data.status == "success") {
-                            //  $("#briefcase").val("");
+                            $("#briefcase").val("");
                             $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                         }
                         // $(location).attr('href', base_url+'sessions/downloadNote/'+briefcase);
@@ -572,7 +681,7 @@ function update_viewsessions_history_open()
                                 $("#briefcase").val("");
                                 $("#success_briefcase").text("Add Notes Successfully").fadeIn('slow').fadeOut(5000);
                             }
-                            $(location).attr('href', base_url+'sessions/downloadNote/'+briefcase);
+                            //$(location).attr('href', base_url+'sessions/downloadNote/'+briefcase);
                         }
                     });
                 }
@@ -781,7 +890,7 @@ function get_poll_vot_section() {
 
                                 if(!window.isComparisonpoll)
                                 {
-                                    $('.progress_bar_new').css('background', '#035a76');
+                                    $('.progress_bar_new').css('background', '#45c0ea');
                                     $("#result_section").append("<label>"+pollIteration+". " + val.option + "</label>");
 
                                 }
@@ -790,7 +899,7 @@ function get_poll_vot_section() {
                             } else {
                                 if(!window.isComparisonpoll)
                                 {
-                                    $('.progress_bar_new').css('background', '#035a76');
+                                    $('.progress_bar_new').css('background', '#45c0ea');
                                     $("#result_section").append("<label>"+pollIteration+". " + val.option + "</label>");
                                 }
 
@@ -1090,3 +1199,28 @@ function calcTime(offset) {
 
     return nd;
 }
+
+
+$(document).ready(function () {
+
+    //Ask a rep
+    $('#askARepSendBtn').on('click', function () {
+
+        let rep_type = $('input[name=askarepRadio]:checked').val();
+
+        $.post(base_url+"sessions/askARep",
+            {
+                rep_type: rep_type,
+                user_id: user_id,
+                session_id: session_id
+            })
+            .done(function( data ) {
+                data = JSON.parse(data);
+                $('.ask-a-rep').html(data.msg);
+            })
+            .fail(function() {
+                $('.ask-a-rep').html('Unable to request, please try again.');
+            });
+
+    });
+});

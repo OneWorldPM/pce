@@ -61,11 +61,31 @@ class Sessions extends CI_Controller {
 
         $sesions = $this->objsessions->viewSessionsData($sessions_id);
 
-        if (date("Y-m-d H:i:s") > date("Y-m-d H:i:s", strtotime($sesions->sessions_date . ' ' . $sesions->end_time)) && $sessions_id != 25) {
-            header("location:" . base_url() . "sessions/session_end/$sessions_id");
-            die();
+        if ($sesions->session_ended == 1) {
+
+
+            if ($next_session = $this->objsessions->findNextOpenSession($sessions_id))
+            {
+                if ($sesions->sessions_type_id != 16)
+                {
+                    header("location:" . base_url() . "sessions/attend/$next_session");
+                    die();
+                }else{
+                    header("location:" . base_url() . "sessions/session_end/$sessions_id");
+                    die();
+                }
+            }else{
+                header("location:" . base_url() . "sessions/session_end/$sessions_id");
+                die();
+            }
         }
 
+//        if (date("Y-m-d H:i:s") > date("Y-m-d H:i:s", strtotime($sesions->sessions_date . ' ' . $sesions->end_time)) && $sessions_id != 25) {
+//            header("location:" . base_url() . "sessions/session_end/$sessions_id");
+//            die();
+//        }
+
+        $header_data["sessions"] = $sesions;
         $header_data["sesions_logo"] = $sesions->sessions_logo;
         $header_data["sesions_logo_width"] = $sesions->sessions_logo_width;
         $header_data["sesions_logo_height"] = $sesions->sessions_logo_height;
@@ -82,6 +102,9 @@ class Sessions extends CI_Controller {
         $header_data["url_link"] = $sesions->url_link;
         $header_data["link_text"] = $sesions->link_text;
         $header_data['session_id'] = $sessions_id;
+
+        $sesions->subsequent_session_1_name = $this->objsessions->sessionNameById($sesions->subsequent_session_1);
+        $sesions->subsequent_session_2_name = $this->objsessions->sessionNameById($sesions->subsequent_session_2);
 
         $data['isMobile'] = $this->MobileDetect->isMobile();
 
@@ -317,11 +340,19 @@ class Sessions extends CI_Controller {
 
     public function attend($sessions_id) {
 
-        $headerData['session_id'] = $sessions_id;
+        $sesions = $this->objsessions->viewSessionsData($sessions_id);
 
-        $data["sessions"] = $this->objsessions->viewSessionsData($sessions_id);
+        $data["sessions"] = $sesions;
 
-        $this->load->view('header', $headerData);
+        $header_data['sessions'] = $sesions;
+        $header_data['session_id'] = $sessions_id;
+        $header_data["sesions_logo"] = $sesions->sessions_logo;
+        $header_data["sesions_logo_width"] = $sesions->sessions_logo_width;
+        $header_data["sesions_logo_height"] = $sesions->sessions_logo_height;
+        $header_data["sessions_addnl_logo"] = $sesions->sessions_addnl_logo;
+        $header_data["sponsor_type"] = $sesions->sponsor_type;
+
+        $this->load->view('header', $header_data);
         $this->load->view('view_attend', $data);
         $this->load->view('footer');
     }
@@ -460,8 +491,11 @@ class Sessions extends CI_Controller {
           $header_data["link_text"] = $sesions->link_text;
           $header_data['session_id'] = $session_id;
 
+          $data['sessions'] = $sesions;
+          //$data['subsequent'] = $this->objsessions->viewSessionsData($sesions->sessions_id);
+
         $this->load->view('header', $header_data);
-        $this->load->view('end_session');
+        $this->load->view('end_session', $data);
         $this->load->view('footer');
     }
 
@@ -579,5 +613,40 @@ class Sessions extends CI_Controller {
         return;
     }
 
+    public function testing_next_session($session)
+    {
+        var_dump($this->objsessions->findNextOpenSession($session));
+    }
+
+
+    public function askARep()
+    {
+        $post = $this->input->post();
+
+        $data = array(
+            'session_id' => $post['session_id'],
+            'user_id' => $post['user_id'],
+            'rep_type' => $post['rep_type'],
+            'date_time' => date('Y-m-d H:i:s')
+        );
+
+        $this->db->select('*');
+        $this->db->from('ask_a_rep');
+        $this->db->where(array('session_id'=>$post['session_id'], 'user_id'=>$post['user_id'], 'rep_type'=>$post['rep_type']));
+        $response = $this->db->get();
+        if ($response->num_rows() > 0)
+            echo json_encode(array('status'=>'failed', 'msg'=>"You have already requested to be contacted by a representative ({$post['rep_type']}).<br> A representative will contact you shortly."));
+        else
+        {
+            $this->db->insert('ask_a_rep', $data);
+            if ($this->db->affected_rows() > 0)
+                echo json_encode(array('status'=>'success', 'msg'=>"Thank you for your request. <br> A representative will contact you shortly."));
+            else
+                echo json_encode(array('status'=>'failed', 'msg'=>"Unable to request, please try again."));
+        }
+
+        return;
+
+    }
 
 }

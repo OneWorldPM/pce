@@ -115,7 +115,7 @@ $user_role = $this->session->userdata('role');
                                             foreach ($sessions as $val) {
                                                 $toolboxItems = explode(',', $val->right_bar);
                                                 ?>
-                                                <tr>
+                                                <tr style="background: <?=($val->session_ended == 0)?'#f1fff1':'#fbe9e9'?>;">
                                                      <td><?= date("h:i A", strtotime($val->time_slot)) . ' - ' . date("h:i A", strtotime($val->end_time)) ?></td>
                                                     <td><?= date("Y-m-d", strtotime($val->sessions_date)) ?></td>
                                                     <td><?= $val->sessions_id ?></td>
@@ -186,6 +186,10 @@ $user_role = $this->session->userdata('role');
                                                         <small><span style="float: left;">Resources</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("resources", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
                                                         <small><span style="float: left;">Attendee Chat</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("chat", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
                                                         <small><span style="float: left;">Notes</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("notes", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
+                                                        <small><span style="float: left;">Ask A Rep</span> <i class="fa fa-circle " aria-hidden="true" style="color: <?=(in_array("askarep", $toolboxItems))?'#0ab50a':'#ff2525'?>;float: right;"></i></small><br>
+
+                                                        <br>
+
                                                         <?php $total=$mod_count+$pres_count;?>
                                                         <small><span style="float: left;">Presenters + Moderators </span> <?= (isset($total) && !empty($total) ) ?'<span style="float:right">'. $total : "".'</span>' ?></small><br>
                                                         <?php if(isset($val->getChatAll) && !empty($val->getChatAll)){
@@ -215,6 +219,7 @@ $user_role = $this->session->userdata('role');
                                                         <a href="<?= base_url() ?>admin/sessions/edit_sessions/<?= $val->sessions_id ?>" class="btn btn-green btn-sm">Edit</a>
                                                         <?php if ($user_role == 'super_admin') { ?>
                                                         <button class="reload-attendee btn btn-danger" app-name="<?=getAppName($val->sessions_id) ?>">Reload Attendee</button>
+                                                        <button class="subsequent_session_redirect btn btn-success margin-top-5" app-name="<?=getAppName($val->sessions_id)?>" session-id="<?=$val->sessions_id?>">Redirect</button>
                                                         <?php } ?>
                                                     </td>
                                                     <td>
@@ -243,12 +248,15 @@ $user_role = $this->session->userdata('role');
                                                             <button href-url="<?= base_url() ?>admin/sessions/reset_sessions/<?= $val->sessions_id ?>" session-name="<?= $val->session_title ?>" style="margin-bottom: 5px;"  class="clear-json-btn btn btn-danger btn-sm">Clear JSON</button>
                                                         <?php } ?>
                                                         <?php if ($user_role == 'super_admin') { ?>
-                                                            <a data-session-id="<?= $val->sessions_id ?>" class="btn btn-danger btn-sm delete_session"  style="font-size: 10px !important; margin-bottom: 5px;">Delete Session</a>
+<!--                                                            <a data-session-id="<?//= $val->sessions_id ?>" class="btn btn-danger btn-sm delete_session"  style="font-size: 10px !important; margin-bottom: 5px;">Delete Session</a>-->
                                                         <?php } ?>
                                                         <br><br>
 														 <a href="<?= base_url() ?>admin/sessions/flash_report/<?= $val->sessions_id ?>" style="margin-bottom: 5px;" class="btn btn-info btn-sm">Flash Report</a>
                                                          <a href="<?= base_url() ?>admin/sessions/polling_report/<?= $val->sessions_id ?>" class="btn btn-azure btn-sm" style="margin-bottom: 5px;">Polling Report</a><br>
                                                          <a href="<?= base_url() ?>admin/sessions/attendee_question_report/<?= $val->sessions_id ?>" class="btn btn-azure btn-sm">Questions Report</a>
+                                                        <?php if ($user_role == 'super_admin') { ?>
+                                                            <br><br><a data-session-id="<?=$val->sessions_id?>" data-session-name="<?=$val->session_title?>" data-session-status="<?=$val->session_ended?>" class="btn <?=($val->session_ended == 0)?'btn-danger':'btn-success'?> end_session"  style="font-size: 15px !important; margin-bottom: 5px;"><?=($val->session_ended == 0)?'<i class="fa fa-stop-circle-o" aria-hidden="true"></i> End Session':'<i class="fa fa-play-circle-o" aria-hidden="true"></i> Open Session'?></a>
+                                                        <?php } ?>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -339,6 +347,26 @@ switch ($msg) {
         socket.emit('reload-attendee', $(this).attr('app-name'));
     });
 
+        $('#sessions_table').on('click', '.subsequent_session_redirect', function () {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                html: "This will either redirect the attendee to the subsequent session or open a pop-up asking where to go<br>(Regardless the session is over or not)",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed!'
+            }).then((result) => {
+                if (result.isConfirmed)
+                {
+                    socket.emit('subsequent-session-redirect', $(this).attr('app-name'));
+                    alertify.success('Redirection initiated!');
+                }
+            })
+
+        });
+
     $('#sessions_table').on('click', '.clear-json-btn', function () {
 
         let session_name = $(this).attr('session-name');
@@ -358,6 +386,77 @@ switch ($msg) {
             }
         })
     });
+
+        $('#sessions_table').on('click', '.end_session', function () {
+
+            let session_id = $(this).data('session-id');
+            let session_name = $(this).data('session-name');
+            let status = ($(this).data('session-status') == 1)?0:1;
+            let info_text;
+            let buton_text;
+            let button = $(this);
+            let row = $(this).parent().parent();
+
+            if (status == 1)
+            {
+                buton_text = 'Yes, end it!';
+                info_text = "This will end session ("+session_name+"), further visits to this session will take attendees to the next session configured! <br><br> This does not redirect attendees or reload their page though";
+            }
+            else{
+                buton_text = 'Yes, open it!';
+                info_text = "This will open session ("+session_name+") <br><br> This does not redirect attendees or reload their page though";
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                html: info_text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: buton_text
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post("<?= base_url() ?>admin/sessions/change_session_status",
+                        {
+                            "id":session_id,
+                            "status": status
+                        },
+                        function (response){
+                            response = JSON.parse(response);
+                            if(response.status == "success"){
+
+                                if(status == 1)
+                                {
+                                    button.html('<i class="fa fa-play-circle-o" aria-hidden="true"></i> Open Session');
+                                    button.removeClass('btn-danger');
+                                    button.addClass('btn-success');
+                                    button.data('session-status', 1);
+                                    row.css('background', '#fbe9e9');
+                                } else {
+                                    button.html('<i class="fa fa-stop-circle-o" aria-hidden="true"></i> End Session');
+                                    button.removeClass('btn-success');
+                                    button.addClass('btn-danger');
+                                    button.data('session-status', 0)
+                                    row.css('background', '#f1fff1');
+                                }
+
+                                Swal.fire(
+                                    'Done!',
+                                    'Session status changed!',
+                                    'success'
+                                )
+                            }else{
+                                Swal.fire(
+                                    'Error!',
+                                    'Unable to change session status!',
+                                    'error'
+                                )
+                            }
+                    });
+                }
+            })
+        });
 
     // This will confirm to send JSON if already sent
 $('#sessions_table').on('click','.send-json', function () {

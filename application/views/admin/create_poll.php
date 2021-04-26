@@ -90,6 +90,12 @@ if (isset($_GET['testing']))
                                             <label class="text-large">Instruction:</label>
                                             <input type="text" name="poll_instruction" id="poll_instruction" value="<?= isset($sessions_data) ? $sessions_data->poll_instruction : "" ?>" placeholder="Slide Number" class="form-control">
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="text-large">External Reference:</label>
+                                            <input type="text" name="external_reference" id="external_reference" value="<?= isset($sessions_data->external_reference) ? $sessions_data->external_reference : "" ?>" placeholder="External Reference" class="form-control">
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="text-large">Select Poll Type:</label>
                                             <select class="form-control" id="poll_type_id" name="poll_type_id">
@@ -139,7 +145,7 @@ if (isset($_GET['testing']))
                                             <?php } ?>
                                         </div>
                                         <?php
-                                        if (!isset($sessions_data)) {
+                                        if (!isset($sessions_data) && empty($sessions_data)) {
                                             ?>
                                             <div class="form-group">
                                                 <label class="text-large">Poll Comparisons with:</label>
@@ -161,19 +167,19 @@ if (isset($_GET['testing']))
                                             <div class="form-group">
                                                 <label class="text-large">Poll Comparisons with:</label>
                                                 <select class="form-control" id="poll_comparisons_id" name="poll_comparisons_id">
-                                                    <option value="">None</option>
+                                                    <option value="0">None</option>
                                                     <?php
-                                                    if (isset($poll_type) && !empty($poll_type)) {
-                                                        foreach ($poll_type as $value) {
+                                                    if (isset($sessions_data->all_other_surveys) && !empty($sessions_data->all_other_surveys)) {
+                                                        foreach ($sessions_data->all_other_surveys as $survey) {
                                                             ?>
-                                                            <option value="<?= $value->poll_type_id ?>" <?= isset($sessions_data) ? ($sessions_data->poll_type_id == $value->poll_type_id) ? "selected" : "" : "" ?>><?= $value->poll_type ?></option>
+                                                            <option value="<?= $survey->sessions_poll_question_id ?>" <?=($survey->sessions_poll_question_id == $sessions_data->comparison_with[0]->sessions_poll_question_id)?"selected": ""?>><?= $survey->poll_name ?></option>
                                                             <?php
                                                         }
                                                     }
                                                     ?>
                                                 </select>
                                             </div>
-                                       <?php }
+                                        <?php }
                                         ?>
                                         <h5 class="over-title margin-bottom-15">
                                             <button type="button" id="<?= isset($sessions_data) ? "edit_create_poll" : "save_create_poll" ?>" name="<?= isset($sessions_data) ? "edit_create_poll" : "save_create_poll" ?>" class="btn btn-green add-row">

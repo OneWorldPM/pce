@@ -1,7 +1,7 @@
 <link href="<?= base_url() ?>assets/css/attendee-session-view.css?v=200" rel="stylesheet">
 
 <!-- Please add styles only in this CSS file, NOT directly on this HTML file -->
-<link href="<?= base_url() ?>front_assets/css/view_sessions.css?v=19" rel="stylesheet">
+<link href="<?= base_url() ?>front_assets/css/view_sessions.css?v=20" rel="stylesheet">
 
 
 <section class="parallax" style="background: url('<?= base_url() ?>front_assets/images/pres_bg.jpg') no-repeat;">
@@ -142,6 +142,11 @@ if (isset($sessions)) {
                     <li data-type="questionsSticky"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
                     <?php
                 }
+                if(sessionRightBarControl($sessions->right_bar, "askarep")){
+                    ?>
+                    <li data-type="askarepSticky"><img src="<?=base_url('front_assets/images/conversation_icon.png')?>" style="width: 25px;padding-bottom: 3px;"> <span>Ask a Rep</span></li>
+                    <?php
+                }
                     ?>
                 <li id="adminChatStickeyIcon" data-type="adminChatSticky" class="admin-chat-stickey-icon" style="display: <?=(sessionRightBarControl($sessions->right_bar, "adminChat"))?'block':'none'?>;">
                     <span class="new-admin-chat-badge badge" style="position: absolute;margin-left: -29px;margin-top: -10px;border-radius: 9px;font-size: 10px;background-color: red;padding-right: 7px;padding-left: 4px;padding-bottom: 4px; display: none;">New</span>
@@ -179,6 +184,13 @@ if (isset($sessions)) {
                         <li data-type="questionsSticky"><a data-type2="off">Questions</a></li>
                         <?php
                     }
+
+                    if(sessionRightBarControl($sessions->right_bar, "askarep")){
+                        ?>
+                        <li data-type="askarepSticky"><img src="<?=base_url('front_assets/images/conversation_icon.png')?>" style="width: 25px;padding-bottom: 3px;"> <span>Ask a Rep</span></li>
+                        <?php
+                    }
+
                     if(sessionRightBarControl($sessions->right_bar, "adminChat")){
                         ?>
                         <li data-type="adminChatSticky"><a data-type2="off">Chat with Admin</a></li>
@@ -196,10 +208,10 @@ if (isset($sessions)) {
         <div id="briefcase_section">
             <div id="briefcase_section">
                 <div class="col-md-12 input-group">
-                    <textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?= isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
+                    <textarea type="text" id="briefcase" class="form-control" placeholder="Add Notes (press enter to save)" value=""><?= isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
                 </div>
-                <a class="button color btn"  id="briefcase_send"><span>Save</span></a>
-                <a class="button color btn" id="downloadbriefcase"><span>Download</span></a>
+                <a class="button color btn btn-sm"  id="briefcase_send"><span>SUBMIT</span></a>
+<!--                <a class="button color btn" id="downloadbriefcase"><span>Download</span></a>-->
             </div>
             <span id='error_briefcase' style='color:red;'></span>
             <span id='success_briefcase' style='color:green;'></span>
@@ -431,6 +443,32 @@ if (isset($sessions)) {
 
 </div>
 
+<div class="rightSticykPopup askarepSticky" style="display: none">
+    <div class="header"><span></span>
+        <div class="rightTool">
+            <i id="minimizeAskARep" class="fa fa-minus" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="content">
+        <div class="contentHeader">
+            ASK A REP
+        </div>
+        <div class="ask-a-rep" style="color: white;">
+            I would like a representative to contact me.
+        </div>
+
+        <div class="input-group" style="border-radius: 5px; position: absolute; bottom: 0; width: 100%;background-color: white;">
+            <h6 style="margin: 0 0 0 10px;"><input type="radio" name="askarepRadio" value="Rep" checked> Reach a Rep</h6>
+            <h6 style="margin: 0 0 0 10px;"><input type="radio" name="askarepRadio" value="MSL"> Reach an MSL</h6>
+            <span class="input-group-btn">
+        <button id="askARepSendBtn" class="btn btn-primary" type="button">SEND</button>
+      </span>
+        </div>
+
+    </div>
+
+</div>
+
 <script>
     var base_url = "<?=base_url()?>";
     var site_url = "<?= site_url() ?>";
@@ -442,6 +480,14 @@ if (isset($sessions)) {
     var session_end_datetime =  new Date("<?= date('M d, Y', strtotime($sessions->sessions_date)) . ' ' . $sessions->end_time ?>");
 
     var socket_session_name = "<?=getAppName('_admin-to-attendee-chat')?>";
+
+    var this_session_type = "<?=$sessions->sessions_type_id?>";
+    var subsequent_session_1 = "<?=($sessions->subsequent_session_1 && $sessions->subsequent_session_1 != null)?$sessions->subsequent_session_1:'null'?>";
+    var subsequent_session_1_name = "<?=$sessions->subsequent_session_1_name?>";
+    var subsequent_session_2 = "<?=($sessions->subsequent_session_2 && $sessions->subsequent_session_2 != null)?$sessions->subsequent_session_2:'null'?>";
+    var subsequent_session_2_name = "<?=$sessions->subsequent_session_2_name?>";
+    var subsequent_session_popup_text = `<?=$sessions->subsequent_session_popup_text?>`;
+
 </script>
 <?= getSocketScript()?>
 <script src="<?= base_url() ?>front_assets/js/custom-fullscreen.js"></script>

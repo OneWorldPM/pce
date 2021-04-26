@@ -9,7 +9,7 @@ $presenter_details = $this->common->get_presenter_data($this->session->userdata(
 <!-- start: HEAD -->
 <head>
     <meta charset="UTF-8">
-    <title>Presenter</title>
+    <title>PCE | Presenter</title>
     <!-- start: META -->
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
     <meta charset="utf-8" />
