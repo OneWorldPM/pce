@@ -1,31 +1,11 @@
-<style>
-@media screen and (-webkit-min-device-pixel-ratio:0) {  /*safari and chrome*/
-    select {
-        height:30px;
-        line-height:30px;
-        background:#f4f4f4;
-    } 
-}
-select::-moz-focus-inner { /*Remove button padding in FF*/ 
-    border: 0;
-    padding: 0;
-}
-@-moz-document url-prefix() { /* targets Firefox only */
-    select {
-        padding: 15px 0!important;
-    }
-}        
-@media screen\0 { /* IE Hacks: targets IE 8, 9 and 10 */        
-    select {
-        height:30px;
-        line-height:30px;
-    }     
-}
-</style>
-
 <?php
 $user_role = $this->session->userdata('role');
 ?>
+<style>
+    .panel{
+        color: #333;
+    }
+</style>
 <div class="main-content">
     <div class="wrap-content container" id="container">
         <!-- start: PAGE TITLE -->
@@ -68,6 +48,10 @@ $user_role = $this->session->userdata('role');
                                     <div class="form-group">
                                         <label class="text-large text-bold">Sessions Description</label>
                                         <textarea class="form-control" style="color: #000;" name="sessions_description" id="sessions_description"><?= (isset($sessions_edit) && !empty($sessions_edit) ) ? $sessions_edit->sessions_description : "" ?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-large text-bold">Landing Page Text</label>
+                                        <textarea class="form-control" style="color: #000;" name="landing_page_text" id="landing_page_text"><?= (isset($sessions_edit->landing_page_text) && ($sessions_edit->landing_page_text != NULL) ) ? $sessions_edit->landing_page_text : "" ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="text-large text-bold">Session Notes</label>
@@ -199,6 +183,52 @@ $user_role = $this->session->userdata('role');
                                         ?>
                                     </div>
 
+
+                                <hr style="border: 2px solid;"/>
+
+                                <div class="row" <?=($user_role != 'super_admin')?'style="display:none"':''?>>
+                                    <label class="col-md-12 text-large text-bold">
+                                        Redirect On Button Click <span class="badge badge-success">new</span>
+                                        <br><small style="color: red;font-size: 12px;">Regardless the session is over or not, this feature will redirect the user on a button click.</small>
+                                        <br><small style="color: red;font-size: 12px;">This will have no effect unless configured before attendees loading their page.</small>
+                                    </label>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-large" style="color: #05969d;">Subsequent CME Session</label>
+                                            <select class="form-control" id="subsequent_session_1" name="subsequent_session_1" <?=($user_role != 'super_admin')?"style='pointer-events:none;' readonly":''?>>
+                                                <option value="null">Unset</option>
+                                                <?php foreach ($all_sessions as $session): ?>
+                                                    <option value="<?=$session['sessions_id']?>" <?=(isset($sessions_edit->subsequent_session_1) && $sessions_edit->subsequent_session_1 == $session['sessions_id'])?'selected':''?>>(<?=$session['sessions_id']?>) <?=$session['session_title']?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+
+                                            <small style="color: darkred;">Choose subsequent CME session regardless the order of the sessions.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-large" style="color: #05969d;">Subsequent PT Session</label>
+                                            <select class="form-control" id="subsequent_session_2" name="subsequent_session_2" <?=($user_role != 'super_admin')?"style='pointer-events:none;' readonly":''?>>
+                                                <option value="null">Unset</option>
+                                                <?php foreach ($all_sessions as $session): ?>
+                                                    <option value="<?=$session['sessions_id']?>" <?=(isset($sessions_edit->subsequent_session_2) && $sessions_edit->subsequent_session_2 == $session['sessions_id'])?'selected':''?>>(<?=$session['sessions_id']?>) <?=$session['session_title']?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <small style="color: darkred;">Choose subsequent PT session regardless the order of the sessions.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-large">Text in the pop-up</label>
+                                            <textarea class="form-control" id="subsequent_session_popup_text" name="subsequent_session_popup_text" maxlength="65000" style="color: black;"><?=(isset($sessions_edit->subsequent_session_popup_text))?$sessions_edit->subsequent_session_popup_text:'This session is over. Click on the following buttons to attend one of the next sessions.'?></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
                                     <div class="row" <?=($user_role != 'super_admin')?'style="display:none"':''?>>
                                         <label class="col-md-12 text-large text-bold">Select Sessions Tracks</label>
                                         <?php
@@ -245,6 +275,7 @@ $user_role = $this->session->userdata('role');
                                             <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?=$right_bar?sessionRightBarControl($right_bar, "notes", "checked"):""?> value="notes">Notes</label>
                                             <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?=$right_bar?sessionRightBarControl($right_bar, "questions", "checked"):""?> value="questions">Questions</label>
                                             <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?=$right_bar?sessionRightBarControl($right_bar, "adminChat", "checked"):""?> value="adminChat">Admin Chat</label>
+                                            <label class="checkbox-inline"><input type="checkbox" name="session_right_bar[]" <?=$right_bar?sessionRightBarControl($right_bar, "askarep", "checked"):""?> value="askarep">Ask A Rep</label>
                                         </div>
                                     </div>
 
@@ -477,8 +508,31 @@ $user_role = $this->session->userdata('role');
 </div>
 </div>
 
+
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
+
+
+        $('#landing_page_text, #sessions_description').summernote({
+            height: 200,
+            toolbar:
+                [
+                    ["history", ["undo", "redo"]],
+                    ["style", ["style"]],
+                    ["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+                    ['fontsize', ['fontsize']],
+                    ["color", ["forecolor", "backcolor", "color"]],
+                    ["paragraph", ["ul", "ol", "paragraph", "height"]],
+                    ["table", ["table"]],
+                    ["insert", ["link", "resizedDataImage", "picture", "video"]],
+                    ["view", ["codeview"] ]
+                ],
+            fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
+        });
+
 
         $('input[readonly]').on('click', function () {
             alertify.error("You are not authorized to edit this field!");

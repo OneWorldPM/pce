@@ -75,6 +75,9 @@ class Sessions extends CI_Controller {
         $data['presenter'] = $this->msessions->getPresenterDetails();
         $data['sessions_type'] = $this->msessions->getSessionTypes();
         $data['session_tracks'] = $this->msessions->getSessionTracks();
+
+        $data['all_sessions'] = $this->msessions->getAllSessions();
+
         $this->load->view('admin/header');
         $this->load->view('admin/add_sessions', $data);
         $this->load->view('admin/footer');
@@ -1017,6 +1020,25 @@ public function archive_session() {
     $this->load->view('admin/header');
     $this->load->view('admin/sessions', $data);
     $this->load->view('admin/footer');
+}
+
+
+public function change_session_status()
+{
+    $post = $this->input->post();
+    $session_id = $post['id'];
+    $status = $post['status'];
+
+    $this->db->set('session_ended', $status);
+    $this->db->where('sessions_id', $session_id);
+    $this->db->update('sessions');
+
+    if($this->db->affected_rows() > 0)
+        echo json_encode(array('status'=>'success'));
+    else
+        echo json_encode(array('status'=>'failed'));
+
+
 }
 
 // 

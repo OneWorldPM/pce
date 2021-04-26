@@ -60,4 +60,8 @@ class User extends CI_Controller {
         $this->load->view('admin/footer');
     }
 
+    public function allUsersJson()
+    {
+        echo json_encode($this->muser->getUserData());
+    }
 }

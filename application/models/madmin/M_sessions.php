@@ -299,6 +299,7 @@ class M_sessions extends CI_Model {
 			'moderator_id' => $moderator_id,
             'session_title' => trim($post['session_title']),
             'sessions_description' => trim($post['sessions_description']),
+            'landing_page_text' => trim($post['landing_page_text']),
             'cco_envent_id' => trim($post['cco_envent_id']),
             'sessions_date' => date("Y-m-d", strtotime($post['sessions_date'])),
             'time_slot' => date("H:i", strtotime($post['time_slot'])),
@@ -323,6 +324,9 @@ class M_sessions extends CI_Model {
             'ppt_uploaded' => (isset($post['ppt_uploaded'])) ? $post['ppt_uploaded'] : 0,
             'ppt_link_shared' => (isset($post['ppt_link_shared'])) ? $post['ppt_link_shared'] : 0,
             'session_notes'=>$post['session_notes'],
+            'subsequent_session_1'=>(trim($post['subsequent_session_1']) == 'null')?null:trim($post['subsequent_session_1']),
+            'subsequent_session_2'=>(trim($post['subsequent_session_2']) == 'null')?null:trim($post['subsequent_session_2']),
+            'subsequent_session_popup_text'=>trim($post['subsequent_session_popup_text'])
             
         );
         $this->db->insert("sessions", $set);
@@ -488,6 +492,7 @@ class M_sessions extends CI_Model {
             'session_title' => trim($post['session_title']),
             'cco_envent_id' => trim($post['cco_envent_id']),
             'sessions_description' => trim($post['sessions_description']),
+            'landing_page_text' => trim($post['landing_page_text']),
             'sessions_date' => date("Y-m-d", strtotime($post['sessions_date'])),
              'zoom_link' => trim($post['zoom_link']),
              'zoom_number' => trim($post['zoom_number']),
@@ -511,6 +516,9 @@ class M_sessions extends CI_Model {
             'ppt_uploaded' => (isset($post['ppt_uploaded'])) ? $post['ppt_uploaded'] : 0,
             'ppt_link_shared' => (isset($post['ppt_link_shared'])) ? $post['ppt_link_shared'] : 0,
             'session_notes'=>$post['session_notes'],
+            'subsequent_session_1'=>(trim($post['subsequent_session_1']) == 'null')?null:trim($post['subsequent_session_1']),
+            'subsequent_session_2'=>(trim($post['subsequent_session_2']) == 'null')?null:trim($post['subsequent_session_2']),
+            'subsequent_session_popup_text'=>trim($post['subsequent_session_popup_text'])
 
         );
         $this->db->update("sessions", $set, array("sessions_id" => $post['sessions_id']));
@@ -633,6 +641,7 @@ class M_sessions extends CI_Model {
             'poll_name' => trim($post['poll_name']),
             'slide_number' => trim($post['slide_number']),
             'poll_instruction' => trim($post['poll_instruction']),
+            'external_reference' => trim($post['external_reference']),
             'poll_comparisons_id' => 0,
             "create_poll_date" => date("Y-m-d h:i")
         );
@@ -763,6 +772,7 @@ class M_sessions extends CI_Model {
             'poll_name' => trim($post['poll_name']),
             'slide_number' => trim($post['slide_number']),
             'poll_instruction' => trim($post['poll_instruction']),
+            'external_reference' => trim($post['external_reference']),
             'poll_type_id' => $post['poll_type_id'],
             'poll_comparisons_id' => (isset($post['poll_comparisons_id']))?$post['poll_comparisons_id']:0
         );
@@ -1275,8 +1285,8 @@ class M_sessions extends CI_Model {
                         'access' => 50,
                         'created_time' => $start_date_time,
                         'last_connected' => $end_date_time,
-//                        'total_time' => $total_time,
-                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
+                        'total_time' => $total_time,
+                        //'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
                         'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
                         'alertness' => array("checks_returned" => "", "understood" => ""),
                         'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
@@ -1337,7 +1347,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,
@@ -1351,7 +1361,7 @@ class M_sessions extends CI_Model {
                             'uuid' => '',
                             'text' => $sessions_poll_question->question,
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'options' => $options,
                             'total_votes' => $total_votes,
@@ -1363,7 +1373,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,
@@ -1538,8 +1548,8 @@ class M_sessions extends CI_Model {
                         'access' => 50,
                         'created_time' => $start_date_time,
                         'last_connected' => $end_date_time,
-//                        'total_time' => $total_time,
-                        'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
+                        'total_time' => $total_time,
+                        //'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
                         'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
                         'alertness' => array("checks_returned" => "", "understood" => ""),
                         'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
@@ -1600,7 +1610,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,
@@ -1614,7 +1624,7 @@ class M_sessions extends CI_Model {
                             'uuid' => '',
                             'text' => $sessions_poll_question->question,
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'options' => $options,
                             'total_votes' => $total_votes,
@@ -1626,7 +1636,7 @@ class M_sessions extends CI_Model {
                         $polls[] = array(
                             'uuid' => '',
                             'status' => 4000,
-                            'external_reference' => "",
+                            'external_reference' => $sessions_poll_question->external_reference,
                             'poll_id' => (int) $sessions_poll_question->sessions_poll_question_id,
                             'text' => $sessions_poll_question->question,
                             'options' => $options,

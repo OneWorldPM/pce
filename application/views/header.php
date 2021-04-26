@@ -17,7 +17,7 @@ else
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <link rel="shortcut icon" href="<?= base_url() ?>front_assets/images/favicon.png">
-        <title>Virtual Conference & Trade Show</title>
+        <title>PCE</title>
         <!-- Bootstrap Core CSS -->
         <link href="<?= base_url() ?>front_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="<?= base_url() ?>front_assets/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
@@ -304,11 +304,20 @@ else
                         if ($this->session->userdata('cid') != "") {
                             $profile_data = $this->common->get_user_details($this->session->userdata('cid'));
                             ?>
-                            <div id="logo" style="margin-right: 7px;">
-                                <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png" style="margin-top: 12px; cursor: auto">
-                                    <img src="<?= base_url() ?>front_assets/images/pce_logo.png" alt="CCO Logo">
-                                </a>
-                            </div>
+
+                                <?php if (isset($sessions->sessions_type_id) && $sessions->sessions_type_id == 16): ?>
+                                <div id="logo" style="margin-right: 7px;">
+                                    <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png" style="margin-top: 12px; cursor: auto">
+                                        <img src="<?= base_url() ?>front_assets/images/Clinical_Care_Solutions_Logo.png" alt="CCO Logo">
+                                    </a>
+                                </div>
+                                <?php else: ?>
+                                <div id="logo" style="margin-right: 7px;">
+                                    <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png" style="margin-top: 12px; cursor: auto">
+                                        <img src="<?= base_url() ?>front_assets/images/pce_logo.png" alt="CCO Logo">
+                                    </a>
+                                </div>
+                                <?php endif; ?>
                         <?php } else { ?>
                             <div id="logo">
                                 <a href="#" class="logo" data-dark-logo="<?= base_url() ?>front_assets/images/logo_new.png">
@@ -347,6 +356,8 @@ else
                                     if ($this->session->userdata('cid') != "") {
                                         $profile_data = $this->common->get_user_details($this->session->userdata('cid'));
                                         ?>
+                                        <button class="live-support-open-button nav navbar-nav navbar-right" onclick="openLiveSupportChat()" style="background-color: #<?=$themeColour?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Technical Support</button>
+
                                         <ul class="main-menu nav navbar-nav navbar-right">
                                             <?php if (1 == 2) { ?>
                                                 <li class="dropdown" style="margin-top: -9px;">
@@ -386,9 +397,9 @@ else
                                                 </li>
                                             <?php } ?>
                                         </ul>
-                                        <ul class="main-menu nav navbar-nav navbar-right">
-                                            <li><a href="https://yourconference.live/support" target="_blank" class="hoverThemeColour">HELP DESK</a></li>
-                                        </ul>
+<!--                                        <ul class="main-menu nav navbar-nav navbar-right">-->
+<!--                                            <li><a href="https://yourconference.live/support" target="_blank" class="hoverThemeColour">HELP DESK</a></li>-->
+<!--                                        </ul>-->
                                         <ul class="main-menu nav navbar-nav navbar-right">
                                             <?php
                                             if (isset($attendee_view_links_status) && isset($attendee_view_links_status)) {
@@ -405,7 +416,7 @@ else
                                             if (isset($right_bar) && isset($tool_box_status)) {
                                             if ($tool_box_status == "1" && sessionRightBarControl($right_bar, "resources")) {
                                             ?>
-                                                <li class="sticky_resources_open" data-type="resourcesSticky"><a data-type2="off" class="hoverThemeColour">RESOURCES</a></li>
+<!--                                                <li class="sticky_resources_open" data-type="resourcesSticky"><a data-type2="off" class="hoverThemeColour">RESOURCES</a></li>-->
                                             <?php
                                                }}
                                             ?>
@@ -443,9 +454,9 @@ else
                                             </li>
                                         </ul>
                                     <?php } else { ?>
-                                        <ul class="main-menu nav navbar-nav navbar-right">
-                                            <li><a href="https://yourconference.live/support" target="_blank" class="hoverThemeColour">HELP DESK</a></li>
-                                        </ul>
+<!--                                        <ul class="main-menu nav navbar-nav navbar-right">-->
+<!--                                            <li><a href="https://yourconference.live/support" target="_blank" class="hoverThemeColour">HELP DESK</a></li>-->
+<!--                                        </ul>-->
                                     <?php } ?>
                                 </nav>
                             </div>

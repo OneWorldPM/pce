@@ -52,8 +52,18 @@
         background-color: #679b41  ;
         color: #fff !important;
     }
+    #bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        /* Preserve aspet ratio */
+        min-width: 100%;
+        min-height: 100%;
+    }
 </style>
-<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/bg_login.jpg); top: 0; padding-top: 0px;height:100% !important">
+<img src="<?= base_url() ?>front_assets/images/Green_BG.jpg" id="bg" alt="">
+<section class="parallax" style="top: 0; padding-top: 0px;height:100% !important">
 <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
     <div class="container container-fullscreen" style="min-height: 700px;">
         <div class="">
@@ -115,7 +125,7 @@
                                                 if (isset($val->presenter) && !empty($val->presenter)) {
                                                     foreach ($val->presenter as $value) {
                                                         ?>
-                                                        <div class="post-info" style="color: #000 !important; font-size: larger; font-weight: 700;"><span class="post-autor"><a href="#" style="color: #000;" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" data-twitter_link="<?= $value->twitter ?>" data-facebook_link="<?= $value->facebook ?>" data-linkedin_link="<?= $value->linkin ?>" data-bio="<?= $value->bio ?>"  class="presenter_open_modul" style="color: #337ab7;"><u><?= $value->presenter_name ?></u><?= ($value->degree != "") ? "," : "" ?> </a></span> <span class="post-category"> <?= $value->degree ?></span> </div>
+                                                        <div class="post-info" style="color: #000 !important; font-size: larger; font-weight: 700;"><span class="post-autor"><a href="#" style="color: #000;cursor: default;" data-presenter_photo="<?= $value->presenter_photo ?>" data-presenter_name="<?= $value->presenter_name ?>" data-designation="<?= $value->designation ?>" data-email="<?= $value->email ?>" data-company_name="<?= $value->company_name ?>" data-twitter_link="<?= $value->twitter ?>" data-facebook_link="<?= $value->facebook ?>" data-linkedin_link="<?= $value->linkin ?>" data-bio="<?= $value->bio ?>"  class="presenter_open_modul" style="color: #337ab7;"><u><?= $value->presenter_name ?></u><?= ($value->degree != "") ? "," : "" ?> </a></span> <span class="post-category"> <?= $value->degree ?></span> </div>
                                                         <div class="post-info" style="color: #000 !important; font-size: larger; font-weight: 700;"><span class="post-category"> <?= $value->company_name ?></span> </div>
                                                         <?php
                                                     }
@@ -194,6 +204,10 @@
             $('#social_link_div').addClass('hidden');
         });
         $(".presenter_open_modul").click(function () {
+
+            // Disable popup
+            return false;
+
             var presenter_photo = $(this).attr("data-presenter_photo");
             var presenter_name = $(this).attr("data-presenter_name");
             var designation = $(this).attr("data-designation");
