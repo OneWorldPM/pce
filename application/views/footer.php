@@ -96,7 +96,7 @@
 
             socket.on('serverStatus', function (data) {
                 socket.emit('addMeToActiveListPerApp', {'user_id':user_id, 'app': socket_app_name, 'room': socket_active_user_list});
-                socket.emit("ConnectSessioViewUsers", socket_app_name);
+                //socket.emit("ConnectSessioViewUsers", socket_app_name);
             });
 
             var app_name_main = "<?=getAppName("") ?>";
