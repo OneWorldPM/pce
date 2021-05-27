@@ -1042,8 +1042,6 @@ public function change_session_status()
 }
 
 //
-
-
 public function ask_rep_report($session_id) {
     $result  = $this->msessions->getAskRepReport($session_id);
 
