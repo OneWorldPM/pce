@@ -516,7 +516,7 @@ $user_role = $this->session->userdata('role');
     $(document).ready(function () {
 
 
-        $('#landing_page_text, #sessions_description').summernote({
+        $('#landing_page_text, #sessions_description, #subsequent_session_popup_text' ).summernote({
             height: 200,
             toolbar:
                 [
