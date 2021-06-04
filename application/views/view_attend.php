@@ -255,4 +255,6 @@
             }
         });
     });
+
+    $('#toolbox').hide();
 </script>
