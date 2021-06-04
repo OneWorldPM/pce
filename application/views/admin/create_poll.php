@@ -270,7 +270,11 @@ switch ($msg) {
             } else if ($('#option_2').val() == '') {
                 alertify.error('Please Enter Option 2');
                 return false;
-            } else {
+            } else if($('#external_reference').val()==''){
+                alertify.error('External Reference Is Required');
+                return false;
+            }
+            else {
 
             let allOptions = $('.input_cust_class');
             let optionValues = [];
@@ -309,7 +313,11 @@ switch ($msg) {
             } else if ($('#option_2').val() == '') {
                 alertify.error('Please Enter Option 2');
                 return false;
-            } else {
+            } else if($('#external_reference').val()=='') {
+                alertify.error('External Reference Is Required');
+                return false;
+            }
+                else {
 
             let allOptions = $('.input_cust_class');
             let optionValues = [];
