@@ -24,13 +24,18 @@ function fireSubsequentRedirection()
         {
             Swal.fire({
                 title: '',
-                text: subsequent_session_popup_text,
-                icon: 'info',
+                html: subsequent_session_popup_text,
+                icon: '',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#0fbd5b',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Join Presentation Theater',
-                cancelButtonText: 'Cancel'
+                confirmButtonText: 'JOIN NOW',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    content: 'join-subsequent-text',
+                    actions: 'join-subsequent-btn',
+                    popup: 'join-subsequent-popup'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire('Redirecting you to '+subsequent_session_2_name, '', 'success');
@@ -41,8 +46,8 @@ function fireSubsequentRedirection()
             })
 
             setTimeout(()=>{
-                window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
-            }, 60000 );
+                window.open(base_url+'sessions/attend/'+subsequent_session_2, "_self");
+            }, (30*60000) );
 
         }else{
             console.log("Subsequent sessions are not set.");
@@ -53,62 +58,39 @@ function fireSubsequentRedirection()
             }
         }
 
-        if (subsequent_session_1 != 'null' && subsequent_session_2 == 'null')
-        {
-            // Swal.fire({
-            //     title: '',
-            //     text: subsequent_session_popup_text,
-            //     icon: 'info',
-            //     showCancelButton: false,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Join CME/CE Session',
-            //     cancelButtonText: 'Cancel'
-            // }).then((result) => {
-            //     if (result.isConfirmed) {
-            //         Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
-            //         window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
-            //     }else{
-            //         window.open(base_url+'home/', "_self");
-            //     }
-            // })
-
-            setTimeout(()=>{
-                window.open(base_url+'home', "_self");
-            }, 60000 );
-        }else{
-            console.log("You won't be redirected to the next GME session automatically.");
-        }
-
     }else // PT Session
     {
         if (subsequent_session_1 != 'null') // Subsequent CME session is set
         {
             Swal.fire({
                 title: '',
-                text: subsequent_session_popup_text,
-                icon: 'info',
+                html: subsequent_session_popup_text,
+                icon: '',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#0fbd5b',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Join CME/CE Session',
-                cancelButtonText: 'Cancel'
+                confirmButtonText: 'JOIN NOW',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    content: 'join-subsequent-text',
+                    actions: 'join-subsequent-btn',
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
                     window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
                 }else{
-                    window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+                    window.open(base_url+'home/', "_self");
                 }
             })
         }else{
             console.log("Subsequent sessions are not set.");
-            //console.log("You will be redirected to the lobby automatically.");
+            console.log("You will be redirected to the lobby automatically.");
         }
 
-        // setTimeout(()=>{
-        //     window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
-        // } , 60000 );
+        setTimeout(()=>{
+            window.open(base_url+'home/', "_self");
+        } , (1*60000) );
     }
 
     return true;
