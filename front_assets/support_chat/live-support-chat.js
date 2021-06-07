@@ -14,15 +14,18 @@ $(document).ready(function () {
     }
 
     supportSocket.on("supportChatStatusChange", function (data){
-        if (data.room == live_support_chat_room)
-            supportChatStatus = data.status;
 
-        if (data.status == 1)
-        {
-            $('.live-support-open-button').show();
-        }else{
-            $('.live-support-open-button').hide();
-            $('#liveSupportChatForm').hide();
+        if(data.room == "PCE_live_support") {
+
+            if (data.room == live_support_chat_room)
+                supportChatStatus = data.status;
+
+            if (data.status == 1) {
+                $('.live-support-open-button').show();
+            } else {
+                $('.live-support-open-button').hide();
+                $('#liveSupportChatForm').hide();
+            }
         }
     });
 
