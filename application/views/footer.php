@@ -34,7 +34,7 @@
 
 <script src="https://kit.fontawesome.com/fd91b3535c.js" crossorigin="anonymous"></script>
 
-<script src="https://cdn.ravenjs.com/3.26.4/raven.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raven.js/3.26.2/raven.min.js" integrity="sha512-tD9agnZBrqsUxmdHP0CDNRM6lu9sVUBiSIU1oHLBj1UpG8/f28acS1Q72eLfp6RczLYv2O1RPJmPJZ6YPuH2XQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(function() {
         // Error Tracking
@@ -51,7 +51,7 @@
 </script>
 <script src="https://athulak.com/socket.io/socket.io.js"></script>
 <link rel="stylesheet" href="<?=base_url()?>front_assets/support_chat/style.css?v=2">
-<script src="<?= base_url() ?>front_assets/support_chat/live-support-chat.js?v=1"></script>
+<script src="<?= base_url() ?>front_assets/support_chat/live-support-chat.js?v=2"></script>
 <div class="live-support-chat-popup" id="liveSupportChatForm">
     <span class="live-support-chat-title"><i class="far fa-life-ring"></i> Live Technical Support</span>
     <div class="live-support-chat-body">
