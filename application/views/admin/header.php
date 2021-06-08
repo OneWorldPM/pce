@@ -69,6 +69,13 @@ $user_name = ucfirst($this->session->userdata('uname'));
         <!-- <script type="text/javascript" src="assets/toggel/js/on-off-switch-onload.js"></script> -->
         <script src="<?= base_url() ?>front_assets/js/custom.js?v=4"></script>
         <?= getSocketScript()?>
+
+
+        <!--****** PubNub Stuff *****-->
+        <!-- DO NOT use production keys on the localhost-->
+        <?=pubnub_keys()?>
+        <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.14.0.min.js"></script>
+
         <style type="text/css">
             .action-row{
                 margin: 10px 0;
@@ -410,62 +417,62 @@ $user_name = ucfirst($this->session->userdata('uname'));
 
                 <!-- end: TOP NAVBAR -->
                 <script>
-                    function extract(variable) {
-                        for (var key in variable) {
-                            window[key] = variable[key];
-                        }
-                    }
-
-                    $.get("<?=base_url()?>socket_config.php", function (data) {
-                        var config = JSON.parse(data);
-                        extract(config);
-
-                        socket.emit("getSessionViewUsers", socket_app_name, function (resp) {
-                            if (resp) {
-                                var totalUsers = resp.users ? resp.users.length : 0;
-                                var sessionId = resp.sessionId;
-                                //$(".totalAttende" + sessionId + " b").html(totalUsers);
-                                $('#online-users-count').html(totalUsers);
-                            }
-                        });
-
-                        socket.on('activeUserListPerApp', function(data) {
-                            if (data == null)
-                                return;
-
-                            var result = [];
-                            var keys = Object.keys(data);
-                            keys.forEach(function(key){
-                                result.push(data[key]);
-                            });
-                            const mySet = new Set(result);
-                            const uniqValuesArray = [...mySet];
-
-                            $('#online-users-count').html(uniqValuesArray.length);
-                        });
-
-                        socket.emit('getActiveUserListPerApp', socket_app_name);
-
-                        socket.on('userActiveChangeInApp', function() {
-                            socket.emit('getActiveUserListPerApp', socket_app_name);
-
-                            // socket.emit("getSessionViewUsers", socket_app_name, function (resp) {
-                            //     if (resp) {
-                            //         var totalUsers = resp.users ? resp.users.length : 0;
-                            //         var sessionId = resp.sessionId;
-                            //         //$(".totalAttende" + sessionId + " b").html(totalUsers);
-                            //         $('#online-users-count').html(totalUsers);
-                            //     }
-                            // });
-                        });
-
-                        socket.on("newViewUsers",function(resp){
-                            if(resp){
-                                var totalUsers=resp.users?resp.users.length:0;
-                                var sessionId=resp.sessionId;
-                                $(".totalAttende"+sessionId+" b").html(totalUsers);
-                            }
-                        });
-
-                    });
+                    //function extract(variable) {
+                    //    for (var key in variable) {
+                    //        window[key] = variable[key];
+                    //    }
+                    //}
+                    //
+                    //$.get("<?//=base_url()?>//socket_config.php", function (data) {
+                    //    var config = JSON.parse(data);
+                    //    extract(config);
+                    //
+                    //    socket.emit("getSessionViewUsers", socket_app_name, function (resp) {
+                    //        if (resp) {
+                    //            var totalUsers = resp.users ? resp.users.length : 0;
+                    //            var sessionId = resp.sessionId;
+                    //            //$(".totalAttende" + sessionId + " b").html(totalUsers);
+                    //            $('#online-users-count').html(totalUsers);
+                    //        }
+                    //    });
+                    //
+                    //    socket.on('activeUserListPerApp', function(data) {
+                    //        if (data == null)
+                    //            return;
+                    //
+                    //        var result = [];
+                    //        var keys = Object.keys(data);
+                    //        keys.forEach(function(key){
+                    //            result.push(data[key]);
+                    //        });
+                    //        const mySet = new Set(result);
+                    //        const uniqValuesArray = [...mySet];
+                    //
+                    //        $('#online-users-count').html(uniqValuesArray.length);
+                    //    });
+                    //
+                    //    socket.emit('getActiveUserListPerApp', socket_app_name);
+                    //
+                    //    socket.on('userActiveChangeInApp', function() {
+                    //        socket.emit('getActiveUserListPerApp', socket_app_name);
+                    //
+                    //        // socket.emit("getSessionViewUsers", socket_app_name, function (resp) {
+                    //        //     if (resp) {
+                    //        //         var totalUsers = resp.users ? resp.users.length : 0;
+                    //        //         var sessionId = resp.sessionId;
+                    //        //         //$(".totalAttende" + sessionId + " b").html(totalUsers);
+                    //        //         $('#online-users-count').html(totalUsers);
+                    //        //     }
+                    //        // });
+                    //    });
+                    //
+                    //    socket.on("newViewUsers",function(resp){
+                    //        if(resp){
+                    //            var totalUsers=resp.users?resp.users.length:0;
+                    //            var sessionId=resp.sessionId;
+                    //            $(".totalAttende"+sessionId+" b").html(totalUsers);
+                    //        }
+                    //    });
+                    //
+                    //});
                 </script>
