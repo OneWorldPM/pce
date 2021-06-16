@@ -103,7 +103,10 @@ function pubnub_keys()
         'publishKey' => 'pub-c-localhost',
         'subscribeKey' => 'sub-c-localhost'
     );
-    include_once FCPATH.'/pubnub_keys.php';
+
+    if(file_exists(FCPATH.'pubnub_keys.php'))
+        include_once FCPATH.'pubnub_keys.php';
+
     echo '<script>  ';
     echo 'let pubnub_publishKey = "'.$pubnub_keys['publishKey'].'"; ';
     echo 'let pubnub_subscribeKey = "'.$pubnub_keys['subscribeKey'].'"; ';

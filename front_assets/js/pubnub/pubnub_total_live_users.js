@@ -88,7 +88,7 @@ function hereNowTotal(channels) {
                 {
                     //console.log("hereNow Response: ", response);
                     for(i=0; i < response.totalOccupancy; i++){
-                        playerListTotal[i] = response.channels.pubnub_channel_total.occupants[i].uuid;
+                        playerListTotal[i] = response.channels[pubnub_channel_total].occupants[i].uuid;
                     }
                     //console.log("hereNow UUIDs: ", playerListTotal);
                 }
