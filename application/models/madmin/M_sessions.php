@@ -1284,7 +1284,9 @@ class M_sessions extends CI_Model {
                     $this->db->where(array("cust_id" => $val->cust_id, "sessions_id"=>$sessions_id));
                     $sessions_cust_briefcase = $this->db->get();
                     if ($sessions_cust_briefcase->num_rows() > 0) {
-                        $private_notes = $sessions_cust_briefcase->row()->note;
+                        foreach ($sessions_cust_briefcase->result() as $note)
+                            $private_notes[] = $note->note;
+//                        $private_notes = $sessions_cust_briefcase->result()->note;
                     }
                     $sessions_history_login[] = array(
                         'uuid' => $val->cust_id,
@@ -1546,7 +1548,9 @@ class M_sessions extends CI_Model {
                     $this->db->where(array("cust_id" => $val->cust_id, "sessions_id"=>$sessions_id));
                     $sessions_cust_briefcase = $this->db->get();
                     if ($sessions_cust_briefcase->num_rows() > 0) {
-                        $private_notes = $sessions_cust_briefcase->row()->note;
+                        foreach ($sessions_cust_briefcase->result() as $note)
+                            $private_notes[] = $note->note;
+                        //$private_notes = $sessions_cust_briefcase->result()->note;
                     }
 
                     $sessions_history_login[] = array(

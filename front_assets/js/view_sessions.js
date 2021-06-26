@@ -26,6 +26,7 @@ function fireSubsequentRedirection()
                 title: '',
                 html: subsequent_session_popup_text,
                 icon: '',
+                allowOutsideClick: false,
                 showCancelButton: false,
                 confirmButtonColor: '#0fbd5b',
                 cancelButtonColor: '#d33',
@@ -66,6 +67,7 @@ function fireSubsequentRedirection()
                 title: '',
                 html: subsequent_session_popup_text,
                 icon: '',
+                allowOutsideClick: false,
                 showCancelButton: false,
                 confirmButtonColor: '#0fbd5b',
                 cancelButtonColor: '#d33',
@@ -80,17 +82,17 @@ function fireSubsequentRedirection()
                     Swal.fire('Redirecting you to '+subsequent_session_1_name, '', 'success');
                     window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
                 }else{
-                    window.open(base_url+'home/', "_self");
+                    //window.open(base_url+'home/', "_self");
                 }
             })
         }else{
             console.log("Subsequent sessions are not set.");
             console.log("You will be redirected to the lobby automatically.");
-        }
 
-        setTimeout(()=>{
-            window.open(base_url+'home/', "_self");
-        } , (1*60000) );
+            setTimeout(()=>{
+                window.open(base_url+'sessions/', "_self");
+            } , (1*60000) );
+        }
     }
 
     return true;
