@@ -22,7 +22,8 @@
                                     <thead class="th_center">
                                         <tr>
                                             <th>Question</th>
-											 <th>Slide Number</th>
+                                            <th>Slide Number</th>
+                                            <th>Instruction</th>
                                             <th>Poll Type</th>
                                             <th>Options</th>
                                             <th>People Voted</th>
@@ -36,7 +37,8 @@
                                                 ?>
                                                 <tr>
                                                     <td style="text-align:left !important"><?= $val->question ?></td>
-													 <td><?= $val->slide_number ?></td>
+                                                    <td><?= $val->slide_number ?></td>
+                                                    <td><?=$val->poll_instruction?></td>
                                                     <td><?= $val->poll_type ?></td>
                                                     <td>
                                                         <?php

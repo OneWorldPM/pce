@@ -640,6 +640,8 @@ class M_sessions extends CI_Model {
             'question' => trim($post['question']),
             'poll_name' => trim($post['poll_name']),
             'slide_number' => trim($post['slide_number']),
+            'correct_answer1' => trim($post['correct_answer1']),
+            'correct_answer2' => trim($post['correct_answer2']),
             'poll_instruction' => trim($post['poll_instruction']),
             'external_reference' => trim($post['external_reference']),
             'poll_comparisons_id' => 0,
@@ -673,6 +675,8 @@ class M_sessions extends CI_Model {
             'question' => trim($post['question']),
             'poll_name' => trim($post['poll_name']),
 			'slide_number' => trim($post['slide_number']),
+            'correct_answer1' => trim($post['correct_answer1']),
+            'correct_answer2' => trim($post['correct_answer2']),
             'poll_comparisons_id' => $insert_id,
             "create_poll_date" => date("Y-m-d h:i")
         );
@@ -771,6 +775,8 @@ class M_sessions extends CI_Model {
             'question' => trim($post['question']),
             'poll_name' => trim($post['poll_name']),
             'slide_number' => trim($post['slide_number']),
+            'correct_answer1' => trim($post['correct_answer1']),
+            'correct_answer2' => trim($post['correct_answer2']),
             'poll_instruction' => trim($post['poll_instruction']),
             'external_reference' => trim($post['external_reference']),
             'poll_type_id' => $post['poll_type_id'],
