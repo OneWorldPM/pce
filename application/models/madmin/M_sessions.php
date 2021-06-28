@@ -1115,8 +1115,7 @@ class M_sessions extends CI_Model {
             'link_published_name' => $post['link_published_name'],
             'resource_link' => $post['resource_link'],
             'upload_published_name' => $post['upload_published_name'],
-            'sessions_id' => $post['sessions_id'],
-            'file_name' =>  $_FILES['resource_file']['name']
+            'sessions_id' => $post['sessions_id']
         );
         $this->db->insert('session_resource', $data);
         $id = $this->db->insert_id();
@@ -1131,7 +1130,7 @@ class M_sessions extends CI_Model {
                 $this->upload->initialize($this->set_upload_options_resource());
                 $this->upload->do_upload('resource_file');
                 $file_upload_name = $this->upload->data();
-                $this->db->update('session_resource', array('resource_file' => $file_upload_name['file_name']), array('session_resource_id' => $id));
+                $this->db->update('session_resource', array('resource_file' => $file_upload_name['file_name'], 'file_name' =>   $file_upload_name['client_name']), array('session_resource_id' => $id));
             }
             return TRUE;
         } else {
