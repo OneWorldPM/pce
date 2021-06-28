@@ -1115,7 +1115,8 @@ class M_sessions extends CI_Model {
             'link_published_name' => $post['link_published_name'],
             'resource_link' => $post['resource_link'],
             'upload_published_name' => $post['upload_published_name'],
-            'sessions_id' => $post['sessions_id']
+            'sessions_id' => $post['sessions_id'],
+            'file_name' =>  $_FILES['resource_file']['name']
         );
         $this->db->insert('session_resource', $data);
         $id = $this->db->insert_id();
