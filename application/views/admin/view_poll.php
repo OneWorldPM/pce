@@ -79,12 +79,11 @@
                                                     </div> 
                                                    
                                                 </td>
-
                                                     <td style="width: 80px">
-                                                        Answer 1: <strong style="font-size: 18px; color: red"><?=($val->correct_answer1 !=='0')?$val->correct_answer1:''?></strong><br>
-                                                        Answer 2: <strong style="font-size: 18px; color: orangered"><?=($val->correct_answer2 !=='0')?$val->correct_answer2:''?></strong>
+                                                        <?=((!isset($val->correct_answer1) || ($val->correct_answer1 =='0') && (!isset($val->correct_answer1) || $val->correct_answer2 =='0')))?'None Set':''?>
+                                                        <span ><?=(isset($val->correct_answer1) && ($val->correct_answer1 !=='0'))?'Answer 1: <strong style="font-size: 18px; color: red">'.$val->correct_answer1.'</strong>':''?></span><br>
+                                                        <span ><?=(isset($val->correct_answer1) && ($val->correct_answer2 !=='0'))?'Answer 2: <strong style="font-size: 18px; color: red">'.$val->correct_answer2.'</strong>':''?></span>
                                                     </td>
-
                                                     <td>
                                                         <a class="btn btn-primary btn-sm" href="<?= base_url() . 'admin/sessions/editPollQuestion/' . $val->sessions_poll_question_id ?>">
                                                             <i class="fa fa-pencil"></i> Edit
