@@ -1069,4 +1069,28 @@ public function ask_rep_report($session_id) {
     exit;
 }
 
+    public function delete_session_end_image()
+    {
+        $post=$this->input->post();
+        $session_id= $post['session_id'];
+
+        $qstr= $this->msessions->edit_sessions($session_id);
+        $session_end_image=$qstr->session_end_image;
+
+        if  (isset($session_end_image) && !empty($session_end_image)){
+            unlink("uploads/session_end/" . $session_end_image);
+        }
+        if(empty($qstr)){
+            $res="error";
+        }
+
+        $res=$this->msessions->delete_session_end_image($session_id, $session_end_image);
+        if($res){
+            echo "success";
+        }
+        else{
+            echo "error";
+        }
+    }
+
 }
