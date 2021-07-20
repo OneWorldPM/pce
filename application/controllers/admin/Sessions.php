@@ -77,6 +77,7 @@ class Sessions extends CI_Controller {
         $data['session_tracks'] = $this->msessions->getSessionTracks();
 
         $data['all_sessions'] = $this->msessions->getAllSessions();
+        $data['millicast_stream_names']=$this->msessions->get_millicast_stream();
 
         $this->load->view('admin/header');
         $this->load->view('admin/add_sessions', $data);
@@ -1090,6 +1091,37 @@ public function ask_rep_report($session_id) {
         }
         else{
             echo "error";
+        }
+    }
+
+    //
+
+    public function streamNames(){
+        $data['millicast_stream_names']=$this->msessions->get_millicast_stream();
+        $this->load->view('admin/header');
+        $this->load->view('admin/manageStreamNames',$data);
+        $this->load->view('admin/footer');
+    }
+
+    public function saveStreamName(){
+        $post = $this->input->post();
+        $result=$this->msessions->saveStreamName($post);
+        if($result){
+            $this->session->set_flashdata('msg','success');
+            redirect('admin/sessions/streamNames');
+        }else{
+            $this->session->set_flashdata('msg','error');
+            redirect('admin/sessions/streamNames');
+        }
+    }
+    public function deleteStreamName($stream_id){
+        $result=$this->msessions->deleteStreamName($stream_id);
+        if($result){
+            $this->session->set_flashdata('msg','deleted');
+            redirect('admin/sessions/streamNames');
+        }else{
+            $this->session->set_flashdata('msg','error');
+            redirect('admin/sessions/streamNames');
         }
     }
 

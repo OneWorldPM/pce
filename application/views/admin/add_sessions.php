@@ -187,10 +187,28 @@ $user_role = $this->session->userdata('role');
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group" <?=($user_role != 'super_admin')?'style="display:none"':''?>>
-                                        <label class="text-large text-bold">Millicast Stream Name</label>
-                                        <input type="text" class="form-control" style="color: #000;" name="embed_html_code" id="embed_html_code" value="<?= (isset($sessions_edit) && !empty($sessions_edit) ) ? $sessions_edit->embed_html_code : "" ?>" <?=($user_role != 'super_admin')?'readonly':''?>>
+
+                                <div class="form-group" <?=($user_role != 'super_admin')?'style="display:none"':''?>>
+                                    <label class="text-large text-bold">Millicast Stream Name</label><span style="float:right"><small style="color:red"> New ! Click this button to insert one time code =====> </small><button class="btn btn-primary btn-sm tootgle-streamName">One Time Code</button></span>  <br>
+                                    <div class="one-time-embedCode">
+                                        <small style="color:red;"> Place one time code at the textbox below </small>
+                                        <input type="text" class="form-control text-blue input-embedCode" name="one_time_embed_html_code" value="" placeholder="Input One Time Code Here !!" >
                                     </div>
+                                    <select name="embed_html_code" class="form-control select-embedCode" style="height: auto">
+                                        <option value=""></option>
+                                        <option <?=isset($sessions_edit)?(!empty($sessions_edit->embed_html_code)?"selected":""):""?>
+                                                value="<?= isset($sessions_edit)?(!empty($sessions_edit->embed_html_code))? $sessions_edit->embed_html_code:'':''?>">
+                                            <?= isset($sessions_edit) && !empty($sessions_edit->embed_html_code)?"Current Code: (".$sessions_edit->embed_html_code.")":''?>
+                                        </option>
+                                        <?php foreach ($millicast_stream_names as $strm_name){
+                                            ?>
+                                            <option value="<?=$strm_name->link?>"><?=$strm_name->name.' ('.$strm_name->link.')'?></option>
+                                            <?php
+                                        }?>
+                                    </select>
+                                    <span style="float:right"><small style="color: red"> NEW! Click here to see ==> </small><a href="<?=base_url().'admin/sessions/streamNames'?>" class="btn btn-secondary btn-sm" id="manage-stream-btn">Manage Stream Names</a></span><br>
+                                </div>
+
                                     <div class="form-group" <?=($user_role != 'super_admin')?'style="display:none"':''?>>
                                         <label class="text-large text-bold">Embed HTML Code <b>(Presenter)</b></label>
                                         <textarea class="form-control" style="color: #000;" placeholder="Embed HTML Code" name="embed_html_code_presenter" id="embed_html_code_presenter" <?=($user_role != 'super_admin')?'readonly':''?>><?= (isset($sessions_edit) && !empty($sessions_edit) ) ? $sessions_edit->embed_html_code_presenter : "" ?></textarea>
@@ -793,6 +811,17 @@ $user_role = $this->session->userdata('role');
             fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
         });
 
+        $(document).ready(function(){
+            $('.one-time-embedCode').hide();
+            $('.tootgle-streamName').on('click',function(e){
+                e.preventDefault();
+                $('.input-embedCode').val('');
+                $('.select-embedCode').val('');
+                $('.one-time-embedCode').toggle();
+                $('.select-embedCode').toggle();
+
+            });
+        });
 
     });
 </script>
