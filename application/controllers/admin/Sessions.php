@@ -56,6 +56,7 @@ class Sessions extends CI_Controller {
         $data['sessions_type'] = $this->msessions->getSessionTypes();
         $data['session_tracks'] = $this->msessions->getSessionTracks();
         $data['unique_identifier_id'] = $this->msessions->getSession_Unique_Identifier_ID();
+        $data['millicast_stream_names']=$this->msessions->getMillicast_Stream_Name();
         $this->load->view('admin/header');
         $this->load->view('admin/add_sessions', $data);
         $this->load->view('admin/footer');
@@ -77,7 +78,7 @@ class Sessions extends CI_Controller {
         $data['session_tracks'] = $this->msessions->getSessionTracks();
 
         $data['all_sessions'] = $this->msessions->getAllSessions();
-        $data['millicast_stream_names']=$this->msessions->get_millicast_stream();
+        $data['millicast_stream_names']=$this->msessions->getMillicast_Stream_Name();
 
         $this->load->view('admin/header');
         $this->load->view('admin/add_sessions', $data);
@@ -1097,7 +1098,7 @@ public function ask_rep_report($session_id) {
     //
 
     public function streamNames(){
-        $data['millicast_stream_names']=$this->msessions->get_millicast_stream();
+        $data['millicast_stream_names']=$this->msessions->getMillicast_Stream_Name();
         $this->load->view('admin/header');
         $this->load->view('admin/manageStreamNames',$data);
         $this->load->view('admin/footer');

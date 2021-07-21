@@ -2126,8 +2126,9 @@ class M_sessions extends CI_Model {
         return $res;
     }
 
-    //        this will get the stream names from database
-    function get_millicast_stream(){
+
+//        this will get the stream names from database
+    function getMillicast_Stream_Name(){
 
         $this->db->select('*');
         $this->db->from('tbl_millicast_stream_names');
