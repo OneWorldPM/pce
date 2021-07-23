@@ -191,7 +191,7 @@ if (isset($_GET['testing']) && $_GET['testing'] == 1) {
 <script>
     var base_url = "<?=base_url()?>";
     var site_url = "<?= site_url() ?>";
-    var user_id = "<?=$this->session->userdata('cid')?>";
+    var user_id = "<?=$this->session->userdata('pid')?>";
     var app_name = "<?=getAppName($sessions->sessions_id) ?>";
     var session_id = "<?=$sessions->sessions_id?>";
     var sessionId = "<?=$sessions->sessions_id?>";
@@ -211,7 +211,7 @@ if (isset($_GET['testing']) && $_GET['testing'] == 1) {
     });
 </script>
 <!-- Please add scripts only in this JS file, NOT directly on this HTML file -->
-<script src="<?= base_url() ?>front_assets/presenter/view_session.js?v=16"></script>
+<script src="<?= base_url() ?>front_assets/presenter/view_session.js?v=17"></script>
 
 <script>
     window.onscroll = function() {myFunction()};
