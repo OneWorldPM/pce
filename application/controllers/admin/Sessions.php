@@ -1126,4 +1126,21 @@ public function ask_rep_report($session_id) {
         }
     }
 
+    public function markAsReplied($sessions_current_question_id)
+    {
+        $data = array(
+            'sessions_cust_question_id' => $sessions_current_question_id
+        );
+
+        $this->db->where($data);
+        $this->db->update('sessions_cust_question', array('marked_replied'=>1));
+
+        if ($this->db->affected_rows() > 0)
+            echo 1;
+        else
+            echo 0;
+
+        return;
+    }
+
 }
