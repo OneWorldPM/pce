@@ -140,7 +140,7 @@ $presenter_details = $this->common->get_presenter_data($this->session->userdata(
                     <i class="ti-align-justify"></i>
                 </a>
                 <a class="" href="<?= base_url() ?>presenter/dashboard">
-                    <img class="kent_logo" src="<?= base_url() ?>front_assets/images/pce_logo.png" width="100%" alt="CCO Logo" />
+                    <img class="navbar-brand" src="<?= base_url() ?>front_assets/images/pce_logo.png" width="180" alt="CCO Logo" />
                 </a>
                 <a href="#" class="sidebar-toggler pull-right visible-md visible-lg" data-toggle-class="app-sidebar-closed" data-toggle-target="#app">
                     <i class="ti-align-justify"></i>
