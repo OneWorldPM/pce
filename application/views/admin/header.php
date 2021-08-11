@@ -365,8 +365,8 @@ $user_name = ucfirst($this->session->userdata('uname'));
                         <a href="#" class="sidebar-mobile-toggler pull-left hidden-md hidden-lg" class="btn btn-navbar sidebar-toggle" data-toggle-class="app-slide-off" data-toggle-target="#app" data-toggle-click-outside="#sidebar">
                             <i class="ti-align-justify"></i>
                         </a>
-                        <a class="" href="<?= base_url() ?>admin/dashboard">
-                            <img src="<?= base_url() ?>front_assets/images/pce_logo.png" class="kent_logo" alt="PCE Logo" style="max-width: 200px"/>
+                        <a class="navbar-brand" href="<?= base_url() ?>admin/dashboard">
+                            <img src="<?= base_url() ?>front_assets/images/pce_logo.png" class="kent_logo" alt="PCE Logo" style="max-width: 150px"/>
                         </a>
                         <a href="#" class="sidebar-toggler pull-right visible-md visible-lg" data-toggle-class="app-sidebar-closed" data-toggle-target="#app">
                             <i class="ti-align-justify"></i>
