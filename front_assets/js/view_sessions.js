@@ -51,11 +51,40 @@ function fireSubsequentRedirection()
             }, (30*60000) );
 
         }else{
-            console.log("Subsequent sessions are not set.");
-            if (subsequent_session_1 != 'null')
-            {
-                console.log("Redirecting to "+subsequent_session_1);
-                window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+            if (subsequent_session_1 != 'null') {
+                Swal.fire({
+                    title: '',
+                    html: subsequent_session_popup_text,
+                    icon: '',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    confirmButtonColor: '#0fbd5b',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'JOIN NOW',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        content: 'join-subsequent-text',
+                        actions: 'join-subsequent-btn',
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('Redirecting you to ' + subsequent_session_1_name, '', 'success');
+                        window.open(base_url + 'sessions/attend/' + subsequent_session_1, "_self");
+                    } else {
+
+                        //window.open(base_url+'home/', "_self");
+                    }
+                })
+
+                setTimeout(() => {
+                    window.open(base_url + 'sessions/attend/' + subsequent_session_1, "_self");
+                }, (1 * 6000));
+                // console.log("Subsequent sessions are not set.");
+                // if (subsequent_session_1 != 'null')
+                // {
+                //     console.log("Redirecting to "+subsequent_session_1);
+                //     window.open(base_url+'sessions/attend/'+subsequent_session_1, "_self");
+                // }
             }
         }
 
