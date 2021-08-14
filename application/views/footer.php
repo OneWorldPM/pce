@@ -57,7 +57,7 @@
 <script src="<?= base_url() ?>front_assets/js/pubnub/pubnub_total_live_users.js?v=2"></script>
 
 <script src="https://athulak.com/socket.io/socket.io.js"></script>
-<link rel="stylesheet" href="<?=base_url()?>front_assets/support_chat/style.css?v=2">
+<link rel="stylesheet" href="<?=base_url()?>front_assets/support_chat/style.css?v=3">
 <script src="<?= base_url() ?>front_assets/support_chat/live-support-chat.js?v=2"></script>
 <div class="live-support-chat-popup" id="liveSupportChatForm">
     <span class="live-support-chat-title"><i class="far fa-life-ring"></i> Live Technical Support</span>
@@ -67,14 +67,18 @@
             <!-- Will be filled by fillAllPreviousChats() function on pageReady -->
         </div>
 
-        <div class="input-group text-center" style="width: 100%;position: absolute;bottom: 90px;">
+        <div class="input-group text-center" style="width: 100%;position: absolute;bottom: 140px;">
             <span id="adminTypingHint" style="display: none;">Admin is typing...</span>
         </div>
-        <div class="input-group" style="position: absolute;bottom: 45px;">
-            <input id="liveSupportText" type="text" class="form-control" placeholder="Enter your message here...">
+        <div class="input-group" style="position: absolute;bottom: 90px;">
+            <input id="liveSupportText" type="text" class="form-control" placeholder="Enter your live chat here...">
             <span class="input-group-btn">
-                <button id="sendLiveSupportText" class="btn btn-default" type="button"><i class="far fa-paper-plane"></i> Send</button>
+                <button id="sendLiveSupportText" class="btn btn-default btn-success" type="button"><i class="far fa-paper-plane"></i> Send</button>
             </span>
+        </div>
+        <div  style="position: absolute;bottom: 45px; width: 100%; text-align: center">
+            <hr style="background-color: #898989; height: 2px; width: 100%">
+            <span style="font-size: 16px"> Telephone Support 1800 952 3259 </span>
         </div>
 
     </div>
