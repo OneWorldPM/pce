@@ -112,3 +112,18 @@ function pubnub_keys()
     echo 'let pubnub_subscribeKey = "'.$pubnub_keys['subscribeKey'].'"; ';
     echo '</script> ';
 }
+
+function liveSupportChatInfo()
+{
+    $CI =& get_instance();
+
+    $CI->db->select('*');
+    $CI->db->from('live_support_chat_status');
+    $CI->db->where(array('name'=>'isOn', 'support_info_status'=>1));
+    $status = $CI->db->get();
+    if ($status->num_rows() > 0) {
+        return $status->row()->support_info;
+    } else {
+        return 0;
+    }
+}

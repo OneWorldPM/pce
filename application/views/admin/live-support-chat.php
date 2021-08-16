@@ -139,63 +139,91 @@
         </section>
 
         <!-- start: PAGE CONTENTS -->
-        <div class="col-md-12" style="margin-top: 10px;">
-            <div class="panel panel-default">
-                <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-body">
 
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-12" style="margin-top: 6px">
-                                        <h3 class="attendees-list-title panel-title">Users</h3>
-                                    </div>
-                                    <div class="col-lg-9 col-md-12">
-                                        <div class="input-group mb-3">
-                                            <input type="text" id="search-attendee-chat" class="form-control shadow-none pull-left">
-                                            <div class="input-group-btn">
-                                                <span class="btn bg-blue" aria-hidden="true" ><i class="fa fa-search text-white"></i></span>
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12" style="margin-top: 6px">
+                                            <h3 class="attendees-list-title panel-title">Users</h3>
+                                        </div>
+                                        <div class="col-lg-9 col-md-12">
+                                            <div class="input-group mb-3">
+                                                <input type="text" id="search-attendee-chat" class="form-control shadow-none pull-left">
+                                                <div class="input-group-btn">
+                                                    <span class="btn bg-blue" aria-hidden="true" ><i class="fa fa-search text-white"></i></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="panel-body users-list-body">
-                                <ul class="users-list list-group">
-                                    <!-- Will be filled by listAllUsers() method -->
-                                    <li class="users-list-item list-group-item">Loading...</li>
-                                    <img src="<?=base_url()?>front_assets/support_chat/ycl_anime_500kb.gif">
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="chat-user-name panel-title"></h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="chat-body" session-id="" user-id="" user-name="">
-
-                                </div>
-                                <div class="input-group text-center" style="width: 100%; position: absolute; bottom: 50px;">
-                                    <span id="currentUserTypingHint" style="display: none;"></span>
-                                </div>
-                                <div class="input-group" style="margin-top: 20px">
-                                    <input id="message-text-input" type="text" class="form-control" placeholder="Enter message">
-                                    <span class="input-group-btn">
-                                        <button class="send-text-btn btn btn-default" type="button" user-id="" session-id="">Send</button>
-                                    </span>
+                                <div class="panel-body users-list-body">
+                                    <ul class="users-list list-group">
+                                        <!-- Will be filled by listAllUsers() method -->
+                                        <li class="users-list-item list-group-item">Loading...</li>
+                                        <img src="<?=base_url()?>front_assets/support_chat/ycl_anime_500kb.gif">
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                        <div class="col-md-8">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="chat-user-name panel-title"></h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="chat-body" session-id="" user-id="" user-name="">
+
+                                    </div>
+                                    <div class="input-group text-center" style="width: 100%; position: absolute; bottom: 50px;">
+                                        <span id="currentUserTypingHint" style="display: none;"></span>
+                                    </div>
+                                    <div class="input-group" style="margin-top: 20px">
+                                        <input id="message-text-input" type="text" class="form-control" placeholder="Enter message">
+                                        <span class="input-group-btn">
+                                            <button class="send-text-btn btn btn-default" type="button" user-id="" session-id="">Send</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-
+        <!-- Dynamic Chat support details -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-default">
+                    <div class="panel-heading">
+                        <div class="margin-bottom-5">
+                            Chat Support Info <i class="badge" style="background: forestgreen !important"> new </i>
+                            <label class="switch pull-right ">
+                                <input id="liveSupportInfoToggle" type="checkbox" <?=($infoStatus)?'checked':''?>>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="text-align: center">
+                        <div class="input-group">
+                              <span class="input-group-btn">
+                                  <label class="btn btn-default" type="button" style="cursor: unset">Live Chat Info</label>
+                              </span>
+                            <input id="chat_info" type="text" class="form-control" placeholder="Phone Support or other information">
+                        </div>
+<!--                        <small style="float: left; color: red"> This will add new line under input box</small><br>-->
+                        <a class="btn btn-success saveSupportInfoBtn margin-top-5" >Save Changes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Dynamic Chat support details -->
 
     </div>
 </div>
@@ -527,5 +555,78 @@
                 }
             });
         }
+
+        $('.saveSupportInfoBtn').click(function(){
+            var info = $('#chat_info').val();
+            $.post("<?=base_url()?>admin/live_support_chat/updateSupportInfo",
+                {
+                    'info':info
+                },
+                function (status) {
+                    if(status.status=='success'){
+                        Swal.fire(
+                            'Success',
+                            'Support Info Updated',
+                            'success'
+                        );
+                    }else{
+                        Swal.fire(
+                            'Update Failed',
+                            'No changes made',
+                            'warning'
+                        );
+                    }
+                },'json')
+        })
+
+        $('#liveSupportInfoToggle').click(function(){
+            Swal.fire({
+                title: 'Please Wait',
+                text: 'We are changing the Info status',
+                imageUrl: '<?=base_url()?>front_assets/support_chat/ycl_anime_500kb.gif',
+                imageAlt: 'Loading...',
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+
+            let infoStatus = 0;
+            if ($(this).is(":checked"))
+                infoStatus = 1;
+
+            $.get("<?=base_url()?>admin/live_support_chat/infoToggleStatus/"+infoStatus, function (response) {
+                console.log(response)
+                try { $.parseJSON(response);}
+                catch(error)
+                {
+                    $('#liveSupportInfoToggle').prop("checked", !$('#liveSupportInfoToggle').prop("checked"));
+                    toastr.error("You are not logged-in");
+                    return false;
+                }
+
+                response = JSON.parse(response);
+
+                if (response.status == 'failed')
+                {
+                    Swal.fire(
+                        'Error',
+                        'Unable to change the status',
+                        'error'
+                    );
+                    $('#liveSupportInfoToggle').prop("checked", !$('#liveSupportInfoToggle').prop("checked"));
+                }else{
+                    Swal.close();
+                    toastr.info('Live support Info status changed');
+                }
+
+            }).fail(()=>{
+                Swal.fire(
+                    'Error',
+                    'Unable to change the Info status',
+                    'error'
+                );
+                $('#liveSupportInfoToggle').prop("checked", !$('#liveSupportInfoToggle').prop("checked"));
+            });
+        })
     })
 </script>

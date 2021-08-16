@@ -13,6 +13,7 @@ class Live_support_chat extends CI_Controller {
     function index() {
 
         $data['status'] = $this->status();
+        $data['infoStatus'] = $this->infoStatus();
 
         $this->load->view('admin/header');
         $this->load->view('admin/live-support-chat', $data);
@@ -95,5 +96,48 @@ class Live_support_chat extends CI_Controller {
             echo json_encode(array('status'=>'failed'));
         }
     }
+
+    public function updateSupportInfo(){
+        $post = $this->input->post();
+
+        $set = array(
+            'support_info' => $post['info']
+        );
+
+        $this->db->update("live_support_chat_status", $set, array('name' => 'isOn'));
+        if($this->db->affected_rows() > 0){
+            echo json_encode(array('status'=>'success'));
+        }else{
+            echo json_encode(array('status'=>'failed'));
+        }
+
+    }
+
+    public function infoToggleStatus($status)
+    {
+        $set = array(
+            'support_info_status' => $status
+        );
+        $this->db->update("live_support_chat_status", $set, array('name' => 'isOn'));
+        if($this->db->affected_rows() > 0){
+            echo json_encode(array('status'=>'success'));
+        }else{
+            echo json_encode(array('status'=>'failed'));
+        }
+    }
+
+    public function infoStatus()
+    {
+        $this->db->select('support_info_status');
+        $this->db->from('live_support_chat_status');
+        $this->db->where('name', 'isOn');
+        $status = $this->db->get();
+        if ($status->num_rows() > 0) {
+            return $status->row()->support_info_status;
+        } else {
+            return 0;
+        }
+    }
+
 }
 ?>
