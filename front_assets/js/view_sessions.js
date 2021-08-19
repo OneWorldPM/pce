@@ -76,9 +76,9 @@ function fireSubsequentRedirection()
                     }
                 })
 
-                setTimeout(() => {
-                    window.open(base_url + 'sessions/attend/' + subsequent_session_1, "_self");
-                }, (1 * 60000));
+                // setTimeout(() => {
+                //     window.open(base_url + 'sessions/attend/' + subsequent_session_1, "_self");
+                // }, (1 * 10000));
                 // console.log("Subsequent sessions are not set.");
                 // if (subsequent_session_1 != 'null')
                 // {
