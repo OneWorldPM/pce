@@ -46,9 +46,9 @@ function fireSubsequentRedirection()
                 }
             })
 
-            setTimeout(()=>{
-                window.open(base_url+'sessions/attend/'+subsequent_session_2, "_self");
-            }, (30*60000) );
+            // setTimeout(()=>{
+            //     window.open(base_url+'sessions/attend/'+subsequent_session_2, "_self");
+            // }, (30*60000) );
 
         }else{
             if (subsequent_session_1 != 'null') {
@@ -118,9 +118,9 @@ function fireSubsequentRedirection()
             console.log("Subsequent sessions are not set.");
             console.log("You will be redirected to the lobby automatically.");
 
-            setTimeout(()=>{
-                window.open(base_url+'sessions/', "_self");
-            } , (1*60000) );
+            // setTimeout(()=>{
+            //     window.open(base_url+'sessions/', "_self");
+            // } , (1*60000) );
         }
     }
 
