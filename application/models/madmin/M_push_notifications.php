@@ -37,6 +37,8 @@ class M_push_notifications extends CI_Model {
             'message' => $post['message'],
             'session_id' => $visibility,
             'notification_date' => date("Y-m-d h:i:s"),
+            'push_url_link' => $post['push_url_link'],
+            'push_url' => $post['push_url'],
             'receiver'=>$receiver,
         );
         $this->db->insert('push_notification_admin', $data);

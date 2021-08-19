@@ -45,6 +45,16 @@ if (isset($_GET['testing']))
                                             <label class="text-large">Message :</label>
                                             <textarea name="message" id="message" rows="3" class="form-control" placeholder="Enter Message..." style="color: #5b5b60"></textarea>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="text-large">Link Text : </label>
+                                            <input type="text" name="push_url_link" id="push_url_link"  class="form-control" placeholder="Google" style="color: #5b5b60">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="text-large">URL :</label>
+                                            <input type="text" name="push_url" id="push_url" class="form-control" placeholder="https://www.google.com" style="color: #5b5b60">
+                                        </div>
+
                                         <h5 class="over-title margin-bottom-15">
                                             <button type="button" id="save_btn" name="save_btn" class="btn btn-green add-row">
                                                 Save
@@ -72,6 +82,8 @@ if (isset($_GET['testing']))
                                                 <th>Date</th>
                                                 <th>Visibility</th>
                                                 <th>Message</th>
+                                                <th>Link</th>
+                                                <th>URL</th>
                                                 <th>Viewer</th>
                                                 <th>Action</th>                          
                                             </tr>
@@ -85,6 +97,8 @@ if (isset($_GET['testing']))
                                                         <td><?= date("Y-m-d", strtotime($val->notification_date)) ?></td>
                                                         <td><?= ($val->session_id == null)?'Whole Site':'Session '.$val->session_id ?></td>
                                                         <td><?= $val->message ?></td>
+                                                        <td><?= $val->push_url_link ?></td>
+                                                        <td><?= $val->push_url ?></td>
 <!--                                                        <td>
                                                             <?php if ($val->status == 1) { ?>
                                                                 <label class="label label-primary">Sent</label>
