@@ -503,6 +503,6 @@ if (isset($sessions)) {
 
 <!-- Please add scripts only in this JS file, NOT directly on this HTML file -->
 
-<script src="<?= base_url() ?>front_assets/js/view_sessions.js?v=26"></script>
+<script src="<?= base_url() ?>front_assets/js/view_sessions.js?v=27"></script>
 
 <script src="<?= base_url() ?>front_assets/js/admin-to-attendee-chat.js?v=202"></script>
