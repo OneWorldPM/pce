@@ -119,7 +119,7 @@ if (isset($_GET['testing']))
                                                 foreach ($sessions_data->option as $key => $value) {
                                                     $key++;
                                                     ?>
-                                                    <input type="text" name="option_<?= $key ?>" id="option_<?= $key ?>" value="<?= $value->option ?>" placeholder="Option <?= $key ?>" class="form-control input_cust_class">
+                                                    <input type="text" name="option_<?= $key ?>" id="option_<?= $key ?>" value="<?= htmlspecialchars($value->option) ?>" placeholder="Option <?= $key ?>" class="form-control input_cust_class">
                                                     <?php
                                                 }
                                                 $total = 10;
