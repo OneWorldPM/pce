@@ -7,6 +7,7 @@
     padding: 3px;
     color: #fff;
     background: rgb(3, 90, 118);
+    min-width: 30px;
 }
 
 .assesment-bar {
@@ -20,6 +21,7 @@
     box-shadow: none;
     color: #000;
     padding-top: 0px;
+    min-width: 30px;
 }
 
 .presurvey-bar{
@@ -36,6 +38,7 @@
     text-align: center;
     color: #fff;
     padding-top: 0px;
+    min-width: 30px;
 }
 
 .progress_bar_new_1 {

@@ -1,4 +1,4 @@
-<link href="<?= base_url() ?>assets/css/attendee-session-view.css?v=200" rel="stylesheet">
+<link href="<?= base_url() ?>assets/css/attendee-session-view.css?v=201" rel="stylesheet">
 
 <!-- Please add styles only in this CSS file, NOT directly on this HTML file -->
 <link href="<?= base_url() ?>front_assets/css/view_sessions.css?v=21" rel="stylesheet">
@@ -503,6 +503,6 @@ if (isset($sessions)) {
 
 <!-- Please add scripts only in this JS file, NOT directly on this HTML file -->
 
-<script src="<?= base_url() ?>front_assets/js/view_sessions.js?v=27"></script>
+<script src="<?= base_url() ?>front_assets/js/view_sessions.js?v=26"></script>
 
 <script src="<?= base_url() ?>front_assets/js/admin-to-attendee-chat.js?v=202"></script>
