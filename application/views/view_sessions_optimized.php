@@ -505,4 +505,4 @@ if (isset($sessions)) {
 
 <script src="<?= base_url() ?>front_assets/js/view_sessions.js?v=26"></script>
 
-<script src="<?= base_url() ?>front_assets/js/admin-to-attendee-chat.js?v=202"></script>
+<script src="<?= base_url() ?>front_assets/js/admin-to-attendee-chat.js?v=203"></script>
