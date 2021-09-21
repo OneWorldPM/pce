@@ -270,7 +270,7 @@ if (isset($sessions)) {
                             if ($val->upload_published_name) {
                                 if ($val->resource_file != "") {
                                     ?>
-                                    <div class="col-md-12"><a class="resources-link-text" href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" download="<?= $val->file_name ?>"> <?= $val->upload_published_name ?> </a></div>
+                                    <div class="col-md-12"><a class="resources-link-text" id="resource-download" data-resource-name="<?= $val->file_name ?>" data-resource-id="<?= $val->session_resource_id ?>" href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" download="<?= $val->file_name ?>"> <?= $val->upload_published_name ?>  </a></div>
                                     <?php
                                 }
                             }
@@ -503,6 +503,6 @@ if (isset($sessions)) {
 
 <!-- Please add scripts only in this JS file, NOT directly on this HTML file -->
 
-<script src="<?= base_url() ?>front_assets/js/view_sessions.js?v=27"></script>
+<script src="<?= base_url() ?>front_assets/js/view_sessions.js?v=28"></script>
 
 <script src="<?= base_url() ?>front_assets/js/admin-to-attendee-chat.js?v=203"></script>
