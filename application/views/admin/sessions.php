@@ -237,6 +237,7 @@ $user_role = $this->session->userdata('role');
                                                         <?php } ?>
                                                         <a href="<?= base_url() ?>admin/groupchat/sessions_groupchat/<?= $val->sessions_id ?>" class="btn btn-blue btn-sm" style="margin-bottom: 5px;">Create Chat</a>
                                                         <a href="<?= base_url() ?>admin/sessions/resource/<?= $val->sessions_id ?>" style="margin-bottom: 5px;" class="btn btn-success btn-sm" >Resources</a>
+                                                        <a href="<?= base_url() ?>admin/sessions/resourceLogs/<?= $val->sessions_id ?>" style="margin-bottom: 5px;" class="btn btn-light-orange btn-sm" >Resources Logs</a>
                                                     </td>
                                                     <td>
                                                          <?php if(isset($val->check_send_json_exist) && !empty($val->check_send_json_exist)){

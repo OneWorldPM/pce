@@ -1163,4 +1163,13 @@ public function ask_rep_report($session_id) {
         echo json_encode($this->msessions->addSelectedModerator());
     }
 
+    public function resourceLogs($session_id){
+        $data['resouces_logs'] = $this->msessions->get_all_resource_logs($session_id);
+//        $data['total_download_each_resource'] = $this->msessions->get_per_resource($session_id);
+        $data['session_id'] = $session_id;
+        $this->load->view('admin/header');
+        $this->load->view('admin/session_resource_logs', $data);
+        $this->load->view('admin/footer');
+
+    }
 }

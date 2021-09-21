@@ -1253,3 +1253,24 @@ $(document).ready(function () {
 
     });
 });
+
+
+$(function(){
+    $('#resource-download').on('click', function(e){
+        // e.preventDefault();
+        var resource_name = $(this).attr('data-resource-name');
+        var resource_id = $(this).attr('data-resource-id');
+
+        // console.log(resource_name);
+        $.post(base_url+"sessions/add_resource_logs",
+            {
+                'resource_name': resource_name,
+                'session_id': session_id,
+                'user_id': user_id,
+                'resource_id': resource_id,
+            },
+            function(){
+
+        })
+    })
+})

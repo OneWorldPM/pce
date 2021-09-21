@@ -649,4 +649,9 @@ class Sessions extends CI_Controller {
 
     }
 
+    public function add_resource_logs(){
+        $post = $this->input->post();
+        $this->db->insert('logs', array('file_name'=>$post['resource_name'], 'resource_id'=>$post['resource_id'], 'session_id'=>$post['session_id'], 'user_id'=>$post['user_id'],'date_time'=>date('Y-m-d H:i:s')));
+    }
+
 }
