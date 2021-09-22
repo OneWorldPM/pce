@@ -7,7 +7,8 @@
                 <div class="row">
                         <table class="table table-striped table-bordered" id="resource_logs_table">
 
-                            <label style="font-size: 18px">  OVERALL RESOURCE DOWNLOADS: <?= isset($resouces_logs) && !empty($resouces_logs) ? COUNT($resouces_logs):''?></label>
+                            <label style="font-size: 18px">  OVERALL RESOURCE DOWNLOADS : <?= isset($resouces_logs) && !empty($resouces_logs) ? COUNT($resouces_logs):''?></label><br>
+                            <label style="font-size: 18px">  UNIQUE USER DOWNLOADS : <?= isset($unique_resource_downloads) && !empty($unique_resource_downloads) ? COUNT($unique_resource_downloads):''?></label>
 <!--                            <a href="" class="btn btn-success btn-sm"> Exort </a>-->
                             <thead>
                                 <th>#</th>
