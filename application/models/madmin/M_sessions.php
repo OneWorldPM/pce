@@ -2271,52 +2271,21 @@ class M_sessions extends CI_Model {
             return '';
         }
     }
+
+    function get_unique_downloads($session_id){
+        $logs_result = $this->db->select('logs.*, CONCAT(cm.first_name, " ",cm.last_name) as attendee')
+            ->join('customer_master cm', 'logs.user_id=cm.cust_id', 'left')
+            ->where('session_id', $session_id)
+            ->group_by('logs.user_id')
+            ->get('logs');
+
+        if($logs_result->num_rows()>0){
+            return $logs_result->result();
+        }else{
+            return '';
+        }
+    }
 //
-//    function get_per_resource($session_id){
-//        $logs_result = $this->db->select('logs.*, CONCAT(cm.first_name, " ",cm.last_name) as attendee, COUNT(*) as total_per_resource, sr.upload_published_name as published_name')
-//            ->join('customer_master cm', 'logs.user_id=cm.cust_id', 'left')
-//            ->join('session_resource sr', 'logs.resource_id=sr.session_resource_id', 'left')
-//            ->where('session_id', $session_id)
-//            ->group_by('resource_id', 'desc')
-//            ->get('logs');
-//
-//        if($logs_result->num_rows()>0){
-//
-//            return $logs_result->result();
-//
-//        }else{
-//            return '';
-//        }
-//    }
-//
-//    function get_all_resource_logs($session_id){
-//        $logs_result = $this->db->select('resource_id')
-//            ->where('session_id', $session_id)
-//            ->where('resource_id !=', '')
-//            ->get('logs');
-//        $log_array = array();
-//        if($logs_result->num_rows()>0){
-//            foreach ($logs_result->result() as $log){
-////                print_r($log);
-//                    $log->resources = $this->get_log_per_resources($log->resource_id);
-//              $log_array = $log;
-//            }
-//            return $log_array;
-//        }else{
-//            return '';
-//        }
-//    }
-//
-//    function get_log_per_resources($resource_id){
-//        $resource_log = $this->db->select('logs.*,  CONCAT(cm.first_name, " ",cm.last_name) as attendee')
-//            ->join('customer_master cm', 'logs.user_id=cm.cust_id','left')
-//            ->where('resource_id', $resource_id)
-//            ->get('logs');
-//        if ($resource_log->num_rows()>0){
-//            return $resource_log->result();
-//        }else{
-//            return '';
-//        }
-//    }
+
 
 }
