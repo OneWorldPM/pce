@@ -2272,6 +2272,19 @@ class M_sessions extends CI_Model {
         }
     }
 
+    function get_all_resource_logs_array($session_id){
+        $logs_result = $this->db->select('logs.session_id, logs.file_name, logs.date_time, CONCAT(cm.first_name, " ",cm.last_name) as attendee')
+            ->join('customer_master cm', 'logs.user_id=cm.cust_id', 'left')
+            ->where('session_id', $session_id)
+            ->get('logs');
+
+        if($logs_result->num_rows()>0){
+            return $logs_result;
+        }else{
+            return '';
+        }
+    }
+
     function get_unique_downloads($session_id){
         $logs_result = $this->db->select('logs.*, CONCAT(cm.first_name, " ",cm.last_name) as attendee')
             ->join('customer_master cm', 'logs.user_id=cm.cust_id', 'left')

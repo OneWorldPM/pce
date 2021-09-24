@@ -9,7 +9,7 @@
 
                             <label style="font-size: 18px">  OVERALL RESOURCE DOWNLOADS : <?= isset($resouces_logs) && !empty($resouces_logs) ? COUNT($resouces_logs):''?></label><br>
                             <label style="font-size: 18px">  UNIQUE USER DOWNLOADS : <?= isset($unique_resource_downloads) && !empty($unique_resource_downloads) ? COUNT($unique_resource_downloads):''?></label>
-<!--                            <a href="" class="btn btn-success btn-sm"> Exort </a>-->
+                            <a href="<?=base_url().'admin/sessions/exportResourceLogs/'.$session_id?>" class="btn btn-success btn-sm"> Export Logs </a>
                             <thead>
                                 <th>#</th>
                                 <th>Download Date</th>

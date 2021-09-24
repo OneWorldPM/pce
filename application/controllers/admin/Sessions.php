@@ -1172,4 +1172,38 @@ public function ask_rep_report($session_id) {
         $this->load->view('admin/footer');
 
     }
+
+    public function exportResourceLogs($session_id){
+        $resource_logs = $this->msessions->get_all_resource_logs_array($session_id);
+        $count = 0;
+        $file_name = 'Resource Download Logs/'.date('Y-m-d').'.csv';
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$file_name");
+        header("Content-Type: application/csv;");
+        // get data
+        // file creation
+        $file = fopen('php://output', 'w');
+        fputcsv($file,array('RESOURCE LOGS'));
+        $header = array("#", "Session ID", "FileName", "Date Downloaded", "Attendee Name");
+        fputcsv($file, $header);
+//        $extra_columns = array('column1' => " ");
+        foreach ($resource_logs->result_array() as $index=> $value)
+        {
+            $count = $count + 1;
+            $extra_columns = array('column1' => ($index+1));
+            $csv_data = array_merge($extra_columns,$value);
+            fputcsv($file,$csv_data);
+        }
+
+
+        fclose($file);
+        exit;
+
+
+
+
+//        foreach ($resource_logs as $rlog){
+//
+//        }
+    }
 }
